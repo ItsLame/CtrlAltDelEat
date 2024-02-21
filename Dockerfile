@@ -10,5 +10,6 @@ RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 RUN pip3 install -r requirements.txt
 
+RUN echo 'alias psql="psql -h localhost --username=$POSTGRES_USER $POSTGRES_NAME"' >> ~/.bashrc
 
 COPY . /code

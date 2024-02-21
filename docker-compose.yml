@@ -14,7 +14,7 @@ services:
         environment:
             POSTGRES_USER: django_postgres
             POSTGRES_PASSWORD: admin_password
-            POSTGRES_DB: django_db
+            POSTGRES_NAME: django_db
             POSTGRES_HOST: db
 
     db:
@@ -28,7 +28,7 @@ services:
         environment:
             POSTGRES_USER: django_postgres
             POSTGRES_PASSWORD: admin_password
-            POSTGRES_DB: django_db
+            POSTGRES_NAME: django_db
             # POSTGRES_HOST_AUTH_METHOD: trust
 
 volumes:
