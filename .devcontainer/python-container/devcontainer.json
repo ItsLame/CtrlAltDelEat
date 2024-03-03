@@ -1,27 +1,55 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
 {
-    "name": "Python container",
-  
-    "dockerComposeFile": "../../docker-compose.yml",
-    "service": "django",
-    "workspaceFolder": "/code",
+  "name": "Python container",
+
+  "dockerComposeFile": "../../docker-compose.yml",
+  "service": "django",
+  "workspaceFolder": "/code",
 
 
 
-    // Features to add to the dev container. More info: https://containers.dev/features.
-    // "features": {},
-  
-    // Use 'forwardPorts' to make a list of ports inside the container available locally.
-    // This can be used to network with other containers or the host.
-    "forwardPorts": [8000, 5432]
-  
-    // Uncomment the next line to run commands after the container is created.
-    // "postCreateCommand": "cat /etc/os-release",
-  
-    // Configure tool-specific properties.
-    // "customizations": {},
-  
-    // Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
-    // "remoteUser": "devcontainer"
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // This can be used to network with other containers or the host.
+"forwardPorts": [
+  8000,
+  5432
+],
+"customizations": {
+  "vscode": {
+          // Set *default* container specific settings.json values on container create.
+          "settings": { 
+              "python.defaultInterpreterPath": "/usr/local/bin/python",
+              "python.linting.enabled": true,
+              "python.linting.pylintEnabled": true,
+              "python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
+              "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+              "python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
+              "python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
+              "python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
+              "python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
+              "python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
+              "python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
+              "python.linting.pylintPath": "/usr/local/py-utils/bin/pylint"
+          },
+    "extensions": [
+      "ms-python.python",
+      "ms-azuretools.vscode-docker",
+              "ms-python.vscode-pylance"
+
+    ]
   }
+}
+
+  // Uncomment the next line to run commands after the container is created.
+  // "postCreateCommand": "cat /etc/os-release",
+
+  // Configure tool-specific properties.
+  // "customizations": {},
+
+  // Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "devcontainer"
+}
