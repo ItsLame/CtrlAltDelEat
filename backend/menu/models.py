@@ -3,11 +3,14 @@ from django.db import models
 from django.db.models import Max
 from django.db.models.fields import CharField, DecimalField, BooleanField, TextField, UUIDField, FloatField
 from taggit.managers import TaggableManager
+from taggit.models import TaggedItemBase, ItemBase
+from rest_framework import permissions
 # Create your models here.
 
 class Category(models.Model):
     name = CharField(max_length = 60, unique=True)
     uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
     def num_items():
         try:
             new_max = Category.objects.aggregate(Max('ordering'))['ordering__max'] + 1
@@ -21,19 +24,13 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-class Tag(models.Model):
-    name = CharField(max_length = 60, unique=True)
-    uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
-    def __str__(self):
-        return self.name
 
-class Ingredient(models.Model):
-    name = CharField(max_length = 60, unique=True)
-    uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
+class ThroughIngredientTag(TaggedItemBase):
+    content_object = models.ForeignKey('MenuItem', on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.name
+class ThroughTagTag(TaggedItemBase):
+    content_object = models.ForeignKey('MenuItem', on_delete=models.CASCADE)    
 
 class MenuItem(models.Model):
     def num_items():
@@ -46,8 +43,8 @@ class MenuItem(models.Model):
     available = BooleanField()
     ordering = FloatField(default=num_items)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    ingredients = models.ManyToManyField(Ingredient)
-    tags = TaggableManager()
+    ingredients = TaggableManager(blank=False, through=ThroughIngredientTag, related_name='ingredient_tags')
+    tags = TaggableManager(blank=False, through=ThroughTagTag, related_name='tag_tags')
     uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
 
