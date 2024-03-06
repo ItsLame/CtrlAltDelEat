@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+    django:
+        build: .
+        # command: python3 backend/manage.py runserver 0.0.0.0:8000
+        command: sleep infinity
+        volumes:
+            - .:/code
+
+        depends_on:
+            - db
+        network_mode: service:db
+        environment:
+            POSTGRES_USER: django_postgres
+            POSTGRES_PASSWORD: admin_password
+            POSTGRES_NAME: django_db
+            POSTGRES_HOST: db
+
+    db:
+        image: postgres:13
+        restart: always
+        ports:
+            - "5432:5432"
+            - "8000:8000"
+        volumes:
+            # - postgres_data:/var/lib/postgresql/data
+            - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+        environment:
+            POSTGRES_USER: django_postgres
+            POSTGRES_PASSWORD: admin_password
+            POSTGRES_NAME: django_db
+            # POSTGRES_HOST_AUTH_METHOD: trust
+
+volumes:
+    postgres_data:
+
+
