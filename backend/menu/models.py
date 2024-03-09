@@ -56,10 +56,10 @@ class MenuItem(models.Model):
     description = CharField(max_length=255)
     available = BooleanField()
     ordering = FloatField(default=num_items)
-    category = models.ForeignKey(
-        Category, related_name='category_items', on_delete=models.PROTECT
-    )
-    # category = models.ManyToManyField(Category)
+    # category = models.ForeignKey(
+        # Category, related_name='category_items', on_delete=models.PROTECT
+    # )
+    category = models.ManyToManyField(Category)
     ingredients = TaggableManager(
         blank=False,
         through=ThroughIngredientTag,

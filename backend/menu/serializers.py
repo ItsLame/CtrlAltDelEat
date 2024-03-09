@@ -15,6 +15,7 @@ class MenuItemSerializer(TaggitSerializer, serializers.ModelSerializer):
         view_name='category-detail',
         queryset=Category.objects.all(),
         lookup_field='uuid',
+        many=True
     )
     tags = TagListSerializerField()
     ingredients = TagListSerializerField()
@@ -55,7 +56,7 @@ class MenuSerializer(serializers.ModelSerializer):
         view_name='category-detail', lookup_field='uuid', read_only=True
     )
     menu_items = MenuItemSerializer(
-        source='category_items', read_only=True, many=True
+        source='menuitem_set', read_only=True, many=True
     )
     ordering = serializers.FloatField(read_only=True)
 
