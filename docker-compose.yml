@@ -2,12 +2,14 @@ version: "3.9"
 
 services:
     django:
-        build: .
-        # command: python3 backend/manage.py runserver 0.0.0.0:8000
+        build:
+            context: backend
+            dockerfile: Dockerfile
         command: sleep infinity
+        # command: sh -c "python3 backend/manage.py makemigrations && python3 backend/manage.py migrate && python3 backend/manage.py runserver 0.0.0.0:8000"
         volumes:
             - .:/code
-
+        container_name: backend
         depends_on:
             - db
         network_mode: service:db
@@ -16,6 +18,19 @@ services:
             POSTGRES_PASSWORD: admin_password
             POSTGRES_NAME: django_db
             POSTGRES_HOST: db
+
+    # frontend:
+    #     restart: always
+    #     build:
+    #         context: frontend
+    #         dockerfile: Dockerfile
+    #     container_name: frontend
+    #     volumes:
+    #         - .:/app/frontend
+    #     command: yarn --cwd frontend run dev
+    #     # command: ls -la
+    #     ports:
+    #         - "3000:3000"
 
     db:
         image: postgres:13
@@ -34,5 +49,3 @@ services:
 
 volumes:
     postgres_data:
-
-

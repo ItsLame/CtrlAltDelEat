@@ -1,37 +1,24 @@
 import uuid
 from django.db import models
-from django.db.models import Max
 from django.db.models.fields import (
     CharField,
     DecimalField,
     BooleanField,
     URLField,
     UUIDField,
-    FloatField,
 )
 from taggit.managers import TaggableManager
-from taggit.models import TaggedItemBase, ItemBase
-from rest_framework import permissions
+from taggit.models import TaggedItemBase
 
 # Create your models here.
 
 
 class Category(models.Model):
+    """ 
+    Stores a unique category name (length <=60). Related to :model:`menu.MenuItem`
+    """
     category_name = CharField(max_length=60, unique=True)
     uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
-
-    def num_items():
-        try:
-            new_max = (
-                Category.objects.aggregate(Max('ordering'))['ordering__max']
-                + 1
-            )
-        except TypeError:
-            new_max = 0
-        print(new_max)
-        return new_max
-
-    ordering = FloatField(default=num_items)
 
     def __str__(self):
         return self.category_name
@@ -46,20 +33,16 @@ class ThroughTagTag(TaggedItemBase):
 
 
 class MenuItem(models.Model):
-    def num_items():
-        num_categories = Category.objects.order_by('-id')[0].id
-        print(num_categories)
-        return num_categories
-
-    menuitem_name = CharField(max_length=60)
+    """ 
+    Stores a unique menu item name (length <=60), cost (max 8 digits), 
+    description (max 255 chars), available flag, list of categories, 
+    list of ingredients, list of tags and image URL. Related to :model:`menu.Category`
+    """
+    menuitem_name = CharField(max_length=60, unique=True)
     cost = DecimalField(max_digits=8, decimal_places=2)
     description = CharField(max_length=255)
     available = BooleanField()
-    ordering = FloatField(default=num_items)
-    # category = models.ForeignKey(
-        # Category, related_name='category_items', on_delete=models.PROTECT
-    # )
-    category = models.ManyToManyField(Category)
+    category = models.ManyToManyField(Category, help_text="URL for category")
     ingredients = TaggableManager(
         blank=False,
         through=ThroughIngredientTag,
