@@ -19,19 +19,6 @@ services:
             POSTGRES_NAME: django_db
             POSTGRES_HOST: db
 
-    # frontend:
-    #     restart: always
-    #     build:
-    #         context: frontend
-    #         dockerfile: Dockerfile
-    #     container_name: frontend
-    #     volumes:
-    #         - .:/app/frontend
-    #     command: yarn --cwd frontend run dev
-    #     # command: ls -la
-    #     ports:
-    #         - "3000:3000"
-
     db:
         image: postgres:13
         restart: always
@@ -49,3 +36,5 @@ services:
 
 volumes:
     postgres_data:
+
+
