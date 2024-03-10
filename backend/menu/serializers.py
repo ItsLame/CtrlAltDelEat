@@ -5,17 +5,16 @@ from taggit.serializers import TagListSerializerField, TaggitSerializer
 
 class MenuItemSerializer(TaggitSerializer, serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
-        view_name='menuitem-detail', lookup_field='uuid', read_only=True
+        view_name='menu:menuitem-detail', lookup_field='uuid', read_only=True
     )
     category = serializers.HyperlinkedRelatedField(
-        view_name='category-detail',
+        view_name='menu:category-detail',
         queryset=Category.objects.all(),
         lookup_field='uuid',
         many=True,
     )
     tags = TagListSerializerField()
     ingredients = TagListSerializerField()
-
     class Meta:
         model = MenuItem
         fields = [
@@ -34,7 +33,7 @@ class MenuItemSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 class CategorySerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
-        view_name='category-detail', lookup_field='uuid', read_only=True
+        view_name='menu:category-detail', lookup_field='uuid', read_only=True
     )
 
     class Meta:
@@ -44,7 +43,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class MenuSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
-        view_name='category-detail', lookup_field='uuid', read_only=True
+        view_name='menu:category-detail', lookup_field='uuid', read_only=True
     )
     menu_items = MenuItemSerializer(
         source='menuitem_set', read_only=True, many=True

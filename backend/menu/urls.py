@@ -9,7 +9,7 @@ urlpatterns = [
         views.MenuItemListCreateAPIView.as_view(),
         name='menuitem-detail',
     ),
-    path('categories/', views.CategoryListCreateAPIView.as_view()),
+    path('categories/', views.CategoryListCreateAPIView.as_view(), name='category-list-create'),
     path(
         'categories/<uuid:uuid>/',
         views.CategoryDetailAPIView.as_view(),
