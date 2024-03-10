@@ -7,3 +7,6 @@ django-filter==23.5
 django-taggit==5.0.1
 uuid==1.30
 drf-extra-fields==3.7.0
+django-cors-headers==4.3.1
+djangorestframework-simplejwt==5.3.1
+docutils==0.20.1
