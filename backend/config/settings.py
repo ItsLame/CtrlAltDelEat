@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
     'django.contrib.admindocs',
+    'orders'
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 
