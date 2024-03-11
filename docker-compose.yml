@@ -5,8 +5,8 @@ services:
         build:
             context: backend
             dockerfile: Dockerfile
-        command: sleep infinity
-        # command: sh -c "python3 backend/manage.py makemigrations && python3 backend/manage.py migrate && python3 backend/manage.py runserver 0.0.0.0:8000"
+        # command: sleep infinity
+        command: sh -c "python3 backend/manage.py makemigrations && python3 backend/manage.py migrate && python3 backend/manage.py runserver 0.0.0.0:4000"
         volumes:
             - .:/code
         container_name: backend
@@ -38,7 +38,7 @@ services:
         restart: always
         ports:
             - "5432:5432"
-            - "8000:8000"
+            - "4000:4000"
         volumes:
             # - postgres_data:/var/lib/postgresql/data
             - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
