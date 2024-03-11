@@ -5,5 +5,5 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['tableNumber', 'itemName', 'cost', 'status', 'alterations', 'timestamp']
+        fields = ['tableNumber', 'itemName', 'cost', 'quantity', 'status', 'alterations', 'timestamp']
         ordering = ('timestamp')
