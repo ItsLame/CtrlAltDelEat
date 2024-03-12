@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { FileButton, Flex, LoadingOverlay, Modal, MultiSelect, NumberInput, Stack, Switch, TagsInput, Textarea, TextInput, Button, Group, Image } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 
 import { AddMenuItemModalProps } from "@/models";
 import { addMenuItem } from "@/services";
-import toast from "react-hot-toast";
 
 const schema = z.object({
   itemName: z.string().min(2, { message: "Name should have at least 2 letters" }),
@@ -89,6 +89,7 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
       <form onSubmit={(e) => {
         e.preventDefault();
         !form.validate().hasErrors && handleAddMenuItem();
+        !form.validate().hasErrors && handleClear();
       }}>
         <Flex gap={30}>
           <LoadingOverlay visible={isLoading}/>
