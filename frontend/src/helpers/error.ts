@@ -1,15 +1,19 @@
-export function failedGetError () {
+export function failedGetError() {
   throw new Error("Failed to fetch data");
 }
 
-export function failedPostError () {
+export function failedPostError() {
   throw new Error("Failed to post data");
 }
 
-export function failedPutError () {
+export function failedPutError() {
   throw new Error("Failed to update data");
 }
 
-export function failedDeleteError () {
+export function failedDeleteError() {
   throw new Error("Failed to delete data");
+}
+
+export function failedAuthError() {
+  throw new Error("Failed to authenticate user");
 }

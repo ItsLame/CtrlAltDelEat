@@ -1,9 +1,13 @@
-export interface addCategoryRequest {
-  name: string
+export interface category {
+  category_name: string
+  url: string
 }
 
-export interface categories {
-  name: string
+// API requests model
+export interface addCategoryRequest {
+  category_name: string
+}
+
+export interface deleteCategoryRequest {
   uuid: string
-  ordering: number
 }

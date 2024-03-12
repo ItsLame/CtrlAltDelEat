@@ -1,8 +1,9 @@
-import { failedGetError, failedPostError } from "@/helpers";
-import { addCategoryRequest } from "@/models";
+import { apiUrlBase } from "@/constants";
+import { getHeaders } from "@/services";
+import { failedDeleteError, failedGetError, failedPostError } from "@/helpers";
+import { addCategoryRequest, deleteCategoryRequest } from "@/models";
 
-// replace this to env file when have time
-const apiUrl = "http://localhost:4000/api/menu/categories/";
+const apiUrl = `${apiUrlBase}/api/menu/categories/`;
 
 export async function getCategories() {
   const endpoint = `${apiUrl}`;
@@ -12,17 +13,29 @@ export async function getCategories() {
   return res.json();
 };
 
-export async function addCategory(addCategoryRequest: addCategoryRequest) {
+export async function addCategory(request: addCategoryRequest) {
+  const headersConfig = await getHeaders();
+  const req = request;
   const endpoint = `${apiUrl}`;
-  const req = addCategoryRequest;
   const res = await fetch(endpoint, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: headersConfig,
     body: JSON.stringify(req)
   });
 
-  if(!res.ok && res.status != 400) failedPostError();
+  if(!res.ok && res.status !== 400 && res.status !== 401) failedPostError();
+  return res.status;
+};
+
+export async function deleteCategory(request: deleteCategoryRequest) {
+  const headersConfig = await getHeaders();
+  const { uuid } = request;
+  const endpoint = `${apiUrl}${uuid}/delete`;
+  const res = await fetch(endpoint, {
+    method: "DELETE",
+    headers: headersConfig
+  });
+
+  if(!res.ok) failedDeleteError();
   return res.status;
 };
