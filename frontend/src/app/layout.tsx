@@ -1,8 +1,8 @@
 import "@mantine/core/styles.css";
 import React from "react";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
-import { theme } from "~/theme";
 
+import { theme } from "~/theme";
 import "@/styles/globals.scss";
 
 export const metadata = {

@@ -1,5 +1,4 @@
-import { category } from "@/models/categories";
-import { menuItems } from "@/models/menuitems";
+import { category, menuItems } from "@/models";
 
 export interface CustomerSidebarProps {
     onCategorySelect: (_category: category) => void
@@ -10,4 +9,5 @@ export interface CustomerSidebarProps {
 
 export interface CustomerMainProps {
     items: menuItems[]
+    tableNo: number
 }

@@ -2,14 +2,14 @@
 
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
-import { AppShell, Burger } from "@mantine/core";
-import Image from "next/image";
+import { AppShell, Burger, Image, Text } from "@mantine/core";
+
 import { getCategories, getMenuItems } from "@/services";
 import { category, menuItems } from "@/models";
 import { CustomerSidebar } from "@/components/customer/CustomerSidebar";
 import { CustomerMain } from "@/components/customer/CustomerMain";
 
-export default function Customer() {
+export default function Customer({ params: { tableNo } } : { params: { tableNo: number } }) {
   const [sidebarOpened, { toggle }] = useDisclosure();
 
   // eslint-disable-next-line no-unused-vars
@@ -74,6 +74,9 @@ export default function Customer() {
             height={60}
             alt="CtrlAltDelEat Logo"
           />
+          <Text fw={700} c="dark">
+            Table #{tableNo}
+          </Text>
         </div>
       </AppShell.Header>
 
@@ -88,7 +91,8 @@ export default function Customer() {
 
       <AppShell.Main>
         <CustomerMain
-          items={ filteredItemList }
+          items={filteredItemList}
+          tableNo={tableNo}
         />
       </AppShell.Main>
     </AppShell>

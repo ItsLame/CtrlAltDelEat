@@ -1,5 +1,6 @@
-import { CustomerSidebarProps } from "@/models/customer";
 import { Box, Button, Stack } from "@mantine/core";
+
+import { CustomerSidebarProps } from "@/models";
 
 export function CustomerSidebar(customerProps: CustomerSidebarProps) {
 
