@@ -110,7 +110,7 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
             </FileButton>
             <Button
               color="red"
-              disabled={itemImage ? false : true}
+              disabled={!itemImage}
               onClick={() => {setItemImage(undefined);}}
             >
               Clear Image

@@ -11,7 +11,7 @@ export async function getMenuItems() {
 
   if(!res.ok) failedGetError();
   return res.json();
-};
+}
 
 export async function addMenuItem(request: addMenuItemRequest) {
   const headersConfig = await getHeaders();
@@ -25,4 +25,4 @@ export async function addMenuItem(request: addMenuItemRequest) {
 
   if(!res.ok && res.status != 400 && res.status != 401) failedPostError();
   return res.status;
-};
+}

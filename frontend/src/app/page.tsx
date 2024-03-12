@@ -29,6 +29,11 @@ export default function HomePage() {
               Manager
             </Button>
           </Link>
+          <Link href="/customer">
+            <Button>
+              Customer
+            </Button>
+          </Link>
         </Stack>
         <Title order={5} mt={20}>Developer Tool</Title>
         <Button
