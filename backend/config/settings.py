@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
     'django.contrib.admindocs',
+    'orders'
 ]
 
 REST_FRAMEWORK = {
@@ -79,6 +80,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+
 CORS_ALLOW_HEADERS = [
     'content-disposition',
     'accept-encoding',

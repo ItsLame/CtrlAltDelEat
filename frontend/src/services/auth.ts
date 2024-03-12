@@ -13,18 +13,17 @@ export async function generateAuthToken(request: generateAuthTokenRequest) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(req)
+    body: JSON.stringify(req),
   });
-
-  if(!res.ok) failedAuthError();
+  if (!res.ok) failedAuthError();
   return res.json();
-};
+}
 
 export async function getHeaders() {
   const authToken = await getAuthToken();
   const headersConfig = {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${authToken}`
+    Authorization: `Bearer ${authToken}`,
   };
   return headersConfig;
 }
