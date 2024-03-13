@@ -1,0 +1,33 @@
+.kitchen-logo {
+  margin-left: 15px;
+}
+
+.kitchen-main {
+  overflow: hidden;
+}
+
+.kitchen-flex-style {
+  overflow: auto;
+  padding: 0.7em;
+  height: 80vh;
+  align-content: start;
+}
+
+.kitchen-flex-items {
+  flex: 1, 1, auto;
+  width: 19rem;
+  align-items: flex-start;
+}
+
+.order-time {
+  color: rgb(178, 25, 48);
+}
+
+.order-first-line {
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.small-break {
+  margin-bottom: 0.5rem;
+}

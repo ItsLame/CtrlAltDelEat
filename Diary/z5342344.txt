@@ -1,0 +1,11 @@
+Week 1: 
+Group of 4 established and given a name - CtrlAltElite. Posted on Ed Forum and Moodle to look for potential teammates. Elected a Scrum Master - Janhavi Jain. Also joined the Jira website created by the Scrum Master.
+
+Week 2: 
+Topic selected for group project. Received responses from interested candidates for team formation, team of 6 successfully formed with new additions Jack and Will. Participated in brainstorming session within group to discuss functionalities of newly chosen group project. Created a shared document folder for group work and Microsoft team for meetings. Added project proposal document to shared document folder. 
+
+Week 3: 
+Brainstormed with group on potential User Stories to be created in weekly standup. Added content to project proposal for novel features and functionalities the waiting management system brings in. Took up login user stories for wait staff and kitchen staff.  
+
+Week 4:
+Discussed sprint 1 updates with group. Looked into API endpoint creation for project. Discussed demo agenda and retrospective requirements with team in weekly standup. 

@@ -1,0 +1,20 @@
+.menu-item-list {
+  margin-top: 1rem;
+
+  &.appshell-h-100 {
+    height: calc(100vh - (var(--app-shell-header-height) + var(--app-shell-header-height) + 2rem));
+  }
+}
+
+.menu-item {
+  transition: all ease 150ms;
+
+  &:hover {
+    background-color: var(--mantine-color-blue-outline-hover);
+    transition: all ease 150ms;
+  }
+  
+  &:active {
+    transform: translateY(3px);
+  }
+}
