@@ -7,7 +7,7 @@ class Order(models.Model):
     tableNumber = IntegerField()
     itemName = CharField(max_length = 60)
     cost = DecimalField(max_digits=8, decimal_places=2)
-    quantity = IntegerField()
+    #quantity = IntegerField()
     status = CharField(max_length=15)
     alterations = TextField()
     #timestamp = BigIntegerField(db_column='timestamp')
