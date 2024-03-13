@@ -1,29 +1,27 @@
-import { Box, Button, Stack } from "@mantine/core";
+import { Button, LoadingOverlay, Stack } from "@mantine/core";
 
 import { CustomerSidebarProps } from "@/models";
 
-export function CustomerSidebar(customerProps: CustomerSidebarProps) {
+// eslint-disable-next-line no-unused-vars
+export function CustomerSidebar({ category, categoryList, isLoading, onCategorySelect, onRefresh }: CustomerSidebarProps) {
 
   return (
     <div className="customer sidebar">
-      <Box className="h-100" pos="relative">
-        {/*<LoadingOverlay visible={customerProps.isLoading} />*/}
-        <Stack gap={10}>
-          {customerProps.categoryList.map((c, k) => (
-            <Button
-              key={k}
-              onClick={() => {
-                console.log("hi there");
-                console.log(c);
-                customerProps.onCategorySelect(c);
-              }}
-            >
-              {c.category_name}
-            </Button>
-          )
-          )}
-        </Stack>
-      </Box>
+      <LoadingOverlay visible={isLoading} />
+      <Stack gap={10}>
+        {categoryList.map((c, k) => (
+          <Button
+            key={k}
+            variant={c.url == category.url ? "filled" : "outline"}
+            onClick={() => {
+              onCategorySelect(c);
+            }}
+          >
+            {c.category_name}
+          </Button>
+        )
+        )}
+      </Stack>
     </div>
   );
 }

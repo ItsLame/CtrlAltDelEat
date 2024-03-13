@@ -1,23 +1,21 @@
-import { Card, Flex, Stack, UnstyledButton, Image, Text } from "@mantine/core";
-import { useRouter } from "next/navigation";
+import { Card, Flex, Stack, UnstyledButton, Image, Text, Title } from "@mantine/core";
 
 import { menuItems, CustomerMainProps } from "@/models";
+import { imagePlaceholder } from "@/constants";
 
-export function CustomerMain({ items, tableNo }: CustomerMainProps) {
-  const router = useRouter();
-
+export function CustomerMain({ category, items, onMenuItemSelect, onViewMenuItem }: CustomerMainProps) {
   const generateMenuItem = (item: menuItems, k: number) => (
-    <UnstyledButton onClick={() => {
-      console.log("going to: " + item.menuitem_name + " page");
-      router.push(`${tableNo}/item`);
+    <UnstyledButton key={k} onClick={() => {
+      onMenuItemSelect(item);
+      onViewMenuItem();
     }}>
-      <Card className="menu-item" key={k} shadow="sm" padding="lg" radius="md" withBorder={true}>
+      <Card className="menu-item" shadow="sm" padding="lg" radius="md" withBorder={true}>
         <Flex gap={15}>
           <Flex w={80}>
             <Image
               src={null}
               alt={`A picture of ${item.menuitem_name}`}
-              fallbackSrc="https://placehold.co/600x400?text=Image%20Preview"
+              fallbackSrc={imagePlaceholder}
             />
           </Flex>
           <Flex direction={"column"}>
@@ -33,6 +31,7 @@ export function CustomerMain({ items, tableNo }: CustomerMainProps) {
   return (
     <div>
       <Stack>
+        <Title order={2} visibleFrom="sm">{category.category_name}</Title>
         {items.map((item, k) => generateMenuItem(item, k))}
       </Stack>
     </div>

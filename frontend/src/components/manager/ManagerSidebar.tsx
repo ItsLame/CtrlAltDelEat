@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { addCategory } from "@/services";
 import { ManagerSidebarProps } from "@/models";
 
-export function ManagerSidebar({ onCategorySelect, categoryList, isLoading, onRefresh }: ManagerSidebarProps) {
+export function ManagerSidebar({ category, onCategorySelect, categoryList, isLoading, onRefresh }: ManagerSidebarProps) {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [isNewCategoryNameValid, setNewCategoryNameValid] = useState(false);
 
@@ -81,7 +81,7 @@ export function ManagerSidebar({ onCategorySelect, categoryList, isLoading, onRe
           {categoryList.map((c, k) => (
             <Button
               key={k}
-              variant="outline"
+              variant={c.url == category.url ? "filled" : "outline"}
               onClick={() => {onCategorySelect(c);}}
             >
               {c.category_name}

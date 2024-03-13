@@ -8,6 +8,7 @@ import { z } from "zod";
 
 import { AddMenuItemModalProps } from "@/models";
 import { addMenuItem } from "@/services";
+import { imagePlaceholder } from "@/constants";
 
 const schema = z.object({
   itemName: z.string().min(2, { message: "Name should have at least 2 letters" }),
@@ -98,7 +99,7 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
               <Image
                 mt={10}
                 src={itemImage}
-                fallbackSrc="https://placehold.co/600x400?text=Image%20Preview"
+                fallbackSrc={imagePlaceholder}
                 alt="Preview of uploaded image"
               />
             </Flex>

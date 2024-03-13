@@ -3,6 +3,7 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { ActionIcon, Box, Button, Card, Flex, LoadingOverlay, ScrollArea, Stack, Title, Text, UnstyledButton, Image } from "@mantine/core";
 
 import { ManagerMainProps, menuItems } from "@/models";
+import { imagePlaceholder } from "@/constants";
 
 export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAddMenuItem }: ManagerMainProps) {
   const [menuItemListFiltered, setMenuItemListFiltered] = useState([] as menuItems[]);
@@ -39,7 +40,7 @@ export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAd
                     <Image
                       src={null}
                       alt={`A picture of ${item.menuitem_name}`}
-                      fallbackSrc="https://placehold.co/600x400?text=Image%20Preview"
+                      fallbackSrc={imagePlaceholder}
                     />
                   </Flex>
                   <Stack gap={0}>

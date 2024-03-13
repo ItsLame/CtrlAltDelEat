@@ -77,9 +77,10 @@ export default function Manager() {
 
       <AppShell.Navbar p="md">
         <ManagerSidebar
-          onCategorySelect={handleSelectCategory}
+          category={category}
           categoryList={categoryList}
           isLoading={isCategoryListLoading}
+          onCategorySelect={handleSelectCategory}
           onRefresh={refreshCategoryList}
         />
       </AppShell.Navbar>

@@ -2,9 +2,10 @@ import { category, menuItems } from "@/models";
 
 // Function props
 export interface ManagerSidebarProps {
-  onCategorySelect: (_category: category) => void
+  category: category
   categoryList: category[]
   isLoading: boolean
+  onCategorySelect: (_category: category) => void
   onRefresh: () => void
 }
 
