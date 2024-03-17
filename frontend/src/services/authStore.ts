@@ -23,6 +23,11 @@ export async function storeToken(request: storeTokenRequest) {
   });
 }
 
+export async function clearAuthRefreshTokens(){
+  cookies().delete(accessTokenCookieName);
+  cookies().delete(refreshTokenCookieName);
+}
+
 export async function getAuthToken(){
   const authToken = cookies().get(accessTokenCookieName)?.value;
   return authToken;

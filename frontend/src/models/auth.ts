@@ -8,3 +8,8 @@ export interface generateAuthTokenRequest {
   username?: string
   password?: string
 }
+
+// API requests model
+export interface refreshAuthTokenRequest {
+  refresh?: string
+}
