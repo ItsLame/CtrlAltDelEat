@@ -2,30 +2,36 @@
 
 import { cookies } from "next/headers";
 
-import { accessTokenCookieName, refreshTokenCookieName } from "@/constants";
+import { accessTokenCookieName, refreshTokenCookieName, usernameCookieName, isSuperUserCookieName, userGroupsCookieName } from "@/constants";
 import { storeTokenRequest } from "@/models";
 
 export async function storeToken(request: storeTokenRequest) {
-  cookies().set({
-    name: accessTokenCookieName,
-    value: request.access,
-    httpOnly: true,
-    sameSite: "strict",
-    secure: true,
-  });
+  console.log("Test");
+  const cookie_map = {
+    [accessTokenCookieName]: request.access,
+    [refreshTokenCookieName]: request.refresh,
+    [usernameCookieName]: request.username,
+    [isSuperUserCookieName]: request.isSuperUser,
+    [userGroupsCookieName]: JSON.stringify(request.groups),
+  };
+  for (const [key, value] of Object.entries(cookie_map)) {
+    cookies().set({
+      name: `${key}`,
+      value: `${value}`,
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true
+    });
+  };
 
-  cookies().set({
-    name: refreshTokenCookieName,
-    value: request.refresh,
-    httpOnly: true,
-    sameSite: "strict",
-    secure: true,
-  });
 }
 
 export async function clearAuthRefreshTokens(){
-  cookies().delete(accessTokenCookieName);
-  cookies().delete(refreshTokenCookieName);
+  const cookie_names = [accessTokenCookieName, refreshTokenCookieName, usernameCookieName, isSuperUserCookieName, userGroupsCookieName];
+  for (let i = 0; i < cookie_names.length; i++) {
+    console.log(`${cookie_names[i]}`);
+    cookies().delete(`${cookie_names[i]}`);
+  };
 }
 
 export async function getAuthToken(){

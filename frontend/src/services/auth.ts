@@ -15,6 +15,7 @@ export async function generateAuthToken(request: generateAuthTokenRequest) {
     },
     body: JSON.stringify(req),
   });
+  console.log(req);
   if (!res.ok) failedAuthError();
   return res.json();
 }
@@ -23,6 +24,11 @@ export async function logout() {
   const refresh_token = await getRefreshToken();
   const endpoint = `${apiUrl}blacklist/`;
   console.log(endpoint);
+  if (!refresh_token)
+  {
+    clearAuthRefreshTokens();
+    return;
+  }
   const res = await fetch(endpoint, {
     method: "POST",
     headers: {
@@ -31,9 +37,9 @@ export async function logout() {
     body: JSON.stringify( { refresh: `${refresh_token}` } ),
   });
   console.log(res.json());
+  clearAuthRefreshTokens();
 
   if (!res.ok) failedAuthError();
-  clearAuthRefreshTokens();
 }
 
 export async function getHeaders() {

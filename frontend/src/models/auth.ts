@@ -1,6 +1,13 @@
+export interface userGroup {
+  id: number,
+  name: string,
+}
 export interface storeTokenRequest {
   access: string
   refresh: string
+  username: string
+  isSuperUser: boolean
+  groups: userGroup[]
 }
 
 // API requests model
