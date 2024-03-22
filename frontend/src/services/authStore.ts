@@ -34,6 +34,15 @@ export async function clearAuthRefreshTokens(){
   };
 }
 
+export async function getUserCookies() {
+  const login_info = {
+    username: cookies().get(usernameCookieName)?.value,
+    isSuperUser: cookies().get(isSuperUserCookieName)?.value,
+    groups: cookies().get(userGroupsCookieName)?.value,
+  };
+  return login_info;
+}
+
 export async function getAuthToken(){
   const authToken = cookies().get(accessTokenCookieName)?.value;
   return authToken;

@@ -10,6 +10,12 @@ export interface storeTokenRequest {
   groups: userGroup[]
 }
 
+export interface loginInfo {
+  username: string
+  isSuperUser: boolean
+  groups: userGroup[]
+}
+
 // API requests model
 export interface generateAuthTokenRequest {
   username?: string
