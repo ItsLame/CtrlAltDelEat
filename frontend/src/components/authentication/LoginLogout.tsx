@@ -2,7 +2,7 @@
 
 import { Button, Center, Stack, Flex, Title, PinInput, Text } from "@mantine/core";
 import { useState, useEffect } from "react";
-import { generateAuthToken, storeToken, logout, getUserCookies } from "@/services";
+import { generateAuthToken, storeToken, blacklistAuthToken, getUserCookies } from "@/services";
 import { apiPassword } from "@/constants";
 import { userGroup } from "@/models";
 import { useForm } from "@mantine/form";
@@ -13,12 +13,14 @@ export function Login() {
   const [groups, setGroups] = useState([]);
   const [errorPin, setErrorPin] = useState(false);
   const [errorName, setErrorName] = useState("");
+  const [pin, setPIN] = useState("");
 
   const form = useForm({
     initialValues: {
       pin: "",
     }
   });
+
   const refreshUser = () => {
     getUserCookies().then((res) => {
       setUsername(res.username!);
@@ -31,17 +33,18 @@ export function Login() {
       }
     });
   };
+
   useEffect(() => {
     refreshUser();
   }, []);
 
-  const handleLogin = (pin: any) => {
+  const handleLogin = (pin: string) => {
     generateAuthToken( { username: pin, password: apiPassword } ).then(
       (res) => {
         console.log(res);
         storeToken(res);
         setErrorPin(false);
-
+        setErrorName("");
         refreshUser();
       }
     ).catch((error) => {
@@ -52,14 +55,44 @@ export function Login() {
   };
 
   const handleLogout = () => {
-    logout().then(
+    blacklistAuthToken().then(
       () => {
+        setErrorName("");
+        setPIN("");
         refreshUser();
       }
     );
 
   };
-  const [pin, setPIN] = useState("");
+
+  const loginSection = () => (
+    <form onSubmit={form.onSubmit((values: any) => console.log(values))}>
+      <><Stack>
+        <PinInput
+          onComplete={(value: string) => setPIN(value)}
+          autoFocus
+          error={errorPin}/>
+        <Text>
+          {errorName}
+        </Text>
+        <Button type="submit" variant="light" onClick={() => handleLogin(pin)}>
+          Log in
+        </Button>
+      </Stack></>
+    </form>
+  );
+
+  const logoutSection = () => (
+    <>
+      <Text><Text span fw={500}>Username: </Text>{username}</Text>
+      <Text><Text span fw={500}>SuperUser: </Text>{isSuperUser ? "Yes" : "No"}</Text>
+      <Text><Text span fw={500}>Groups: </Text>{groups.toString()}</Text>
+      <Button variant="light" onClick={handleLogout}>
+        Log out
+      </Button>
+    </>
+  );
+
   return (
     <Center>
       <Flex direction="column" align="center">
@@ -67,32 +100,7 @@ export function Login() {
           <Title order={5} mt={20}>
             Authentication
           </Title>
-          {!username ?
-            (
-              <form onSubmit={form.onSubmit((values: any) => console.log(values))}>
-                <><Stack>
-                  <PinInput
-                    onComplete={(value: any) => setPIN(value)}
-                    autoFocus
-                    error={errorPin}/>
-                  <Text>
-                    {errorName}
-                  </Text>
-                  <Button type="submit" variant="light" onClick={() => handleLogin(pin)}>
-                    Log in
-                  </Button>
-                </Stack></>
-              </form>
-            ) :
-            (
-              <><Text><Text span fw={500}>Username: </Text>{username}</Text>
-                <Text><Text span fw={500}>SuperUser: </Text>{isSuperUser ? "Yes" : "No"}</Text>
-                <Text><Text span fw={500}>Groups: </Text>{groups}</Text>
-                <Button variant="light" onClick={handleLogout}>
-                  Log out
-                </Button></>
-            )
-          }
+          {!username ? loginSection() : logoutSection()}
         </Stack>
       </Flex>
     </Center>

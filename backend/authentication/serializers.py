@@ -29,7 +29,6 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ('id', 'name',)
-        # fields = '__all__'
     
 class UserSerializer(serializers.ModelSerializer):
     groups = serializers.HyperlinkedRelatedField(
@@ -40,8 +39,7 @@ class UserSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = User
-        # fields = '__all__'
-        fields = ('username', 'password', 'groups')
+        fields = ('username', 'password', 'is_superuser', 'groups')
 
     def create(self, validated_data):
         groups_data = validated_data.pop('groups')
