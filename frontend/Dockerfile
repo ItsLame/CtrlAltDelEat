@@ -9,7 +9,7 @@ WORKDIR /app
 COPY ./package*.json ./
 RUN npm ci && npm cache clean --force
 
-RUN npm install
+# RUN npm install
 COPY . /app
 
 RUN npm run build
