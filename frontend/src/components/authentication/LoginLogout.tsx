@@ -71,7 +71,11 @@ export function Login() {
         <PinInput
           onComplete={(value: string) => setPIN(value)}
           autoFocus
-          error={errorPin}/>
+          error={errorPin}
+          type={/^\d*$/}
+          inputType="tel"
+          // inputMode="numeric"
+        />
         <Text>
           {errorName}
         </Text>
