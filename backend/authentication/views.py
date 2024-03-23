@@ -3,6 +3,7 @@ from rest_framework import generics, permissions
 from django.contrib.auth.models import User, Group
 from authentication.serializers import UserSerializer, GroupSerializer, CustomTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from authentication.permissions import IsManagerOrReadOnly
 # Create your views here.
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -13,7 +14,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 class GroupListCreateAPIView(generics.ListCreateAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAdminUser|IsManagerOrReadOnly]
 
 class GroupDetailAPIView(generics.RetrieveAPIView):
     """
@@ -21,7 +22,7 @@ class GroupDetailAPIView(generics.RetrieveAPIView):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAdminUser|IsManagerOrReadOnly]
 
 
     lookup_field = 'pk'
@@ -33,6 +34,4 @@ class UserListCreateAPIView(generics.ListCreateAPIView):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    # permission_classes = [permissions.IsAdminUser | IsManagerOrReadOnly]
-    permission_classes = [permissions.AllowAny]
-    # lookup_field = 'uuid'
+    permission_classes = [permissions.IsAdminUser|IsManagerOrReadOnly]
