@@ -7,9 +7,11 @@ from django.db.models.fields import (
     URLField,
     UUIDField,
 )
+
+from django.db.models import ImageField
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
-
+import os
 # Create your models here.
 
 
@@ -31,6 +33,8 @@ class ThroughIngredientTag(TaggedItemBase):
 class ThroughTagTag(TaggedItemBase):
     content_object = models.ForeignKey('MenuItem', on_delete=models.CASCADE)
 
+def upload_path(instance, filename):
+    return os.path.join("images", filename)
 
 class MenuItem(models.Model):
     """ 
@@ -52,7 +56,8 @@ class MenuItem(models.Model):
         blank=True, through=ThroughTagTag, related_name='tag_tags'
     )
     uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    image = URLField(max_length=200, blank=True)
+    image = ImageField(upload_to=upload_path, blank=True, null=True)
+    # image = URLField(max_length=200, blank=True)
 
     def __str__(self):
         return self.menuitem_name

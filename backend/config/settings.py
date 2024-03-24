@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
     'django.contrib.admindocs',
-    'orders'
+    'orders',
+    'storages'
 ]
 
 REST_FRAMEWORK = {
@@ -193,3 +194,22 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AWS_CUSTOM_DOMAIN = os.environ.get('S3_HOST')
+MEDIA_URL = f"{AWS_CUSTOM_DOMAIN}media/"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": os.environ.get('S3_BUCKET_NAME'),    
+            "access_key": os.environ.get("AWS_ACCESS_KEY_ID"),
+            "secret_key": os.environ.get("AWS_SECRET_ACCESS_KEY"),
+            "endpoint_url": os.environ.get('S3_HOST'),
+            "region_name": os.environ.get('AWS_S3_REGION_NAME'),
+        }
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}

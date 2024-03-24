@@ -17,7 +17,12 @@ services:
         container_name: backend
         depends_on:
             - db
-        network_mode: service:db
+        dns:
+            - 10.0.2.20
+        networks:
+            - ls
+        ports:
+            - "4000:4000"
         environment:
             POSTGRES_USER: django_postgres
             POSTGRES_PASSWORD: admin_password
@@ -25,6 +30,11 @@ services:
             POSTGRES_HOST: db
             DJANGO_SUPERUSER_USERNAME: root
             DJANGO_SUPERUSER_PASSWORD: password
+            S3_HOST: http://localhost.localstack.cloud:4566/
+            S3_BUCKET_NAME: media
+            AWS_ACCESS_KEY_ID: test
+            AWS_SECRET_ACCESS_KEY: test
+            AWS_S3_REGION_NAME: us-east-1
 
     frontend:
         restart: always
@@ -46,17 +56,35 @@ services:
         restart: always
         ports:
             - "5432:5432"
-            - "4000:4000"
+            # - "4000:4000"
         volumes:
             # - postgres_data:/var/lib/postgresql/data
             - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+        networks:
+            - ls
         environment:
             POSTGRES_USER: django_postgres
             POSTGRES_PASSWORD: admin_password
             POSTGRES_NAME: django_db
             # POSTGRES_HOST_AUTH_METHOD: trust
 
+    localstack:
+        container_name: localstack
+        image: localstack/localstack:latest
+        ports:
+            - "4566:4566"
+        volumes:
+            - "./localstack/init-s3.py:/etc/localstack/init/ready.d/init-s3.py"
+        networks:
+            ls:
+                ipv4_address: 10.0.2.20
+
 volumes:
     postgres_data:
 
 
+networks:
+  ls:
+    ipam:
+      config:
+        - subnet: 10.0.2.0/24
