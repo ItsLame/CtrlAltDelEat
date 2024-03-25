@@ -17,13 +17,18 @@ class AddToCartAPIView(generics.ListCreateAPIView):
 
 
 class GetCartForTableAPIView(generics.ListCreateAPIView):
+    """
+        view items in the cart for a particular table
+    """
+
     serializer_class = ItemSerializer
 
     def get_queryset(self):
         queryset = Item.objects.all()
         tableNum = self.request.GET.get('tableNumber', None)
+        status = "in-cart"
         if tableNum is not None:
-            queryset = queryset.filter(tableNumber=tableNum)
+            queryset = queryset.filter(tableNumber=tableNum, status=status)
         return queryset
 
 
