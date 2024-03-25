@@ -2,5 +2,7 @@ from django.urls import path
 from orders import views
 
 urlpatterns = [
-    path('orderitems/', views.OrderCreateAPIView.as_view()),
+    path('addtocart/', views.AddToCartAPIView.as_view()),
+    path('getCartForTable/', views.GetCartForTableAPIView.as_view()),
+    path('orderitems/', views.OrderCreateAPIView.as_view())
 ]

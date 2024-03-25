@@ -1,19 +1,19 @@
 import uuid
 from django.db import models
-from django.db.models.fields import CharField, UUIDField, IntegerField, DecimalField, TextField, TimeField
+from django.db.models.fields import CharField, UUIDField, IntegerField, DecimalField, TextField, TimeField, AutoField
 import time
 
-class Order(models.Model):
+class Item(models.Model):
     tableNumber = IntegerField()
     itemName = CharField(max_length = 60)
     cost = DecimalField(max_digits=8, decimal_places=2)
-    quantity = IntegerField()
-    status = CharField(max_length=15)
-    alterations = TextField()
-    #timestamp = BigIntegerField(db_column='timestamp')
+    quantity = IntegerField(default=1)
+    status = CharField(max_length=15, default="in-cart")
+    alterations = TextField(blank=True)
     timestamp = TimeField(auto_now_add=True)
-    uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    #uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
+    # timestamp = BigIntegerField(db_column='timestamp')
     # @property
     # def timestamp(self):
     #     self.timestamp = round(time.time() * 1000)
@@ -24,7 +24,15 @@ class Order(models.Model):
     #
     # def save(self, *args, **kwargs):
     #     self.timestamp = self.get_timestamp()
-    #     super(Order, self).save(*args, **kwargs)
+    #     super(Item, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.itemName
+
+
+class Order(models.Model):
+    orderNumber = IntegerField()
+    #orderNumber = AutoField(primary_key=True)
+    items = models.ManyToManyField(Item)
+
+
