@@ -72,7 +72,7 @@ services:
         environment:
             storage.awsAccessKey: test
             storage.awsSecretKey: test
-            storage.autocreateBuckets: true
+            storage.autocreateBuckets: 1
         volumes:
             - s3ninja_data:/home/sirius/data/
 
