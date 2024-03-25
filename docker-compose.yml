@@ -17,10 +17,7 @@ services:
         container_name: backend
         depends_on:
             - db
-        dns:
-            - 10.0.2.20
-        networks:
-            - ls
+
         ports:
             - "4000:4000"
         environment:
@@ -30,7 +27,7 @@ services:
             POSTGRES_HOST: db
             DJANGO_SUPERUSER_USERNAME: root
             DJANGO_SUPERUSER_PASSWORD: password
-            S3_HOST: http://localhost.localstack.cloud:4566/
+            S3_HOST: http://s3ninja:9000/
             S3_BUCKET_NAME: media
             AWS_ACCESS_KEY_ID: test
             AWS_SECRET_ACCESS_KEY: test
@@ -58,33 +55,27 @@ services:
             - "5432:5432"
             # - "4000:4000"
         volumes:
-            # - postgres_data:/var/lib/postgresql/data
+            - postgres_data:/var/lib/postgresql/data
             - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
-        networks:
-            - ls
         environment:
             POSTGRES_USER: django_postgres
             POSTGRES_PASSWORD: admin_password
             POSTGRES_NAME: django_db
             # POSTGRES_HOST_AUTH_METHOD: trust
 
-    localstack:
-        container_name: localstack
-        image: localstack/localstack:latest
+
+    s3ninja:
+        container_name: s3ninja
+        image: scireum/s3-ninja:latest
         ports:
-            - "4566:4566"
+            - 9444:9000
+        environment:
+            storage.awsAccessKey: test
+            storage.awsSecretKey: test
+            storage.autocreateBuckets: True
         volumes:
-            - "./localstack/init-s3.py:/etc/localstack/init/ready.d/init-s3.py"
-        networks:
-            ls:
-                ipv4_address: 10.0.2.20
+            - s3ninja_data:/home/sirius/data/
 
 volumes:
     postgres_data:
-
-
-networks:
-  ls:
-    ipam:
-      config:
-        - subnet: 10.0.2.0/24
+    s3ninja_data:

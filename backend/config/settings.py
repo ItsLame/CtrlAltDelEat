@@ -207,6 +207,7 @@ STORAGES = {
             "secret_key": os.environ.get("AWS_SECRET_ACCESS_KEY"),
             "endpoint_url": os.environ.get('S3_HOST'),
             "region_name": os.environ.get('AWS_S3_REGION_NAME'),
+            "querystring_auth": False,
         }
     },
     "staticfiles": {
