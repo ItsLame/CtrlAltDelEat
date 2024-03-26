@@ -30,7 +30,7 @@ SECRET_KEY = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1""localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1""localhost", "127.0.0.1", "api.ctrlaltdeleat.com"]
 
 # Application definition
 
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'django.contrib.admindocs',
     'orders',
-    'storages'
+    # 'storages'
 ]
 
 REST_FRAMEWORK = {
@@ -98,6 +98,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://0.0.0.0:4000',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:4000',
+    'http://api.ctrlaltdeleat.com',
 ]
 
 # CORS_ORIGIN_ALLOW_ALL = True
@@ -195,22 +196,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AWS_CUSTOM_DOMAIN = os.environ.get('S3_HOST')
-MEDIA_URL = f"{AWS_CUSTOM_DOMAIN}media/"
-
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.s3.S3Storage",
-        "OPTIONS": {
-            "bucket_name": os.environ.get('S3_BUCKET_NAME'),    
-            "access_key": os.environ.get("AWS_ACCESS_KEY_ID"),
-            "secret_key": os.environ.get("AWS_SECRET_ACCESS_KEY"),
-            "endpoint_url": os.environ.get('S3_HOST'),
-            "region_name": os.environ.get('AWS_S3_REGION_NAME'),
-            "querystring_auth": False,
-        }
-    },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
-}
+MEDIA_URL = f"/media/"
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'data/media/')
+MEDIA_ROOT = ('/home/django_data/media')

@@ -14,12 +14,14 @@ services:
             && python3 manage.py runserver 0.0.0.0:4000"
         volumes:
             - .:/code
+            - /etc/hosts:/etc/hosts
         container_name: backend
         depends_on:
             - db
 
         ports:
             - "4000:4000"
+
         environment:
             POSTGRES_USER: django_postgres
             POSTGRES_PASSWORD: admin_password
@@ -27,11 +29,6 @@ services:
             POSTGRES_HOST: db
             DJANGO_SUPERUSER_USERNAME: root
             DJANGO_SUPERUSER_PASSWORD: password
-            S3_HOST: http://s3ninja:9000/
-            S3_BUCKET_NAME: media
-            AWS_ACCESS_KEY_ID: test
-            AWS_SECRET_ACCESS_KEY: test
-            AWS_S3_REGION_NAME: us-east-1
 
     frontend:
         restart: always
@@ -64,18 +61,5 @@ services:
             # POSTGRES_HOST_AUTH_METHOD: trust
 
 
-    s3ninja:
-        container_name: s3ninja
-        image: scireum/s3-ninja:latest
-        ports:
-            - 9444:9000
-        environment:
-            storage.awsAccessKey: test
-            storage.awsSecretKey: test
-            storage.autocreateBuckets: 1
-        volumes:
-            - s3ninja_data:/home/sirius/data/
-
 volumes:
     postgres_data:
-    s3ninja_data:
