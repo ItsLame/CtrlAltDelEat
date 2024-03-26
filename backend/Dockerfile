@@ -1,4 +1,5 @@
-FROM debian:bookworm
+# FROM debian:bookworm
+FROM python:3.11-bookworm
 RUN apt update -y
 RUN apt-get install -y python3 python3-pip python3-venv
 RUN apt-get install -y postgresql-client
