@@ -16,8 +16,8 @@ class OrderSerializer(serializers.ModelSerializer):
     items = ItemSerializer(many=True)
     class Meta:
         model = Order
-        fields = ['orderNumber', 'items']
-        ordering = ('orderNumber')
+        fields = ['id', 'items']
+        ordering = ('id')
         depth = 1
 
     def create(self, validated_data):

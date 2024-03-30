@@ -31,8 +31,6 @@ class Item(models.Model):
 
 
 class Order(models.Model):
-    orderNumber = IntegerField()
-    #orderNumber = AutoField(primary_key=True)
     items = models.ManyToManyField(Item)
 
 
