@@ -22,7 +22,8 @@ const schema = z.object({
 
 export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, onClose, onSubmit }: AddMenuItemModalProps) {
   const [itemCategories, setItemCategories] = useState([] as string[]);
-  const [itemImage, setItemImage] = useState<string | undefined>();
+  const [itemImage, setItemImage] = useState<File | null>(null);
+  const [itemImagePreview, setItemImagePreview] = useState<string | null>();
 
   const form = useForm({
     validate: zodResolver(schema),
@@ -68,7 +69,7 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
 
   const handleClear = () => {
     setItemCategories([category.category_name]);
-    setItemImage(undefined);
+    setItemImage(null);
     form.reset();
     onClose();
   };
@@ -76,7 +77,8 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
   const previewImage = (file: File | null) => {
     const reader = new FileReader();
     reader.addEventListener("loadend", () => {
-      setItemImage(reader.result?.toString());
+      setItemImagePreview(reader.result?.toString());
+      setItemImage(file);
     });
     file && reader.readAsDataURL(file);
   };
@@ -98,7 +100,7 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
             <Flex w={200} h={200}>
               <Image
                 mt={10}
-                src={itemImage}
+                src={itemImagePreview}
                 fallbackSrc={imagePlaceholder}
                 alt="Preview of uploaded image"
               />
@@ -112,7 +114,7 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
             <Button
               color="red"
               disabled={!itemImage}
-              onClick={() => {setItemImage(undefined);}}
+              onClick={() => {setItemImage(null);}}
             >
               Clear Image
             </Button>

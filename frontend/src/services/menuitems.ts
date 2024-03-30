@@ -15,12 +15,24 @@ export async function getMenuItems() {
 
 export async function addMenuItem(request: addMenuItemRequest) {
   const headersConfig = await getHeaders();
-  const req = request;
   const endpoint = `${apiUrl}`;
+  const formData = new FormData();
+
+  formData.append("menuitem_name", `${request.menuitem_name}`);
+  formData.append("available", `${request.available}`);
+  formData.append("category", `${request.category}`);
+  formData.append("cost", `${request.cost}`);
+  formData.append("description", `${request.description}`);
+  formData.append("tags", `${request.tags}`);
+  formData.append("ingredients", `${request.ingredients}`);
+  if (request.image != null) {
+    formData.append("image", request.image as Blob);
+  }
+
   const res = await fetch(endpoint, {
     method: "POST",
-    headers: headersConfig,
-    body: JSON.stringify(req)
+    headers: { "Authorization": headersConfig.Authorization },
+    body: formData
   });
 
   if(!res.ok && res.status != 400 && res.status != 401) failedPostError();

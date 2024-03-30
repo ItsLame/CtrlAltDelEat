@@ -19,5 +19,5 @@ export interface addMenuItemRequest {
   category: string[]
   ingredients: string[]
   tags: string[]
-  image: string | undefined
+  image: File | null
 }
