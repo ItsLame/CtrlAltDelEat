@@ -7,7 +7,7 @@ class ItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item
-        fields = ['tableNumber', 'itemName', 'cost', 'status', 'alterations', 'timestamp', 'quantity']
+        fields = ['id','tableNumber', 'itemName', 'cost', 'status', 'alterations', 'timestamp', 'quantity']
         ordering = ('timestamp')
 
 

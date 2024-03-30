@@ -15,6 +15,12 @@ class AddToCartAPIView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save()
 
+class RemoveFromCartAPIView(generics.DestroyAPIView):
+    """
+    remove item from cart
+    """
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
 
 class GetCartForTableAPIView(generics.ListCreateAPIView):
     """
@@ -42,3 +48,34 @@ class OrderCreateAPIView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
+
+
+class GetOrderAPIView(generics.ListAPIView):
+    """
+    view newly received orders
+    """
+    serializer_class = OrderSerializer
+    def get_queryset(self):
+        queryset = Order.objects.all()
+        status = "received"
+        queryset = queryset.filter(items__status=status).distinct()
+        return queryset
+
+class ChangeItemStatusAPIView(generics.UpdateAPIView):
+    """
+    change item status
+    """
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+
+class GetPreparedItemsAPIView(generics.ListAPIView):
+    """
+    view items prepared by kitchen staff
+    """
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        status = "prepared"
+        queryset = queryset.filter(status=status)
+        return queryset
