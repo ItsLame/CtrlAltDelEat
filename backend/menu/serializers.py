@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from menu.models import Category, MenuItem
+from menu.models import Category, MenuItem, TagTag, IngredientTag
 from taggit.serializers import TagListSerializerField, TaggitSerializer
-
 
 class MenuItemSerializer(TaggitSerializer, serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
@@ -13,8 +12,8 @@ class MenuItemSerializer(TaggitSerializer, serializers.ModelSerializer):
         lookup_field='uuid',
         many=True,
     )
-    tags = TagListSerializerField()
-    ingredients = TagListSerializerField()
+    tags = TagListSerializerField(required=False)
+    ingredients = TagListSerializerField(required=False)
     class Meta:
         model = MenuItem
         fields = [
@@ -52,3 +51,13 @@ class MenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['category_name', 'url', 'menu_items']
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TagTag
+        fields = ["name"]
+
+class IngredientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IngredientTag
+        fields = ["name"]

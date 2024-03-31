@@ -1,8 +1,11 @@
-from menu.models import MenuItem, Category
+from menu.models import MenuItem, Category, TagTag, IngredientTag
 from menu.serializers import (
     MenuItemSerializer,
     CategorySerializer,
     MenuSerializer,
+    TagSerializer,
+    IngredientSerializer
+    
 )
 from rest_framework import generics, permissions
 from authentication.permissions import IsManagerOrReadOnly
@@ -77,3 +80,15 @@ class MenuItemListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAdminUser | IsManagerOrReadOnly]
     permission_classes = [permissions.AllowAny]
     parser_classes = [MultiPartParser,]
+
+class TagListAPIView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
+
+    queryset = TagTag.objects.all().order_by('name')
+    serializer_class = TagSerializer
+
+class IngredientListAPIView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
+
+    queryset = IngredientTag.objects.all().order_by('name')
+    serializer_class = IngredientSerializer

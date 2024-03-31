@@ -163,7 +163,7 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
               withAsterisk
               label="Category"
               data={categoryList.map(c => c.category_name)}
-              defaultValue={itemCategories}
+              // defaultValue={itemCategories}
               error={form.errors?.itemCategories}
               onChange={(e) => {
                 setItemCategories(e as string[]);

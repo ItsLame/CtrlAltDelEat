@@ -22,6 +22,12 @@ urlpatterns = [
         'categories/<uuid:uuid>/delete/',
         views.CategoryDestroyAPIView.as_view(),
     ),
+    path(
+        'tags/', views.TagListAPIView.as_view()
+    ),
+    path(
+        'ingredients/', views.IngredientListAPIView.as_view()
+    )
 
 
 ]

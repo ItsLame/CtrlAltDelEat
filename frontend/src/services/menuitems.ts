@@ -20,11 +20,18 @@ export async function addMenuItem(request: addMenuItemRequest) {
 
   formData.append("menuitem_name", `${request.menuitem_name}`);
   formData.append("available", `${request.available}`);
-  formData.append("category", `${request.category}`);
   formData.append("cost", `${request.cost}`);
   formData.append("description", `${request.description}`);
-  formData.append("tags", `${request.tags}`);
-  formData.append("ingredients", `${request.ingredients}`);
+
+  for (var i = 0; i < request.category.length; ++i) {
+    formData.append("category", request.category[i]);
+  }
+  for (var i = 0; i < request.ingredients.length; ++i) {
+    formData.append("ingredients", request.ingredients[i]);
+  }
+  for (var i = 0; i < request.tags.length; ++i) {
+    formData.append("tags", request.tags[i]);
+  }
   if (request.image != null) {
     formData.append("image", request.image as Blob);
   }
