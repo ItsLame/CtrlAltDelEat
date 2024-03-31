@@ -45,7 +45,7 @@ export function Login() {
         setErrorName("");
         refreshUser();
       }
-    ).catch((error) => {
+    ).catch(() => {
       setErrorPin(true);
       setErrorName("Failed to authenticate");
     });
@@ -71,7 +71,6 @@ export function Login() {
           error={errorPin}
           type={/^\d*$/}
           inputType="tel"
-          // inputMode="numeric"
         />
         <Text>
           {errorName}
