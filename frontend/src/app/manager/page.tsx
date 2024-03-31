@@ -114,7 +114,6 @@ export default function Manager() {
 
       <EditMenuItemModal
         menuItem={menuItem}
-        category={category}
         categoryList={categoryList}
         isOpened={editMenuItemModalOpened}
         isLoading={isMenuItemListLoading}

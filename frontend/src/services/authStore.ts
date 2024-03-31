@@ -21,7 +21,6 @@ export async function storeToken(request: storeTokenRequest) {
       secure: true
     });
   };
-
 }
 
 export async function clearAuthRefreshTokens(){

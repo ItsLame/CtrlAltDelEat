@@ -29,7 +29,6 @@ export interface AddMenuItemModalProps {
 
 export interface EditMenuItemModalProps {
   menuItem: menuItems
-  category: category
   categoryList: category[]
   isOpened: boolean
   isLoading: boolean

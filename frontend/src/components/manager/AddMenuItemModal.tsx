@@ -50,7 +50,7 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
         break;
       case 201:
         toast.success(`Successfully created menu item "${cleanedUpMenuItemFields.menuitem_name}"`);
-        onSubmit();
+        onSubmit(false);
         !isLoading && onClose();
         break;
       }

@@ -20,7 +20,7 @@ const schema = z.object({
   itemTags: z.array(z.string()).optional(),
 });
 
-export function EditMenuItemModal({ menuItem, category, categoryList, isOpened, isLoading, onClose, onSubmit }: EditMenuItemModalProps) {
+export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading, onClose, onSubmit }: EditMenuItemModalProps) {
   const [itemImage, setItemImage] = useState<string | undefined>();
 
   const form = useForm({
@@ -72,12 +72,14 @@ export function EditMenuItemModal({ menuItem, category, categoryList, isOpened, 
     file && reader.readAsDataURL(file);
   };
 
-  const initForm = () => {
+  const initForm = async () => {
+    const categories = categoryList.filter(c => menuItem.category.includes(c.url)).map(c => c.category_name);
+
     form.setValues({
       itemName: menuItem.menuitem_name,
       itemPrice: parseFloat(menuItem.cost),
       itemDescription: menuItem.description,
-      itemCategories: [category.category_name] as string[],
+      itemCategories: categories,
       itemAvailable: menuItem.available,
       itemIngredients: menuItem.ingredients,
       itemTags: menuItem.tags,
