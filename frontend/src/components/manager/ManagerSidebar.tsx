@@ -7,7 +7,7 @@ import { useForm, zodResolver } from "@mantine/form";
 import { addCategory } from "@/services";
 import { ManagerSidebarProps, categorySchema } from "@/models";
 
-export function ManagerSidebar({ category, onCategorySelect, categoryList, isLoading, onRefresh }: ManagerSidebarProps) {
+export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, categoryList, isLoading, onRefresh }: ManagerSidebarProps) {
   const [newCategoryName, setNewCategoryName] = useState("");
 
   const form = useForm({
@@ -83,15 +83,19 @@ export function ManagerSidebar({ category, onCategorySelect, categoryList, isLoa
       </form>
       <Box className="h-100" pos="relative">
         <LoadingOverlay visible={isLoading} />
-        <Stack gap={10}>
+        <Stack gap="xs">
           {categoryList.map((c, k) => (
-            <Button
-              key={k}
-              variant={c.url == category.url ? "filled" : "outline"}
-              onClick={() => {onCategorySelect(c);}}
-            >
-              {c.category_name}
-            </Button>
+            <Flex className="w-100" direction="row" key={k} gap={5} align="center">
+              <Button fullWidth={true}
+                variant={c.url == category.url ? "filled" : "outline"}
+                onClick={() => {onCategorySelect(c);}}
+              >
+                {c.category_name}
+              </Button>
+              <CloseButton
+                onClick={() => {onCategoryDelete(c);}}
+              />
+            </Flex>
           )
           )}
         </Stack>

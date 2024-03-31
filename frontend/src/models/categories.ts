@@ -14,5 +14,5 @@ export interface editCategoryRequest {
 }
 
 export interface deleteCategoryRequest {
-  uuid: string
+  uuidUrl: string
 }

@@ -3,7 +3,7 @@ import { Box, Card, Flex, LoadingOverlay, ScrollArea, Stack, Text, UnstyledButto
 
 import { ManagerMainProps, menuItems } from "@/models";
 import { imagePlaceholder } from "@/constants";
-import { ManagerMainHeader } from "./ManagerMainHeader";
+import { ManagerMainHeader } from "@/components";
 
 export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAddMenuItem, onEditMenuItem, onEditCategory }: ManagerMainProps) {
   const [menuItemListFiltered, setMenuItemListFiltered] = useState([] as menuItems[]);
@@ -27,7 +27,7 @@ export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAd
           {menuItemListFiltered.length >= 1 ? menuItemListFiltered.map((item, k) => (
             <UnstyledButton key={k} onClick={() => {onEditMenuItem(item);}}>
               <Card className="menu-item" shadow="sm" padding="lg" radius="md" withBorder>
-                <Flex gap={15}>
+                <Flex gap="md">
                   <Flex w={80}>
                     <Image
                       src={null}

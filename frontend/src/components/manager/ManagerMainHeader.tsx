@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { CheckIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { ActionIcon, Button, Flex, Title, Text, TextInput, Group } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import toast from "react-hot-toast";
 
 import { ManagerMainHeaderProps, categorySchema } from "@/models";
-import toast from "react-hot-toast";
 import { editCategory } from "@/services";
 
 export function ManagerMainHeader ({ category, onRefresh, onAddMenuItem, onEditCategory }: ManagerMainHeaderProps) {
@@ -71,7 +71,7 @@ export function ManagerMainHeader ({ category, onRefresh, onAddMenuItem, onEditC
                 }}
                 onKeyDown={(event) => {event.key === "Escape" && toggleEditCategory();}}
               >
-                <Group gap={10} align="top">
+                <Group gap="xs" align="top">
                   <TextInput
                     autoFocus
                     className="w-75"
@@ -93,7 +93,7 @@ export function ManagerMainHeader ({ category, onRefresh, onAddMenuItem, onEditC
               </form>
             )
           }
-          <Group gap={15} align="top">
+          <Group gap="sm" align="top">
             <ActionIcon variant="subtle" size="lg" py={17} onClick={onRefresh}><ReloadIcon /></ActionIcon>
             <Button onClick={onAddMenuItem}>Add Item</Button>
           </Group>

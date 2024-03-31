@@ -44,8 +44,8 @@ export async function editCategory(request: editCategoryRequest) {
 
 export async function deleteCategory(request: deleteCategoryRequest) {
   const headersConfig = await getHeaders();
-  const { uuid } = request;
-  const endpoint = `${apiUrl}${uuid}/delete`;
+  const { uuidUrl } = request;
+  const endpoint = `${uuidUrl}delete/`;
   const res = await fetch(endpoint, {
     method: "DELETE",
     headers: headersConfig

@@ -3,10 +3,10 @@
 import { useRef, useState } from "react";
 import { Flex, LoadingOverlay, Modal, NumberInput, Stack, Textarea, Button, Group, Image, NumberInputHandlers, ActionIcon, Title, Text, Badge } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 
 import { ViewMenuItemModalProps, menuItemSchema } from "@/models";
 import { imagePlaceholder } from "@/constants";
-import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 
 // eslint-disable-next-line no-unused-vars
 export function ViewMenuItemModal({ tableNo, menuItem, isOpened, isLoading, onClose, onSubmit }: ViewMenuItemModalProps) {

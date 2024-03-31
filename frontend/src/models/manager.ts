@@ -6,6 +6,7 @@ export interface ManagerSidebarProps {
   categoryList: category[]
   isLoading: boolean
   onCategorySelect: (_category: category) => void
+  onCategoryDelete: (_category: category) => void
   onRefresh: (_loadingAnimation?: boolean) => void
 }
 
@@ -42,4 +43,11 @@ export interface EditMenuItemModalProps {
   isLoading: boolean
   onClose: () => void
   onSubmit: (_loadingAnimation?: boolean) => void
+}
+
+export interface DeleteCategoryModalProps {
+  category: category
+  isOpened: boolean
+  onRefresh: (_loadingAnimation?: boolean) => void
+  onClose: () => void
 }
