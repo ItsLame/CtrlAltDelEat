@@ -121,7 +121,7 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
             </Button>
             <Switch
               label="In stock"
-              defaultChecked={true}
+              defaultChecked={form.values?.itemAvailable}
               onChange={(e) => {form.setFieldValue("itemAvailable", e.target.checked);}}
             />
           </Stack>
