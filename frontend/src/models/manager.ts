@@ -24,7 +24,7 @@ export interface AddMenuItemModalProps {
   isOpened: boolean
   isLoading: boolean
   onClose: () => void
-  onSubmit: (_refresh?: boolean) => void
+  onSubmit: (_loadingAnimation?: boolean) => void
 }
 
 export interface EditMenuItemModalProps {
@@ -33,5 +33,5 @@ export interface EditMenuItemModalProps {
   isOpened: boolean
   isLoading: boolean
   onClose: () => void
-  onSubmit: (_refresh?: boolean) => void
+  onSubmit: (_loadingAnimation?: boolean) => void
 }

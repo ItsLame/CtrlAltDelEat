@@ -32,8 +32,8 @@ export default function Manager() {
     openEditModal();
   };
 
-  const refreshMenuList = (refresh=true) => {
-    setMenuItemListLoading(refresh);
+  const refreshMenuList = (loadingAnimation=true) => {
+    setMenuItemListLoading(loadingAnimation);
     getMenuItems().then((res) => {
       setMenuItemList(res);
       setMenuItemListLoading(false);
