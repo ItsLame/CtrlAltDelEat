@@ -1,11 +1,10 @@
-// import Link from "next/link";
-
 import { Button, Center, Stack, Flex, Title, PinInput, Text } from "@mantine/core";
 import { useState, useEffect } from "react";
+import { useForm } from "@mantine/form";
+
 import { generateAuthToken, storeToken, blacklistAuthToken, getUserCookies } from "@/services";
 import { apiPassword } from "@/constants";
 import { userGroup } from "@/models";
-import { useForm } from "@mantine/form";
 
 export function Login() {
   const [username, setUsername] = useState("");
@@ -41,14 +40,12 @@ export function Login() {
   const handleLogin = (pin: string) => {
     generateAuthToken( { username: pin, password: apiPassword } ).then(
       (res) => {
-        console.log(res);
         storeToken(res);
         setErrorPin(false);
         setErrorName("");
         refreshUser();
       }
     ).catch((error) => {
-      console.log(error);
       setErrorPin(true);
       setErrorName("Failed to authenticate");
     });
