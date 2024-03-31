@@ -5,7 +5,7 @@ import { ActionIcon, Box, Button, Card, Flex, LoadingOverlay, ScrollArea, Stack,
 import { ManagerMainProps, menuItems } from "@/models";
 import { imagePlaceholder } from "@/constants";
 
-export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAddMenuItem }: ManagerMainProps) {
+export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAddMenuItem, onEditMenuItem }: ManagerMainProps) {
   const [menuItemListFiltered, setMenuItemListFiltered] = useState([] as menuItems[]);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAd
         <LoadingOverlay zIndex={1000} visible={isLoading}/>
         <Stack>
           {menuItemListFiltered.length >= 1 ? menuItemListFiltered.map((item, k) => (
-            <UnstyledButton key={k}>
+            <UnstyledButton key={k} onClick={() => {onEditMenuItem(item);}}>
               <Card className="menu-item" shadow="sm" padding="lg" radius="md" withBorder>
                 <Flex gap={15}>
                   <Flex w={80}>

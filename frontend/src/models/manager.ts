@@ -15,6 +15,7 @@ export interface ManagerMainProps {
   isLoading: boolean
   onRefresh: () => void
   onAddMenuItem: () => void
+  onEditMenuItem: (_menuItems : menuItems) => void
 }
 
 export interface AddMenuItemModalProps {
@@ -23,5 +24,15 @@ export interface AddMenuItemModalProps {
   isOpened: boolean
   isLoading: boolean
   onClose: () => void
-  onSubmit: () => void
+  onSubmit: (_refresh?: boolean) => void
+}
+
+export interface EditMenuItemModalProps {
+  menuItem: menuItems
+  category: category
+  categoryList: category[]
+  isOpened: boolean
+  isLoading: boolean
+  onClose: () => void
+  onSubmit: (_refresh?: boolean) => void
 }

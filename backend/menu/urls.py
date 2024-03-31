@@ -5,10 +5,13 @@ urlpatterns = [
     path('', views.MenuListAPIView.as_view()),
     path('menuitems/', views.MenuItemListCreateAPIView.as_view()),
     path(
-        'menuitems/<uuid:uuid>',
-        views.MenuItemListCreateAPIView.as_view(),
+        'menuitems/<uuid:uuid>/',
+        views.MenuItemDetailAPIView.as_view(),
         name='menuitem-detail',
     ),
+    path('menuitems/<uuid:uuid>/update/', views.MenuItemUpdateAPIView.as_view()),
+    path('menuitems/<uuid:uuid>/delete/', views.MenuItemDestroyAPIView.as_view()),
+
     path('categories/', views.CategoryListCreateAPIView.as_view(), name='category-list-create'),
     path(
         'categories/<uuid:uuid>/',

@@ -6,15 +6,17 @@ import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-import { AddMenuItemModal, ManagerMain, ManagerSidebar } from "@/components";
+import { AddMenuItemModal, EditMenuItemModal, ManagerMain, ManagerSidebar } from "@/components";
 import { getCategories, getMenuItems } from "@/services";
 import { category, menuItems } from "@/models";
 
 export default function Manager() {
   const [sidebarOpened, { toggle }] = useDisclosure();
-  const [addMenuItemModalOpened, { open, close }] = useDisclosure(false);
+  const [addMenuItemModalOpened, { open: openAddModal, close: closeAddModal }] = useDisclosure(false);
+  const [editMenuItemModalOpened, { open: openEditModal, close: closeEditModal }] = useDisclosure(false);
 
   const [category, setCategory] = useState({} as category);
+  const [menuItem, setMenuItem] = useState({} as menuItems);
   const [menuItemList, setMenuItemList] = useState([] as menuItems[]);
   const [categoryList, setCategoryList] = useState([] as category[]);
 
@@ -25,8 +27,13 @@ export default function Manager() {
     setCategory(category);
   };
 
-  const refreshMenuList = () => {
-    setMenuItemListLoading(true);
+  const handleSelectItem = async (item: menuItems) => {
+    setMenuItem(item);
+    openEditModal();
+  };
+
+  const refreshMenuList = (refresh=true) => {
+    setMenuItemListLoading(refresh);
     getMenuItems().then((res) => {
       setMenuItemList(res);
       setMenuItemListLoading(false);
@@ -91,7 +98,8 @@ export default function Manager() {
           menuItemList={menuItemList}
           isLoading={isMenuItemListLoading}
           onRefresh={refreshMenuList}
-          onAddMenuItem={open}
+          onAddMenuItem={openAddModal}
+          onEditMenuItem={handleSelectItem}
         />
       </AppShell.Main>
 
@@ -100,7 +108,17 @@ export default function Manager() {
         categoryList={categoryList}
         isOpened={addMenuItemModalOpened}
         isLoading={isMenuItemListLoading}
-        onClose={close}
+        onClose={closeAddModal}
+        onSubmit={refreshMenuList}
+      />
+
+      <EditMenuItemModal
+        menuItem={menuItem}
+        category={category}
+        categoryList={categoryList}
+        isOpened={editMenuItemModalOpened}
+        isLoading={isMenuItemListLoading}
+        onClose={closeEditModal}
         onSubmit={refreshMenuList}
       />
       <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>

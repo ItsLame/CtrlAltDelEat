@@ -71,3 +71,32 @@ class MenuItemListCreateAPIView(generics.ListCreateAPIView):
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
     permission_classes = [permissions.IsAdminUser | IsManagerOrReadOnly]
+    lookup_field = 'uuid'
+
+
+class MenuItemDetailAPIView(generics.RetrieveAPIView):
+    """ 
+    Retrieve menu item
+    """
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+    permission_classes = [permissions.IsAdminUser | IsManagerOrReadOnly]
+    lookup_field = 'uuid'
+
+class MenuItemUpdateAPIView(generics.UpdateAPIView):
+    """ 
+    Update menu item
+    """
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+    permission_classes = [permissions.IsAdminUser | IsManagerOrReadOnly]
+    lookup_field = 'uuid'
+
+class MenuItemDestroyAPIView(generics.DestroyAPIView):
+    """ 
+    Destroy menu item
+    """
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+    permission_classes = [permissions.IsAdminUser | IsManagerOrReadOnly]
+    lookup_field = 'uuid'
