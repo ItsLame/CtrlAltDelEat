@@ -9,7 +9,7 @@ import { EditMenuItemModalProps, menuItemSchema } from "@/models";
 import { editMenuItem } from "@/services";
 import { imagePlaceholder } from "@/constants";
 
-export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading, onClose, onSubmit }: EditMenuItemModalProps) {
+export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading, onDeleteMenuItem, onClose, onSubmit }: EditMenuItemModalProps) {
   const [itemImage, setItemImage] = useState<string | undefined>();
 
   const form = useForm({
@@ -177,7 +177,7 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
           </Stack>
         </Flex>
         <Group justify="flex-end" mt="md">
-          <Button variant="outline" color="red" onClick={handleClear}>Delete</Button>
+          <Button variant="outline" color="red" onClick={onDeleteMenuItem}>Delete</Button>
           <Button type="submit" px="xl">Save</Button>
         </Group>
       </form>

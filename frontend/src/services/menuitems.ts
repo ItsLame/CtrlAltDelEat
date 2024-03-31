@@ -1,7 +1,7 @@
 import { apiUrlBase } from "@/constants";
 import { getHeaders } from "@/services";
-import { failedGetError, failedPostError } from "@/helpers";
-import { addMenuItemRequest, editMenuItemRequest } from "@/models";
+import { failedDeleteError, failedGetError, failedPostError } from "@/helpers";
+import { addMenuItemRequest, deleteMenuItemRequest, editMenuItemRequest } from "@/models";
 
 const apiUrl = `${apiUrlBase}/api/menu/menuitems/`;
 
@@ -41,3 +41,16 @@ export async function editMenuItem(request: editMenuItemRequest) {
   if(!res.ok && res.status != 400 && res.status != 401) failedPostError();
   return res.status;
 }
+
+export async function deleteMenuItem(request: deleteMenuItemRequest) {
+  const headersConfig = await getHeaders();
+  const { uuidUrl } = request;
+  const endpoint = `${uuidUrl}delete/`;
+  const res = await fetch(endpoint, {
+    method: "DELETE",
+    headers: headersConfig
+  });
+
+  if(!res.ok) failedDeleteError();
+  return res.status;
+};

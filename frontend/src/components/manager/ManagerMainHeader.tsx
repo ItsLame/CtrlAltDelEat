@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CheckIcon, ReloadIcon } from "@radix-ui/react-icons";
-import { ActionIcon, Button, Flex, Title, Text, TextInput, Group } from "@mantine/core";
+import { ActionIcon, Button, Flex, Title, Text, TextInput, Group, UnstyledButton } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import toast from "react-hot-toast";
 
@@ -54,13 +54,14 @@ export function ManagerMainHeader ({ category, onRefresh, onAddMenuItem, onEditC
         <Flex justify="space-between" pos="sticky">
           {
             !isEditCategory ? (
-              <Title
-                className="category-name pointer"
-                order={2}
+              <UnstyledButton
+                className="category-name"
                 onClick={toggleEditCategory}
               >
-                {category.category_name}
-              </Title>
+                <Title order={2}>
+                  {category.category_name}
+                </Title>
+              </UnstyledButton>
             ) : (
               <form
                 className="w-75"

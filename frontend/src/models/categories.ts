@@ -13,6 +13,10 @@ export interface editCategoryRequest {
   uuidUrl: string
 }
 
+export interface deleteMenuItemRequest {
+  uuidUrl: string
+}
+
 export interface deleteCategoryRequest {
   uuidUrl: string
 }

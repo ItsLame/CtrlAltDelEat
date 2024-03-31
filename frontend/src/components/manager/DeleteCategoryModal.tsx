@@ -4,7 +4,7 @@ import { DeleteCategoryModalProps, category } from "@/models";
 import { deleteCategory } from "@/services";
 import toast from "react-hot-toast";
 
-export function DeleteCategoryModal ({ category, isOpened, onRefresh, onClose }: DeleteCategoryModalProps) {
+export function DeleteCategoryModal ({ category, isOpened, onDelete, onClose }: DeleteCategoryModalProps) {
   const handleDeleteCategory = (category: category) => {
     const { category_name, url } = category;
 
@@ -18,7 +18,7 @@ export function DeleteCategoryModal ({ category, isOpened, onRefresh, onClose }:
         break;
       case 204:
         toast.success(`Successfully deleted category "${category_name}"`);
-        onRefresh(false);
+        onDelete(false);
         onClose();
         break;
       }
@@ -29,7 +29,7 @@ export function DeleteCategoryModal ({ category, isOpened, onRefresh, onClose }:
     <Modal
       centered
       title="WARNING"
-      size="lg"
+      size="md"
       opened={isOpened}
       onClose={onClose}
     >

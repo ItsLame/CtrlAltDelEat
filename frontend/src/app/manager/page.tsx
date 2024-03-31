@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-import { AddMenuItemModal, DeleteCategoryModal, EditMenuItemModal, ManagerMain, ManagerSidebar } from "@/components";
+import { AddMenuItemModal, DeleteCategoryModal, DeleteMenuItemModal, EditMenuItemModal, ManagerMain, ManagerSidebar } from "@/components";
 import { getCategories, getMenuItems } from "@/services";
 import { category, menuItems } from "@/models";
 
@@ -14,6 +14,7 @@ export default function Manager() {
   const [sidebarOpened, { toggle }] = useDisclosure();
   const [addMenuItemModalOpened, { open: openAddModal, close: closeAddModal }] = useDisclosure(false);
   const [editMenuItemModalOpened, { open: openEditModal, close: closeEditModal }] = useDisclosure(false);
+  const [deleteMenuItemModalOpened, { open: openDeleteMenuItemModal, close: closeDeleteMenuItemModal }] = useDisclosure(false);
   const [deleteCategoryModalOpened, { open: openDeleteCategoryModal, close: closeDeleteCategoryModal }] = useDisclosure(false);
 
   const [category, setCategory] = useState({} as category);
@@ -48,6 +49,12 @@ export default function Manager() {
   const handleDeleteCategoryAfter = (loadingAnimation=true) => {
     if (category.category_name === targetCategory.category_name) setCategory({} as category);
     refreshCategoryList(loadingAnimation);
+  };
+
+  const handleMenuItemAfter = (loadingAnimation=true) => {
+    closeEditModal();
+    closeDeleteMenuItemModal();
+    refreshMenuList(loadingAnimation);
   };
 
   const refreshMenuList = (loadingAnimation=true) => {
@@ -137,6 +144,7 @@ export default function Manager() {
         categoryList={categoryList}
         isOpened={editMenuItemModalOpened}
         isLoading={isMenuItemListLoading}
+        onDeleteMenuItem={openDeleteMenuItemModal}
         onClose={closeEditModal}
         onSubmit={refreshMenuList}
       />
@@ -144,8 +152,15 @@ export default function Manager() {
       <DeleteCategoryModal
         category={targetCategory}
         isOpened={deleteCategoryModalOpened}
-        onRefresh={handleDeleteCategoryAfter}
+        onDelete={handleDeleteCategoryAfter}
         onClose={closeDeleteCategoryModal}
+      />
+
+      <DeleteMenuItemModal
+        menuItem={menuItem}
+        isOpened={deleteMenuItemModalOpened}
+        onDelete={handleMenuItemAfter}
+        onClose={closeDeleteMenuItemModal}
       />
       <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
     </AppShell>
