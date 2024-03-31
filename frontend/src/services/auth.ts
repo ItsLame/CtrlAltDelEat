@@ -1,5 +1,5 @@
 import { apiUrlBase } from "@/constants";
-import { getAuthToken } from "@/services";
+import { getAuthToken, getRefreshToken, clearAuthRefreshTokens } from "@/services";
 import { failedAuthError } from "@/helpers";
 import { generateAuthTokenRequest } from "@/models";
 
@@ -17,6 +17,26 @@ export async function generateAuthToken(request: generateAuthTokenRequest) {
   });
   if (!res.ok) failedAuthError();
   return res.json();
+}
+
+export async function blacklistAuthToken() {
+  const refresh_token = await getRefreshToken();
+  const endpoint = `${apiUrl}blacklist/`;
+  if (!refresh_token)
+  {
+    clearAuthRefreshTokens();
+    return;
+  }
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify( { refresh: `${refresh_token}` } ),
+  });
+  clearAuthRefreshTokens();
+
+  if (!res.ok) failedAuthError();
 }
 
 export async function getHeaders() {

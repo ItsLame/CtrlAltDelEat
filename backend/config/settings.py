@@ -114,6 +114,13 @@ CORS_ALLOWED_ORIGINS = [
 # SESSION_COOKIE_SAMESITE = 'Strict'
 # SESSION_COOKIE_HTTPONLY = True
 
+
+# Actual directory user files go to
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'backend/media')
+
+# URL used to access the media
+MEDIA_URL = '/media/'
+
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -180,6 +187,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+FIXTURE_DIRS = [
+    "fixtures/"
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
