@@ -1,17 +1,23 @@
 import { useState } from "react";
-import { Input, CloseButton, Button, Flex, Stack, LoadingOverlay, Box, ActionIcon, Tooltip } from "@mantine/core";
+import { CloseButton, Button, Flex, Stack, LoadingOverlay, Box, ActionIcon, TextInput } from "@mantine/core";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import toast from "react-hot-toast";
+import { useForm, zodResolver } from "@mantine/form";
 
 import { addCategory } from "@/services";
-import { ManagerSidebarProps } from "@/models";
+import { ManagerSidebarProps, categorySchema } from "@/models";
 
 export function ManagerSidebar({ category, onCategorySelect, categoryList, isLoading, onRefresh }: ManagerSidebarProps) {
   const [newCategoryName, setNewCategoryName] = useState("");
-  const [isNewCategoryNameValid, setNewCategoryNameValid] = useState(false);
+
+  const form = useForm({
+    validate: zodResolver(categorySchema),
+    validateInputOnChange: true,
+  });
 
   const handleAddCategory = () => {
     const cleanedNewCategoryName = newCategoryName.trim().replace(/ +/g, " ");
+
     addCategory({ category_name: cleanedNewCategoryName }).then(status => {
       switch(status){
       case 400:
@@ -22,7 +28,7 @@ export function ManagerSidebar({ category, onCategorySelect, categoryList, isLoa
         break;
       case 201:
         toast.success(`Successfully created category "${newCategoryName}"`);
-        onRefresh();
+        onRefresh(false);
         break;
       }
     });
@@ -30,24 +36,24 @@ export function ManagerSidebar({ category, onCategorySelect, categoryList, isLoa
 
   const handleClearNewCategoryName = () => {
     setNewCategoryName("");
-    setNewCategoryNameValid(false);
+    form.reset();
   };
 
   return (
     <div className="manager sidebar">
-      <Tooltip
-        opened={newCategoryName ? !isNewCategoryNameValid : false}
-        label="Must contain 1-60 alphabetical characters (spaces are allowed)"
-        color="red"
-        position="bottom"
-        withArrow
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        handleAddCategory();
+        handleClearNewCategoryName();
+      }}
       >
-        <Input
+        <TextInput
           placeholder="New category name"
           value={newCategoryName}
+          error={form.values?.categoryName !== "" && form.errors?.categoryName}
           onChange={(event) => {
-            setNewCategoryName(event.currentTarget.value);
-            setNewCategoryNameValid(event.currentTarget.value.match("^[a-zA-Z ]{1,60}$") ? true : false);
+            setNewCategoryName(event.target.value);
+            form.setFieldValue("categoryName", event.target.value);
           }}
           rightSectionPointerEvents="all"
           mt="md"
@@ -55,26 +61,26 @@ export function ManagerSidebar({ category, onCategorySelect, categoryList, isLoa
             <CloseButton
               aria-label="Clear input"
               onClick={handleClearNewCategoryName}
-              style={{ display: newCategoryName ? undefined : "none" }}
+              style={{ display: form.values?.categoryName ? undefined : "none" }}
             />
           )}
         />
-      </Tooltip>
-      <Flex
-        mih={50}
-        justify="space-between"
-        align="center"
-        direction="row"
-      >
-        <ActionIcon variant="subtle" onClick={onRefresh}><ReloadIcon /></ActionIcon>
-        <Button
-          variant="filled"
-          onClick={handleAddCategory}
-          disabled={!isNewCategoryNameValid}
+        <Flex
+          mih={50}
+          justify="space-between"
+          align="center"
+          direction="row"
         >
-          Add
-        </Button>
-      </Flex>
+          <ActionIcon variant="subtle" onClick={() => {onRefresh();}}><ReloadIcon /></ActionIcon>
+          <Button
+            type="submit"
+            variant="filled"
+            disabled={form.errors?.categoryName || newCategoryName === "" ? true: false}
+          >
+            Add
+          </Button>
+        </Flex>
+      </form>
       <Box className="h-100" pos="relative">
         <LoadingOverlay visible={isLoading} />
         <Stack gap={10}>

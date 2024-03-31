@@ -3,21 +3,10 @@
 import { useRef, useState } from "react";
 import { Flex, LoadingOverlay, Modal, NumberInput, Stack, Textarea, Button, Group, Image, NumberInputHandlers, ActionIcon, Title, Text, Badge } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { z } from "zod";
 
-import { ViewMenuItemModalProps } from "@/models";
+import { ViewMenuItemModalProps, menuItemSchema } from "@/models";
 import { imagePlaceholder } from "@/constants";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
-
-const schema = z.object({
-  itemName: z.string().min(2, { message: "Name should have at least 2 letters" }),
-  itemPrice: z.number().min(0, { message: "Price can't be empty" }),
-  itemDescription: z.string().min(1, { message: "Description can't be empty" }),
-  itemAvailable: z.boolean(),
-  itemCategories: z.array(z.string()).min(1, { message: "Should at least pick 1 category" }),
-  itemIngredients: z.array(z.string()).optional(),
-  itemTags: z.array(z.string()).optional(),
-});
 
 // eslint-disable-next-line no-unused-vars
 export function ViewMenuItemModal({ tableNo, menuItem, isOpened, isLoading, onClose, onSubmit }: ViewMenuItemModalProps) {
@@ -25,7 +14,7 @@ export function ViewMenuItemModal({ tableNo, menuItem, isOpened, isLoading, onCl
   const [itemImage, setItemImage] = useState<string | undefined>();
 
   const form = useForm({
-    validate: zodResolver(schema),
+    validate: zodResolver(menuItemSchema),
     validateInputOnChange: true,
     initialValues: {
       itemQuantity: 0,

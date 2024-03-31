@@ -32,6 +32,11 @@ export default function Manager() {
     openEditModal();
   };
 
+  const handleEditCategory = (updatedCategory: category) => {
+    setCategory(updatedCategory);
+    refreshCategoryList(false);
+  };
+
   const refreshMenuList = (loadingAnimation=true) => {
     setMenuItemListLoading(loadingAnimation);
     getMenuItems().then((res) => {
@@ -40,8 +45,8 @@ export default function Manager() {
     });
   };
 
-  const refreshCategoryList = () => {
-    setCategoryListLoading(true);
+  const refreshCategoryList = (loadingAnimation=true) => {
+    setCategoryListLoading(loadingAnimation);
     getCategories().then((res) => {
       setCategoryList(res);
       setCategoryListLoading(false);
@@ -100,6 +105,7 @@ export default function Manager() {
           onRefresh={refreshMenuList}
           onAddMenuItem={openAddModal}
           onEditMenuItem={handleSelectItem}
+          onEditCategory={handleEditCategory}
         />
       </AppShell.Main>
 

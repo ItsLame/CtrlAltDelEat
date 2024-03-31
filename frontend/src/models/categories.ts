@@ -8,6 +8,11 @@ export interface addCategoryRequest {
   category_name: string
 }
 
+export interface editCategoryRequest {
+  category_name: string
+  uuidUrl: string
+}
+
 export interface deleteCategoryRequest {
   uuid: string
 }

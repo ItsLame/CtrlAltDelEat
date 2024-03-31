@@ -6,16 +6,24 @@ export interface ManagerSidebarProps {
   categoryList: category[]
   isLoading: boolean
   onCategorySelect: (_category: category) => void
-  onRefresh: () => void
+  onRefresh: (_loadingAnimation?: boolean) => void
 }
 
 export interface ManagerMainProps {
   category: category
   menuItemList: menuItems[]
   isLoading: boolean
-  onRefresh: () => void
+  onRefresh: (_loadingAnimation?: boolean) => void
   onAddMenuItem: () => void
   onEditMenuItem: (_menuItems : menuItems) => void
+  onEditCategory: (_category: category) => void
+}
+
+export interface ManagerMainHeaderProps {
+  category: category
+  onRefresh: () => void
+  onAddMenuItem: () => void
+  onEditCategory: (_category: category) => void
 }
 
 export interface AddMenuItemModalProps {

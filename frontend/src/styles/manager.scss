@@ -18,3 +18,12 @@
     transform: translateY(3px);
   }
 }
+
+.category-name {
+  transition: all ease 150ms;
+
+  &:hover {
+    color: var(--mantine-color-blue-filled);
+    transition: all ease 150ms;
+  }
+}

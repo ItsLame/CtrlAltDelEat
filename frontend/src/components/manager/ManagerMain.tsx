@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { ActionIcon, Box, Button, Card, Flex, LoadingOverlay, ScrollArea, Stack, Title, Text, UnstyledButton, Image } from "@mantine/core";
+import { Box, Card, Flex, LoadingOverlay, ScrollArea, Stack, Text, UnstyledButton, Image } from "@mantine/core";
 
 import { ManagerMainProps, menuItems } from "@/models";
 import { imagePlaceholder } from "@/constants";
+import { ManagerMainHeader } from "./ManagerMainHeader";
 
-export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAddMenuItem, onEditMenuItem }: ManagerMainProps) {
+export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAddMenuItem, onEditMenuItem, onEditCategory }: ManagerMainProps) {
   const [menuItemListFiltered, setMenuItemListFiltered] = useState([] as menuItems[]);
 
   useEffect(() => {
@@ -15,20 +15,12 @@ export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAd
 
   return (
     <Box className="h-100" pos="relative">
-      {category.url ? (
-        <Flex justify="space-between" pos="sticky">
-          <Title order={2}>{category.category_name}</Title>
-          <Flex gap={15} align="center">
-            <ActionIcon variant="subtle" onClick={onRefresh}><ReloadIcon /></ActionIcon>
-            <Button onClick={onAddMenuItem}>Add Item</Button>
-          </Flex>
-        </Flex>
-      ): (
-        <Text c="dimmed">
-          No category selected.
-        </Text>
-      )}
-
+      <ManagerMainHeader
+        category={category}
+        onRefresh={onRefresh}
+        onAddMenuItem={onAddMenuItem}
+        onEditCategory={onEditCategory}
+      />
       <ScrollArea className="menu-item-list appshell-h-100">
         <LoadingOverlay zIndex={1000} visible={isLoading}/>
         <Stack>
