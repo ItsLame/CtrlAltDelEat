@@ -21,21 +21,11 @@ const schema = z.object({
 });
 
 export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, onClose, onSubmit }: AddMenuItemModalProps) {
-  const [itemCategories, setItemCategories] = useState([] as string[]);
   const [itemImage, setItemImage] = useState<string | undefined>();
 
   const form = useForm({
     validate: zodResolver(schema),
     validateInputOnChange: true,
-    initialValues: {
-      itemName: "",
-      itemPrice: 0,
-      itemDescription: "",
-      itemCategories: [category.category_name] as string[],
-      itemAvailable: true,
-      itemIngredients: [] as string[],
-      itemTags: [] as string[],
-    },
   });
 
   const handleAddMenuItem = () => {
@@ -44,11 +34,12 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
       cost: form.values.itemPrice,
       description: form.values.itemDescription.trim(),
       available: form.values.itemAvailable,
-      category: categoryList.filter(c => itemCategories.includes(c.category_name)).map(c => c.url),
+      category: categoryList.filter(c => form.values.itemCategories.includes(c.category_name)).map(c => c.url),
       ingredients: form.values.itemIngredients,
       tags: form.values.itemTags,
       image: itemImage
     };
+
     addMenuItem(cleanedUpMenuItemFields).then(status => {
       switch(status){
       case 400:
@@ -67,7 +58,6 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
   };
 
   const handleClear = () => {
-    setItemCategories([category.category_name]);
     setItemImage(undefined);
     form.reset();
     onClose();
@@ -81,9 +71,22 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
     file && reader.readAsDataURL(file);
   };
 
+  const initForm = () => {
+    form.setValues({
+      itemName: "",
+      itemPrice: 0,
+      itemDescription: "",
+      itemCategories: [category.category_name] as string[],
+      itemAvailable: true,
+      itemIngredients: [] as string[],
+      itemTags: [] as string[],
+    });
+  };
+
   useEffect(() => {
-    setItemCategories([category.category_name]);
-  }, [category]);
+    isOpened && initForm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpened]);
 
   return (
     <Modal opened={isOpened} onClose={handleClear} title="Add Item" size="lg">
@@ -128,14 +131,15 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
               label="Item name"
               placeholder="e.g., Chicken rice"
               error={form.errors?.itemName}
+              defaultValue={form.values?.itemName}
               onChange={(e) => {form.setFieldValue("itemName", e.target.value);}}
             />
             <NumberInput
               withAsterisk
               label="Item price"
               min={0}
-              defaultValue={form.values?.itemPrice}
               error={form.errors?.itemPrice}
+              defaultValue={form.values?.itemPrice}
               onChange={(e) => {form.setFieldValue("itemPrice", e as number);}}
             />
             <Textarea
@@ -143,28 +147,30 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
               label="Item description"
               placeholder="e.g., Hainanese style marinated in soy sauce"
               error={form.errors?.itemDescription}
+              defaultValue={form.values?.itemDescription}
               onChange={(e) => {form.setFieldValue("itemDescription", e.target.value);}}
             />
             <TagsInput
               label="Item ingredients"
               placeholder="e.g., chicken, rice, soy sauce"
               error={form.errors?.itemIngredients}
+              defaultValue={form.values?.itemIngredients}
               onChange={(e) => {form.setFieldValue("itemIngredients", e as string[]);}}
             />
             <TagsInput
               label="Tags"
               placeholder="e.g., vegan, spicy"
               error={form.errors?.itemTags}
+              defaultValue={form.values?.itemTags}
               onChange={(e) => {form.setFieldValue("itemTags", e as string[]);}}
             />
             <MultiSelect
               withAsterisk
               label="Category"
               data={categoryList.map(c => c.category_name)}
-              defaultValue={itemCategories}
               error={form.errors?.itemCategories}
+              defaultValue={form.values?.itemCategories}
               onChange={(e) => {
-                setItemCategories(e as string[]);
                 form.setFieldValue("itemCategories", e as string[]);
               }}
             />
