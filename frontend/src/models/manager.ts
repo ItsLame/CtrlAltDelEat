@@ -1,4 +1,4 @@
-import { category, menuItems } from "@/models";
+import { category, menuItems, ingredient, tag } from "@/models";
 
 // Function props
 export interface ManagerSidebarProps {
@@ -20,6 +20,8 @@ export interface ManagerMainProps {
 export interface AddMenuItemModalProps {
   category: category
   categoryList: category[]
+  tagsList: tag[]
+  ingredientsList: ingredient[]
   isOpened: boolean
   isLoading: boolean
   onClose: () => void

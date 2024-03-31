@@ -20,7 +20,7 @@ const schema = z.object({
   itemTags: z.array(z.string()).optional(),
 });
 
-export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, onClose, onSubmit }: AddMenuItemModalProps) {
+export function AddMenuItemModal({ category, categoryList, ingredientsList, tagsList, isOpened, isLoading, onClose, onSubmit }: AddMenuItemModalProps) {
   const [itemCategories, setItemCategories] = useState([] as string[]);
   const [itemImage, setItemImage] = useState<File | null>(null);
   const [itemImagePreview, setItemImagePreview] = useState<string | null>();
@@ -150,12 +150,14 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
             <TagsInput
               label="Item ingredients"
               placeholder="e.g., chicken, rice, soy sauce"
+              data={ingredientsList.map(c => c.name)}
               error={form.errors?.itemIngredients}
               onChange={(e) => {form.setFieldValue("itemIngredients", e as string[]);}}
             />
             <TagsInput
               label="Tags"
               placeholder="e.g., vegan, spicy"
+              data={tagsList.map(c => c.name)}
               error={form.errors?.itemTags}
               onChange={(e) => {form.setFieldValue("itemTags", e as string[]);}}
             />
