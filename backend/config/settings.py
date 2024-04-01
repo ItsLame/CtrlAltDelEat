@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
     'django.contrib.admindocs',
-    'orders'
+    'orders',
+    'tables'
 ]
 
 REST_FRAMEWORK = {
