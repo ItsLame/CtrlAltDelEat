@@ -5,7 +5,7 @@ import { Flex, LoadingOverlay, Modal, NumberInput, Stack, Textarea, Button, Grou
 import { useForm, zodResolver } from "@mantine/form";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 
-import { ViewMenuItemModalProps, menuItemSchema } from "@/models";
+import { ViewMenuItemModalProps, menuItemSchema, orderMenuItemRequest } from "@/models";
 import { imagePlaceholder } from "@/constants";
 
 // eslint-disable-next-line no-unused-vars
@@ -17,15 +17,28 @@ export function ViewMenuItemModal({ tableNo, menuItem, isOpened, isLoading, onCl
     validate: zodResolver(menuItemSchema),
     validateInputOnChange: true,
     initialValues: {
-      itemQuantity: 0,
+      itemQuantity: 1,
       itemOptionalRequest: "",
     },
   });
 
+  const handleSubmit = () => {
+    // create menu item to post to api
+    const menu_item_request: orderMenuItemRequest = {
+      itemName: menuItem.menuitem_name,
+      cost: +menuItem.cost,
+      tableNumber: tableNo,
+      quantity: form.values.itemQuantity,
+      alterations: form.values.itemOptionalRequest
+    };
+    // this is temporary until api changes have gone through
+    console.log(menu_item_request);
+  };
+
   const handleAddMenuItem = () => {
     const _cleanedUpMenuItemFields = {
       quantity: form.values.itemQuantity,
-      optionalRequeset: form.values.itemOptionalRequest.trim(),
+      optionalRequest: form.values.itemOptionalRequest.trim(),
     };
   };
 
@@ -67,17 +80,21 @@ export function ViewMenuItemModal({ tableNo, menuItem, isOpened, isLoading, onCl
           <Textarea
             label="Optional requests"
             placeholder="e.g., less spicy, no tomato"
-            onChange={(e) => {form.setFieldValue("itemDescription", e.target.value);}}
+            onChange={(e) => {form.setFieldValue("itemOptionalRequest", e.target.value);}}
           />
         </Stack>
 
         <Group justify="space-between" mt="md">
           <Flex align="center" gap={5}>
             <ActionIcon onClick={() => handlersRef.current?.decrement()} variant="filled"><MinusIcon /></ActionIcon>
-            <NumberInput w={50} min={1} defaultValue={1} handlersRef={handlersRef} hideControls/>
+            <NumberInput w={50} min={1} defaultValue={1} onChange={(value) => {
+              form.setFieldValue("itemQuantity", value as number);
+            }} handlersRef={handlersRef} hideControls/>
             <ActionIcon onClick={() => handlersRef.current?.increment()} variant="filled"><PlusIcon /></ActionIcon>
           </Flex>
-          <Button type="submit">Add to Cart</Button>
+          <Button type="submit" onClick={handleSubmit}>
+            Add to Cart
+          </Button>
         </Group>
       </form>
     </Modal>

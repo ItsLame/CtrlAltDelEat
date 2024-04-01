@@ -33,3 +33,11 @@ export interface editMenuItemRequest {
   uuidUrl: string
   image: string | undefined
 }
+
+export interface orderMenuItemRequest {
+  tableNumber: number,
+  itemName: string,
+  cost: number,
+  quantity: number,
+  alterations: string
+}
