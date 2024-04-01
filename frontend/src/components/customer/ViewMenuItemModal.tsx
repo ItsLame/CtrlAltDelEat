@@ -1,15 +1,43 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Flex, LoadingOverlay, Modal, NumberInput, Stack, Textarea, Button, Group, Image, NumberInputHandlers, ActionIcon, Title, Text, Badge } from "@mantine/core";
+import {
+  Flex,
+  LoadingOverlay,
+  Modal,
+  NumberInput,
+  Stack,
+  Textarea,
+  Button,
+  Group,
+  Image,
+  NumberInputHandlers,
+  ActionIcon,
+  Title,
+  Text,
+  Badge,
+} from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 
-import { ViewMenuItemModalProps, menuItemSchema, orderMenuItemRequest } from "@/models";
+import {
+  ViewMenuItemModalProps,
+  menuItemSchema,
+  orderMenuItemRequest,
+} from "@/models";
 import { imagePlaceholder } from "@/constants";
+import { addItemToCart } from "@/services/orders";
+import toast from "react-hot-toast";
 
-// eslint-disable-next-line no-unused-vars
-export function ViewMenuItemModal({ tableNo, menuItem, isOpened, isLoading, onClose, onSubmit }: ViewMenuItemModalProps) {
+export function ViewMenuItemModal({
+  tableNo,
+  menuItem,
+  isOpened,
+  isLoading,
+  onClose,
+  // eslint-disable-next-line no-unused-vars
+  onSubmit,
+}: ViewMenuItemModalProps) {
   const handlersRef = useRef<NumberInputHandlers>(null);
   const [itemImage, setItemImage] = useState<string | undefined>();
 
@@ -29,10 +57,20 @@ export function ViewMenuItemModal({ tableNo, menuItem, isOpened, isLoading, onCl
       cost: +menuItem.cost,
       tableNumber: tableNo,
       quantity: form.values.itemQuantity,
-      alterations: form.values.itemOptionalRequest
+      alterations: form.values.itemOptionalRequest,
     };
-    // this is temporary until api changes have gone through
-    console.log(menu_item_request);
+
+    addItemToCart(menu_item_request).then((res) => {
+      switch (res) {
+      case 400:
+        toast.error("some sort of error here");
+        break;
+      case 200:
+        toast.success("added item to cart");
+        onClose();
+        break;
+      }
+    });
   };
 
   const handleAddMenuItem = () => {
@@ -49,14 +87,21 @@ export function ViewMenuItemModal({ tableNo, menuItem, isOpened, isLoading, onCl
   };
 
   return (
-    <Modal opened={isOpened} onClose={handleClear} title="View Item" size="md" centered>
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        !form.validate().hasErrors && handleAddMenuItem();
-        !form.validate().hasErrors && handleClear();
-      }}>
-
-        <LoadingOverlay visible={isLoading}/>
+    <Modal
+      opened={isOpened}
+      onClose={handleClear}
+      title="View Item"
+      size="md"
+      centered
+    >
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          !form.validate().hasErrors && handleAddMenuItem();
+          !form.validate().hasErrors && handleClear();
+        }}
+      >
+        <LoadingOverlay visible={isLoading} />
         <Stack w="100%">
           <Flex h={200}>
             <Image
@@ -68,9 +113,11 @@ export function ViewMenuItemModal({ tableNo, menuItem, isOpened, isLoading, onCl
           </Flex>
           {menuItem.tags?.length >= 1 && (
             <Flex gap={5}>
-              {menuItem.tags.map((tag, k) =>
-                <Badge key={k} variant="light" color="dark">{tag}</Badge>
-              )}
+              {menuItem.tags.map((tag, k) => (
+                <Badge key={k} variant="light" color="dark">
+                  {tag}
+                </Badge>
+              ))}
             </Flex>
           )}
           <Stack gap="xs">
@@ -80,17 +127,36 @@ export function ViewMenuItemModal({ tableNo, menuItem, isOpened, isLoading, onCl
           <Textarea
             label="Optional requests"
             placeholder="e.g., less spicy, no tomato"
-            onChange={(e) => {form.setFieldValue("itemOptionalRequest", e.target.value);}}
+            onChange={(e) => {
+              form.setFieldValue("itemOptionalRequest", e.target.value);
+            }}
           />
         </Stack>
 
         <Group justify="space-between" mt="md">
           <Flex align="center" gap={5}>
-            <ActionIcon onClick={() => handlersRef.current?.decrement()} variant="filled"><MinusIcon /></ActionIcon>
-            <NumberInput w={50} min={1} defaultValue={1} onChange={(value) => {
-              form.setFieldValue("itemQuantity", value as number);
-            }} handlersRef={handlersRef} hideControls/>
-            <ActionIcon onClick={() => handlersRef.current?.increment()} variant="filled"><PlusIcon /></ActionIcon>
+            <ActionIcon
+              onClick={() => handlersRef.current?.decrement()}
+              variant="filled"
+            >
+              <MinusIcon />
+            </ActionIcon>
+            <NumberInput
+              w={50}
+              min={1}
+              defaultValue={1}
+              onChange={(value) => {
+                form.setFieldValue("itemQuantity", value as number);
+              }}
+              handlersRef={handlersRef}
+              hideControls
+            />
+            <ActionIcon
+              onClick={() => handlersRef.current?.increment()}
+              variant="filled"
+            >
+              <PlusIcon />
+            </ActionIcon>
           </Flex>
           <Button type="submit" onClick={handleSubmit}>
             Add to Cart
