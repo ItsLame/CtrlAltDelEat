@@ -2,6 +2,7 @@ from django.shortcuts import render
 from orders.models import Item, Order
 from orders.serializers import ItemSerializer, OrderSerializer
 from rest_framework import generics
+from rest_framework import permissions
 
 class AddToCartAPIView(generics.ListCreateAPIView):
     """
@@ -11,6 +12,7 @@ class AddToCartAPIView(generics.ListCreateAPIView):
 
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    permission_classes = [permissions.AllowAny]
 
     def perform_create(self, serializer):
         serializer.save()
@@ -21,6 +23,7 @@ class RemoveFromCartAPIView(generics.DestroyAPIView):
     """
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    permission_classes = [permissions.AllowAny]
 
 class GetCartForTableAPIView(generics.ListCreateAPIView):
     """
@@ -28,6 +31,7 @@ class GetCartForTableAPIView(generics.ListCreateAPIView):
     """
 
     serializer_class = ItemSerializer
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
         queryset = Item.objects.all()
