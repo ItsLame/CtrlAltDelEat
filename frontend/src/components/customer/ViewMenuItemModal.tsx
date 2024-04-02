@@ -23,10 +23,10 @@ import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import {
   ViewMenuItemModalProps,
   menuItemSchema,
-  orderMenuItemRequest,
+  addToCartRequest,
 } from "@/models";
 import { imagePlaceholder } from "@/constants";
-import { addItemToCart } from "@/services/orders";
+import { addItemToCart } from "@/services";
 import toast from "react-hot-toast";
 
 export function ViewMenuItemModal({
@@ -52,9 +52,9 @@ export function ViewMenuItemModal({
 
   const handleSubmit = () => {
     // create menu item to post to api
-    const menu_item_request: orderMenuItemRequest = {
+    const menu_item_request: addToCartRequest = {
       itemName: menuItem.menuitem_name,
-      cost: +menuItem.cost,
+      cost: menuItem.cost,
       tableNumber: tableNo,
       quantity: form.values.itemQuantity,
       alterations: form.values.itemOptionalRequest,

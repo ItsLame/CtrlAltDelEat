@@ -1,7 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FileButton, Flex, LoadingOverlay, Modal, MultiSelect, NumberInput, Stack, Switch, TagsInput, Textarea, TextInput, Button, Group, Image } from "@mantine/core";
+import {
+  FileButton,
+  Flex,
+  LoadingOverlay,
+  Modal,
+  MultiSelect,
+  NumberInput,
+  Stack,
+  Switch,
+  TagsInput,
+  Textarea,
+  TextInput,
+  Button,
+  Group,
+  Image,
+} from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import toast from "react-hot-toast";
 
@@ -9,7 +24,15 @@ import { EditMenuItemModalProps, menuItemSchema } from "@/models";
 import { editMenuItem } from "@/services";
 import { imagePlaceholder } from "@/constants";
 
-export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading, onDeleteMenuItem, onClose, onSubmit }: EditMenuItemModalProps) {
+export function EditMenuItemModal({
+  menuItem,
+  categoryList,
+  isOpened,
+  isLoading,
+  onDeleteMenuItem,
+  onClose,
+  onSubmit,
+}: EditMenuItemModalProps) {
   const [itemImage, setItemImage] = useState<string | undefined>();
 
   const form = useForm({
@@ -23,23 +46,29 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
       cost: form.values.itemPrice,
       description: form.values.itemDescription.trim(),
       available: form.values.itemAvailable,
-      category: categoryList.filter(c => form.values.itemCategories.includes(c.category_name)).map(c => c.url),
+      category: categoryList
+        .filter((c) => form.values.itemCategories.includes(c.category_name))
+        .map((c) => c.url),
       ingredients: form.values.itemIngredients,
       tags: form.values.itemTags,
       uuidUrl: menuItem.url,
-      image: itemImage
+      image: itemImage,
     };
 
-    editMenuItem(cleanedUpMenuItemFields).then(status => {
-      switch(status){
+    editMenuItem(cleanedUpMenuItemFields).then((status) => {
+      switch (status) {
       case 400:
-        toast.error(`Menu item "${cleanedUpMenuItemFields.menuitem_name}" already exists!`);
+        toast.error(
+          `Menu item "${cleanedUpMenuItemFields.menuitem_name}" already exists!`,
+        );
         break;
       case 401:
         toast.error("Editing menu item requires permission!");
         break;
       case 200:
-        toast.success(`Successfully edited menu item "${cleanedUpMenuItemFields.menuitem_name}"`);
+        toast.success(
+          `Successfully edited menu item "${cleanedUpMenuItemFields.menuitem_name}"`,
+        );
         onSubmit(false);
         !isLoading && onClose();
         break;
@@ -62,11 +91,13 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
   };
 
   const initForm = async () => {
-    const categories = categoryList.filter(c => menuItem.category.includes(c.url)).map(c => c.category_name);
+    const categories = categoryList
+      .filter((c) => menuItem.category.includes(c.url))
+      .map((c) => c.category_name);
 
     form.setValues({
       itemName: menuItem.menuitem_name,
-      itemPrice: parseFloat(menuItem.cost),
+      itemPrice: menuItem.cost,
       itemDescription: menuItem.description,
       itemCategories: categories,
       itemAvailable: menuItem.available,
@@ -82,13 +113,15 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
 
   return (
     <Modal opened={isOpened} onClose={handleClear} title="Edit Item" size="lg">
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        !form.validate().hasErrors && handleEditMenuItem();
-        !form.validate().hasErrors && handleClear();
-      }}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          !form.validate().hasErrors && handleEditMenuItem();
+          !form.validate().hasErrors && handleClear();
+        }}
+      >
         <Flex gap={30}>
-          <LoadingOverlay visible={isLoading}/>
+          <LoadingOverlay visible={isLoading} />
           <Stack>
             <Flex w={200} h={200}>
               <Image
@@ -98,16 +131,15 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
                 alt="Preview of uploaded image"
               />
             </Flex>
-            <FileButton
-              onChange={previewImage}
-              accept="image/png,image/jpeg"
-            >
+            <FileButton onChange={previewImage} accept="image/png,image/jpeg">
               {(props) => <Button {...props}>Upload Image</Button>}
             </FileButton>
             <Button
               color="red"
               disabled={!itemImage}
-              onClick={() => {setItemImage(undefined);}}
+              onClick={() => {
+                setItemImage(undefined);
+              }}
             >
               Clear Image
             </Button>
@@ -115,14 +147,18 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
               variant="outline"
               color="red"
               disabled={!itemImage}
-              onClick={() => {setItemImage(undefined);}}
+              onClick={() => {
+                setItemImage(undefined);
+              }}
             >
               Reset Image
             </Button>
             <Switch
               label="In stock"
               defaultChecked={form.values?.itemAvailable}
-              onChange={(e) => {form.setFieldValue("itemAvailable", e.target.checked);}}
+              onChange={(e) => {
+                form.setFieldValue("itemAvailable", e.target.checked);
+              }}
             />
           </Stack>
           <Stack w="100%">
@@ -132,7 +168,9 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
               placeholder="e.g., Chicken rice"
               error={form.errors?.itemName}
               defaultValue={form.values?.itemName}
-              onChange={(e) => {form.setFieldValue("itemName", e.target.value);}}
+              onChange={(e) => {
+                form.setFieldValue("itemName", e.target.value);
+              }}
             />
             <NumberInput
               withAsterisk
@@ -140,7 +178,9 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
               min={0}
               error={form.errors?.itemPrice}
               defaultValue={form.values?.itemPrice}
-              onChange={(e) => {form.setFieldValue("itemPrice", e as number);}}
+              onChange={(e) => {
+                form.setFieldValue("itemPrice", e as number);
+              }}
             />
             <Textarea
               withAsterisk
@@ -148,26 +188,32 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
               placeholder="e.g., Hainanese style marinated in soy sauce"
               error={form.errors?.itemDescription}
               defaultValue={form.values?.itemDescription}
-              onChange={(e) => {form.setFieldValue("itemDescription", e.target.value);}}
+              onChange={(e) => {
+                form.setFieldValue("itemDescription", e.target.value);
+              }}
             />
             <TagsInput
               label="Item ingredients"
               placeholder="e.g., chicken, rice, soy sauce"
               error={form.errors?.itemIngredients}
               defaultValue={form.values?.itemIngredients}
-              onChange={(e) => {form.setFieldValue("itemIngredients", e as string[]);}}
+              onChange={(e) => {
+                form.setFieldValue("itemIngredients", e as string[]);
+              }}
             />
             <TagsInput
               label="Tags"
               placeholder="e.g., vegan, spicy"
               error={form.errors?.itemTags}
               defaultValue={form.values?.itemTags}
-              onChange={(e) => {form.setFieldValue("itemTags", e as string[]);}}
+              onChange={(e) => {
+                form.setFieldValue("itemTags", e as string[]);
+              }}
             />
             <MultiSelect
               withAsterisk
               label="Category"
-              data={categoryList.map(c => c.category_name)}
+              data={categoryList.map((c) => c.category_name)}
               error={form.errors?.itemCategories}
               defaultValue={form.values?.itemCategories}
               onChange={(e) => {
@@ -177,8 +223,12 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
           </Stack>
         </Flex>
         <Group justify="flex-end" mt="md">
-          <Button variant="outline" color="red" onClick={onDeleteMenuItem}>Delete</Button>
-          <Button type="submit" px="xl">Save</Button>
+          <Button variant="outline" color="red" onClick={onDeleteMenuItem}>
+            Delete
+          </Button>
+          <Button type="submit" px="xl">
+            Save
+          </Button>
         </Group>
       </form>
     </Modal>

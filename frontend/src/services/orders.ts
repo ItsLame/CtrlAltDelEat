@@ -1,15 +1,14 @@
-import { orderMenuItemRequest } from "@/models";
-import { failedPostError } from "@/helpers";
+import { addToCartRequest, viewCartResponse } from "@/models";
+import { failedGetError, failedPostError } from "@/helpers";
 import { apiUrlBase } from "@/constants";
 import { getHeaders } from "@/services/auth";
 
 const apiBase = `${apiUrlBase}/api/orders`;
 
-export async function addItemToCart(request: orderMenuItemRequest) {
+export async function addItemToCart(request: addToCartRequest) {
   const apiUrl = `${apiBase}/addtocart/`;
 
-  const endpoint = `${apiUrl}`;
-  const res = await fetch(endpoint, {
+  const res = await fetch(apiUrl, {
     method: "POST",
     headers: await getHeaders(),
     body: JSON.stringify(request),
@@ -17,4 +16,13 @@ export async function addItemToCart(request: orderMenuItemRequest) {
 
   if (!res.ok && res.status != 400 && res.status != 401) failedPostError();
   return res.status;
+}
+
+export async function getCartStatus(
+  tableNumber: number,
+): Promise<viewCartResponse> {
+  const apiUrl = `${apiBase}/getCartForTable/?tableNumber=${tableNumber}`;
+  const res = await fetch(apiUrl);
+  if (!res.ok) failedGetError();
+  return res.json();
 }
