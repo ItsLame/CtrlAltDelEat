@@ -1,19 +1,3 @@
-// const previewImage = (file: File | null) => {
-//   const reader = new FileReader();
-//   reader.addEventListener("loadend", () => {
-//     setItemImage(reader.result?.toString());
-//   });
-//   file && reader.readAsDataURL(file);
-// };
-
-export const _displayImage = (file: File | null) => {
-  const reader = new FileReader();
-  reader.addEventListener("loadend", () => {
-    return reader.result?.toString();
-  });
-  file && reader.readAsDataURL(file);
-};
-
 export function displayImage (file: File | null) {
   const validFileTypes = [ "image/jpeg", "image/png", "image/jpg" ];
   const valid = validFileTypes.find(type => type === file?.type);

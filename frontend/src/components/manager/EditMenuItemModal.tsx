@@ -18,6 +18,8 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
     validateInputOnChange: true,
   });
 
+  const isImageUpdated = form.values?.itemImage !== menuItem.image;
+
   const handleEditMenuItem = async () => {
     const cleanedUpMenuItemFields = {
       menuitem_name: form.values.itemName.trim(),
@@ -28,7 +30,7 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
       ingredients: form.values.itemIngredients,
       tags: form.values.itemTags,
       uuidUrl: menuItem.url,
-      image: itemImage && await handleUploadImageToServer()
+      image: isImageUpdated ? await handleUploadImageToServer() : form.values?.itemImage
     };
 
     editMenuItem(cleanedUpMenuItemFields).then(status => {
@@ -131,7 +133,7 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
             <Button
               variant="outline"
               color="red"
-              disabled={form.values?.itemImage === menuItem.image}
+              disabled={!isImageUpdated}
               onClick={handleResetImage}
             >
               Reset Image
