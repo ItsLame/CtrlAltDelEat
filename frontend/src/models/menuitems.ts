@@ -34,6 +34,10 @@ export interface editMenuItemRequest {
   image?: string
 }
 
+export interface deleteMenuItemRequest {
+  uuidUrl: string
+}
+
 export interface uploadMenuItemImageRequest {
   image?: File | null
 }
