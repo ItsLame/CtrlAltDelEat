@@ -17,6 +17,10 @@ export interface cartItem {
   quantity: number;
 }
 
-export interface viewCartResponse {
-  items: cartItem[];
+export interface ViewCartModalProps {
+  isLoading: boolean;
+  cartItems: cartItem[];
+  tableNo: number;
+  isOpen: boolean;
+  onClose: () => void;
 }

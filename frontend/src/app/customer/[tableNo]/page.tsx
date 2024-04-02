@@ -4,16 +4,25 @@ import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { ActionIcon, AppShell, Flex, Image, Select, Text } from "@mantine/core";
 
-import { getCategories, getMenuItems } from "@/services";
-import { category, menuItems } from "@/models";
+import { getCartStatus, getCategories, getMenuItems } from "@/services";
+import { cartItem, category, menuItems } from "@/models";
 import { CustomerSidebar } from "@/components/customer/CustomerSidebar";
 import { CustomerMain } from "@/components/customer/CustomerMain";
 import { ViewMenuItemModal } from "@/components";
-import { BellIcon } from "@radix-ui/react-icons";
+import { BellIcon, ReaderIcon } from "@radix-ui/react-icons";
+import { ViewCartModal } from "@/components/customer/ViewCartModal";
 
-export default function Customer({ params: { tableNo } } : { params: { tableNo: number } }) {
+export default function Customer({
+  params: { tableNo },
+}: {
+  params: { tableNo: number };
+}) {
   const [sidebarOpened] = useDisclosure();
   const [viewMenuItemModalOpened, { open, close }] = useDisclosure(false);
+  const [
+    addMenuItemModalOpened,
+    { open: openCartModal, close: closeCartModal },
+  ] = useDisclosure(false);
 
   const [category, setCategory] = useState({} as category);
   const [menuItem, setMenuItem] = useState({} as menuItems);
@@ -22,11 +31,15 @@ export default function Customer({ params: { tableNo } } : { params: { tableNo: 
   const [categoryList, setCategoryList] = useState([] as category[]);
   const [isMenuItemListLoading, setMenuItemListLoading] = useState(true);
   const [isCategoryListLoading, setCategoryListLoading] = useState(true);
+  const [cartItems, setCartItems] = useState([] as cartItem[]);
+  const [isCartLoading, { toggle }] = useDisclosure(false);
 
   const handleSelectCategory = (category?: category) => {
     if (category) {
       setCategory(category);
-      const items = menuItemList.filter((item) => item.category.includes(category.url));
+      const items = menuItemList.filter((item) =>
+        item.category.includes(category.url),
+      );
       updateItems(items);
     }
   };
@@ -42,6 +55,18 @@ export default function Customer({ params: { tableNo } } : { params: { tableNo: 
       setMenuItemListLoading(false);
     });
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const cart = await getCartStatus(tableNo);
+      setCartItems(cart);
+      toggle();
+    };
+
+    if (isCartLoading) {
+      fetchData().catch(() => console.error("there was an error loading cart"));
+    }
+  }, [cartItems, isCartLoading, tableNo, toggle]);
 
   const refreshCategoryList = () => {
     setCategoryListLoading(true);
@@ -84,12 +109,26 @@ export default function Customer({ params: { tableNo } } : { params: { tableNo: 
               size="sm"
               w={120}
               value={category.category_name}
-              data={categoryList.map(c => c.category_name)}
-              onChange={(e) => {handleSelectCategory(categoryList.find(c => c.category_name == e));}}
+              data={categoryList.map((c) => c.category_name)}
+              onChange={(e) => {
+                handleSelectCategory(
+                  categoryList.find((c) => c.category_name == e),
+                );
+              }}
             />
           </Flex>
-          <Flex justify="flex-end" mr={20}>
-            <ActionIcon><BellIcon /></ActionIcon>
+          <Flex justify="flex-end" mr={20} columnGap="sm">
+            <ActionIcon>
+              <ReaderIcon
+                onClick={() => {
+                  toggle();
+                  openCartModal();
+                }}
+              />
+            </ActionIcon>
+            <ActionIcon>
+              <BellIcon />
+            </ActionIcon>
           </Flex>
         </div>
       </AppShell.Header>
@@ -120,6 +159,14 @@ export default function Customer({ params: { tableNo } } : { params: { tableNo: 
         isLoading={isMenuItemListLoading}
         onClose={close}
         onSubmit={refreshMenuList}
+      />
+
+      <ViewCartModal
+        isLoading={isCartLoading}
+        tableNo={tableNo}
+        isOpen={addMenuItemModalOpened}
+        onClose={closeCartModal}
+        cartItems={cartItems}
       />
     </AppShell>
   );

@@ -1,4 +1,4 @@
-import { addToCartRequest, viewCartResponse } from "@/models";
+import { addToCartRequest, cartItem } from "@/models";
 import { failedGetError, failedPostError } from "@/helpers";
 import { apiUrlBase } from "@/constants";
 import { getHeaders } from "@/services/auth";
@@ -19,9 +19,7 @@ export async function addItemToCart(request: addToCartRequest) {
   return res.status;
 }
 
-export async function getCartStatus(
-  tableNumber: number,
-): Promise<viewCartResponse> {
+export async function getCartStatus(tableNumber: number): Promise<cartItem[]> {
   const apiUrl = `${apiBase}/getCartForTable/?tableNumber=${tableNumber}`;
   const res = await fetch(apiUrl);
   if (!res.ok) failedGetError();
