@@ -1,6 +1,6 @@
 "use client";
 
-import { cartItem, ViewCartModalProps } from "@/models";
+import { cartView, ViewCartModalProps } from "@/models";
 import {
   ActionIcon,
   Button,
@@ -14,8 +14,10 @@ import {
 } from "@mantine/core";
 import { imagePlaceholder } from "@/constants";
 import { TrashIcon } from "@radix-ui/react-icons";
+import { orderCart } from "@/services";
+import toast from "react-hot-toast";
 
-const generateMenuItem = (item: cartItem, key: number) => (
+const generateMenuItem = (item: cartView, key: number) => (
   <Card padding="lg" radius="md" withBorder={true} key={key}>
     <Flex gap={15}>
       <Flex w={100}>
@@ -50,6 +52,16 @@ const generateMenuItem = (item: cartItem, key: number) => (
 
 export function ViewCartModal(viewCartProps: ViewCartModalProps) {
   const handleSubmit = () => {
+    orderCart(viewCartProps.cartItems).then((res) => {
+      switch (res) {
+      case 200:
+        toast.success("order success");
+        break;
+      default:
+        toast.error("failed to submit order");
+        break;
+      }
+    });
     viewCartProps.onClose();
   };
 
@@ -70,7 +82,11 @@ export function ViewCartModal(viewCartProps: ViewCartModalProps) {
     >
       <Flex direction={"column"} gap={"sm"}>
         <ScrollArea.Autosize scrollbars={"y"} mah={550}>
-          <Stack>{viewCartProps.cartItems?.map(generateMenuItem)}</Stack>
+          <Stack>
+            {viewCartProps.cartItems
+              ?.filter((item) => item.status == "in-cart")
+              .map((i, k) => generateMenuItem(i, k))}
+          </Stack>
         </ScrollArea.Autosize>
         <Flex align={"center"} direction={"row"} justify={"space-between"}>
           <Button onClick={handleSubmit}>Submit Order!</Button>

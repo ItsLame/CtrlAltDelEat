@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { ActionIcon, AppShell, Flex, Image, Select, Text } from "@mantine/core";
 
 import { getCartStatus, getCategories, getMenuItems } from "@/services";
-import { cartItem, category, menuItems } from "@/models";
+import { cartView, category, menuItems } from "@/models";
 import { CustomerSidebar } from "@/components/customer/CustomerSidebar";
 import { CustomerMain } from "@/components/customer/CustomerMain";
 import { ViewMenuItemModal } from "@/components";
@@ -31,7 +31,7 @@ export default function Customer({
   const [categoryList, setCategoryList] = useState([] as category[]);
   const [isMenuItemListLoading, setMenuItemListLoading] = useState(true);
   const [isCategoryListLoading, setCategoryListLoading] = useState(true);
-  const [cartItems, setCartItems] = useState([] as cartItem[]);
+  const [cartItems, setCartItems] = useState([] as cartView[]);
   const [isCartLoading, { toggle }] = useDisclosure(false);
 
   const handleSelectCategory = (category?: category) => {

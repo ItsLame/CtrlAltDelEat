@@ -6,7 +6,7 @@ export interface addToCartRequest {
   alterations: string;
 }
 
-export interface cartItem {
+export interface cartView {
   id: number;
   tableNumber: number;
   itemName: string;
@@ -17,9 +17,23 @@ export interface cartItem {
   quantity: number;
 }
 
+export interface orderItemView {
+  id: number;
+  tableNumber: number;
+  itemName: string;
+  cost: number;
+  status: string;
+  alterations: string;
+  quantity: number;
+}
+
+export interface orderView {
+  items: orderItemView[];
+}
+
 export interface ViewCartModalProps {
   isLoading: boolean;
-  cartItems: cartItem[];
+  cartItems: cartView[];
   tableNo: number;
   isOpen: boolean;
   onClose: () => void;
