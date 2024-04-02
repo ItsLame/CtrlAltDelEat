@@ -1,8 +1,8 @@
 import { Button, Code, Flex, Modal, Text } from "@mantine/core";
+import toast from "react-hot-toast";
 
 import { DeleteCategoryModalProps, category } from "@/models";
 import { deleteCategory } from "@/services";
-import toast from "react-hot-toast";
 
 export function DeleteCategoryModal ({ category, isOpened, onDelete, onClose }: DeleteCategoryModalProps) {
   const handleDeleteCategory = (category: category) => {

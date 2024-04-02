@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from menu.models import Category, MenuItem
+from menu.models import Category, MenuItem, MenuItemImage
 from taggit.serializers import TagListSerializerField, TaggitSerializer
 
 
@@ -30,6 +30,10 @@ class MenuItemSerializer(TaggitSerializer, serializers.ModelSerializer):
         ]
         depth = 1
 
+class MenuItemImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuItemImage
+        fields = ('image',)
 
 class CategorySerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(

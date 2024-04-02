@@ -6,11 +6,12 @@ import { getHeaders } from "@/services/auth";
 const apiBase = `${apiUrlBase}/api/orders`;
 
 export async function addItemToCart(request: addToCartRequest) {
+  const headersConfig = await getHeaders.json();
   const apiUrl = `${apiBase}/addtocart/`;
 
   const res = await fetch(apiUrl, {
     method: "POST",
-    headers: await getHeaders(),
+    headers: headersConfig,
     body: JSON.stringify(request),
   });
 

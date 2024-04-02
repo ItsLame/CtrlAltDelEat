@@ -6,18 +6,19 @@ import { useForm, zodResolver } from "@mantine/form";
 import toast from "react-hot-toast";
 
 import { AddMenuItemModalProps, menuItemSchema } from "@/models";
-import { addMenuItem } from "@/services";
+import { addMenuItem, uploadMenuItemImage } from "@/services";
 import { imagePlaceholder } from "@/constants";
+import { displayImage } from "@/helpers";
 
 export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, onClose, onSubmit }: AddMenuItemModalProps) {
-  const [itemImage, setItemImage] = useState<string | undefined>();
+  const [itemImage, setItemImage] = useState<File | null>();
 
   const form = useForm({
     validate: zodResolver(menuItemSchema),
     validateInputOnChange: true,
   });
 
-  const handleAddMenuItem = () => {
+  const handleAddMenuItem = async () => {
     const cleanedUpMenuItemFields = {
       menuitem_name: form.values.itemName.trim(),
       cost: form.values.itemPrice,
@@ -26,7 +27,7 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
       category: categoryList.filter(c => form.values.itemCategories.includes(c.category_name)).map(c => c.url),
       ingredients: form.values.itemIngredients,
       tags: form.values.itemTags,
-      image: itemImage
+      image: itemImage && await handleUploadImageToServer()
     };
 
     addMenuItem(cleanedUpMenuItemFields).then(status => {
@@ -39,25 +40,38 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
         break;
       case 201:
         toast.success(`Successfully created menu item "${cleanedUpMenuItemFields.menuitem_name}"`);
+        itemImage && handleUploadImageToServer();
         onSubmit(false);
-        !isLoading && onClose();
+        !isLoading && handleClear();
         break;
       }
     });
   };
 
-  const handleClear = () => {
-    setItemImage(undefined);
-    form.reset();
-    onClose();
+  const handleUploadImageToServer = async () => {
+    const cleanedUpMenuItemFields = {
+      image: itemImage || null
+    };
+
+    return uploadMenuItemImage(cleanedUpMenuItemFields).then(data => data.image);
   };
 
-  const previewImage = (file: File | null) => {
-    const reader = new FileReader();
-    reader.addEventListener("loadend", () => {
-      setItemImage(reader.result?.toString());
+  const handleUploadImage = (file: File | null) => {
+    displayImage(file).then((res) => {
+      form.setFieldValue("itemImage", res);
+      setItemImage(file);
     });
-    file && reader.readAsDataURL(file);
+  };
+
+  const handleClearImage = () => {
+    form.setFieldValue("itemImage", "");
+    setItemImage(null);
+  };
+
+  const handleClear = () => {
+    onClose();
+    form.reset();
+    handleClearImage();
   };
 
   const initForm = () => {
@@ -69,6 +83,7 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
       itemAvailable: true,
       itemIngredients: [] as string[],
       itemTags: [] as string[],
+      itemImage: ""
     });
   };
 
@@ -82,7 +97,6 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
       <form onSubmit={(e) => {
         e.preventDefault();
         !form.validate().hasErrors && handleAddMenuItem();
-        !form.validate().hasErrors && handleClear();
       }}>
         <Flex gap={30}>
           <LoadingOverlay visible={isLoading}/>
@@ -90,21 +104,21 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
             <Flex w={200} h={200}>
               <Image
                 mt={10}
-                src={itemImage}
+                src={form.values?.itemImage}
                 fallbackSrc={imagePlaceholder}
                 alt="Preview of uploaded image"
               />
             </Flex>
             <FileButton
-              onChange={previewImage}
+              onChange={handleUploadImage}
               accept="image/png,image/jpeg"
             >
               {(props) => <Button {...props}>Upload Image</Button>}
             </FileButton>
             <Button
               color="red"
-              disabled={!itemImage}
-              onClick={() => {setItemImage(undefined);}}
+              disabled={!form.values?.itemImage}
+              onClick={handleClearImage}
             >
               Clear Image
             </Button>
@@ -159,9 +173,7 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
               data={categoryList.map(c => c.category_name)}
               error={form.errors?.itemCategories}
               defaultValue={form.values?.itemCategories}
-              onChange={(e) => {
-                form.setFieldValue("itemCategories", e as string[]);
-              }}
+              onChange={(e) => {form.setFieldValue("itemCategories", e as string[]);}}
             />
           </Stack>
         </Flex>

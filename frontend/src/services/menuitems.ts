@@ -1,11 +1,7 @@
 import { apiUrlBase } from "@/constants";
 import { getHeaders } from "@/services";
 import { failedDeleteError, failedGetError, failedPostError } from "@/helpers";
-import {
-  addMenuItemRequest,
-  deleteMenuItemRequest,
-  editMenuItemRequest,
-} from "@/models";
+import { addMenuItemRequest, deleteMenuItemRequest, editMenuItemRequest, uploadMenuItemImageRequest } from "@/models";
 
 const apiUrl = `${apiUrlBase}/api/menu/menuitems/`;
 
@@ -18,9 +14,10 @@ export async function getMenuItems() {
 }
 
 export async function addMenuItem(request: addMenuItemRequest) {
-  const headersConfig = await getHeaders();
+  const headersConfig = await getHeaders.json();
   const req = request;
   const endpoint = `${apiUrl}`;
+
   const res = await fetch(endpoint, {
     method: "POST",
     headers: headersConfig,
@@ -32,7 +29,7 @@ export async function addMenuItem(request: addMenuItemRequest) {
 }
 
 export async function editMenuItem(request: editMenuItemRequest) {
-  const headersConfig = await getHeaders();
+  const headersConfig = await getHeaders.json();
   const req = request;
   const { uuidUrl } = req;
   const endpoint = `${uuidUrl}update/`;
@@ -47,7 +44,7 @@ export async function editMenuItem(request: editMenuItemRequest) {
 }
 
 export async function deleteMenuItem(request: deleteMenuItemRequest) {
-  const headersConfig = await getHeaders();
+  const headersConfig = await getHeaders.json();
   const { uuidUrl } = request;
   const endpoint = `${uuidUrl}delete/`;
   const res = await fetch(endpoint, {
@@ -57,4 +54,23 @@ export async function deleteMenuItem(request: deleteMenuItemRequest) {
 
   if (!res.ok) failedDeleteError();
   return res.status;
+}
+
+export async function uploadMenuItemImage(request: uploadMenuItemImageRequest) {
+  const headersConfig = await getHeaders.form();
+  const req = request;
+  const { image } = req;
+  const endpoint = `${apiUrl}images/`;
+
+  const formData = new FormData();
+  if (request.image != null) formData.append("image", image as Blob);
+
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: headersConfig,
+    body: formData
+  });
+
+  if(!res.ok && res.status != 400 && res.status != 401) failedPostError();
+  return res.json();
 }

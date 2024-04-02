@@ -14,7 +14,7 @@ export async function getCategories() {
 };
 
 export async function addCategory(request: addCategoryRequest) {
-  const headersConfig = await getHeaders();
+  const headersConfig = await getHeaders.json();
   const req = request;
   const endpoint = `${apiUrl}`;
   const res = await fetch(endpoint, {
@@ -28,7 +28,7 @@ export async function addCategory(request: addCategoryRequest) {
 };
 
 export async function editCategory(request: editCategoryRequest) {
-  const headersConfig = await getHeaders();
+  const headersConfig = await getHeaders.json();
   const req = request;
   const { uuidUrl } = req;
   const endpoint = `${uuidUrl}update/`;
@@ -43,7 +43,7 @@ export async function editCategory(request: editCategoryRequest) {
 };
 
 export async function deleteCategory(request: deleteCategoryRequest) {
-  const headersConfig = await getHeaders();
+  const headersConfig = await getHeaders.json();
   const { uuidUrl } = request;
   const endpoint = `${uuidUrl}delete/`;
   const res = await fetch(endpoint, {

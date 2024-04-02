@@ -30,7 +30,7 @@ SECRET_KEY = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1""localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1""localhost", "127.0.0.1", "api.ctrlaltdeleat.com"]
 
 # Application definition
 
@@ -98,6 +98,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://0.0.0.0:4000',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:4000',
+    'http://api.ctrlaltdeleat.com',
 ]
 
 # CORS_ORIGIN_ALLOW_ALL = True
@@ -201,3 +202,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'public/media/')

@@ -30,7 +30,7 @@ export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAd
                 <Flex gap="md">
                   <Flex w={80}>
                     <Image
-                      src={null}
+                      src={item.image}
                       alt={`A picture of ${item.menuitem_name}`}
                       fallbackSrc={imagePlaceholder}
                     />

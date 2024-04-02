@@ -1,12 +1,14 @@
-from menu.models import MenuItem, Category
+from menu.models import MenuItem, Category, MenuItemImage
 from menu.serializers import (
     MenuItemSerializer,
     CategorySerializer,
     MenuSerializer,
+    MenuItemImageSerializer
 )
 from rest_framework import generics, permissions
 from authentication.permissions import IsManagerOrReadOnly
 
+from rest_framework.parsers import MultiPartParser
 # Create your views here.
 
 
@@ -20,6 +22,10 @@ class MenuListAPIView(generics.ListAPIView):
     permission_classes = [permissions.IsAdminUser | IsManagerOrReadOnly]
     lookup_field = 'uuid'
 
+class MenuItemImageListCreateAPIView(generics.ListCreateAPIView):
+    queryset = MenuItemImage.objects.all()
+    serializer_class = MenuItemImageSerializer
+    permission_classes = [permissions.IsAdminUser | IsManagerOrReadOnly]
 
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
     """ 
@@ -28,6 +34,7 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAdminUser | IsManagerOrReadOnly]
+
     lookup_field = 'uuid'
 
 
@@ -60,6 +67,7 @@ class CategoryDestroyAPIView(generics.DestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAdminUser | IsManagerOrReadOnly]
+
 
     lookup_field = 'uuid'
 

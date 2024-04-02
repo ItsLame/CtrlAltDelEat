@@ -20,9 +20,9 @@ export async function generateAuthToken(request: generateAuthTokenRequest) {
 }
 
 export async function blacklistAuthToken() {
-  const refresh_token = await getRefreshToken();
+  const refreshToken = await getRefreshToken();
   const endpoint = `${apiUrl}blacklist/`;
-  if (!refresh_token)
+  if (!refreshToken)
   {
     clearAuthRefreshTokens();
     return;
@@ -32,18 +32,24 @@ export async function blacklistAuthToken() {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify( { refresh: `${refresh_token}` } ),
+    body: JSON.stringify( { refresh: `${refreshToken}` } ),
   });
   clearAuthRefreshTokens();
 
   if (!res.ok) failedAuthError();
 }
 
-export async function getHeaders() {
-  const authToken = await getAuthToken();
-  const headersConfig = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${authToken}`,
-  };
-  return headersConfig;
-}
+export const getHeaders = {
+  async json() {
+    return {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${await getAuthToken()}`,
+    };
+  },
+  async form() {
+    return {
+      // "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${await getAuthToken()}`,
+    };
+  }
+};

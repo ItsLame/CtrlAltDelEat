@@ -1,8 +1,8 @@
 import { Button, Code, Flex, Modal, Text } from "@mantine/core";
+import toast from "react-hot-toast";
 
 import { DeleteMenuItemModalProps, menuItems } from "@/models";
 import { deleteMenuItem } from "@/services";
-import toast from "react-hot-toast";
 
 export function DeleteMenuItemModal ({ menuItem, isOpened, onDelete, onClose }: DeleteMenuItemModalProps) {
   const handleDeleteMenuItem = (menuItem: menuItems) => {
