@@ -8,7 +8,7 @@ services:
         working_dir: /code/backend/
         # command: sleep infinity
         command: >
-            sh -c "while [ "$(pg_isready -q -h 127.0.0.1 && echo OK)" != "OK" ]; do sleep 1; done
+            sh -c "while [ "$(pg_isready -q -h 127.0.0.1 && echo OK)"!="OK" ]; do sleep 1; done
             && python3 manage.py makemigrations 
             && python3 manage.py migrate 
             && python manage.py loaddata fixtures/initial_users 
