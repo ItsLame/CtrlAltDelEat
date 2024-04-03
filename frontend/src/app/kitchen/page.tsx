@@ -5,6 +5,7 @@ import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
 import { KitchenMain } from "@/components";
 import { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 import { getOrderItems } from "@/services";
 import { orderItems } from "@/models";
@@ -24,7 +25,11 @@ export default function Kitchen() {
   };
 
   useEffect(() => {
-    const intervalId = setInterval(refreshOrderList, 5000);
+    refreshOrderList();
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(refreshOrderList, 7000);
     return () => clearInterval(intervalId);
   }, []);
 
@@ -56,6 +61,7 @@ export default function Kitchen() {
           onRefresh={refreshOrderList}
         />
       </AppShell.Main>
+      <Toaster position="top-center" toastOptions={{ duration: 5000 }} />
     </AppShell>
   );
 }

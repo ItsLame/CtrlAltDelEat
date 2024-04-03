@@ -1,7 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { Image, Button, Center, Flex, Stack, Title, Box, NumberInput } from "@mantine/core";
+import {
+  Image,
+  Button,
+  Center,
+  Flex,
+  Stack,
+  Title,
+  Box,
+  NumberInput,
+} from "@mantine/core";
 import { useState } from "react";
 
 import { generateAuthToken, storeToken } from "@/services";
@@ -32,12 +41,20 @@ export default function HomePage() {
           <Link href="/kitchen">
             <Button>Kitchen</Button>
           </Link>
+          <Link href="/wait">
+            <Button>Wait Staff</Button>
+          </Link>
           <Flex gap={10}>
-            <NumberInput defaultValue={1} w={70} min={1} onChange={(e) => {setTableNo(e as number);}}/>
+            <NumberInput
+              defaultValue={1}
+              w={70}
+              min={1}
+              onChange={(e) => {
+                setTableNo(e as number);
+              }}
+            />
             <Link href={`/customer/${tableNo}`}>
-              <Button>
-                Customer
-              </Button>
+              <Button>Customer</Button>
             </Link>
           </Flex>
         </Stack>

@@ -5,4 +5,5 @@ export * from "./auth";
 export * from "./categories";
 export * from "./menuitems";
 export * from "./forms";
+export * from "./waitAssistance";
 export * from "./cart";

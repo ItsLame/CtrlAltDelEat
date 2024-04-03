@@ -1,22 +1,80 @@
 // Note: Does not support functionality to remove an order from list
 
 import { useEffect, useState } from "react";
-import { Box, Card, Flex, Title } from "@mantine/core";
+import { Box, Card, Flex, Text, Title } from "@mantine/core";
+import { UndoDeleteOrder } from "@/components";
+import { KitchenMainProps, orderItems, Items } from "@/models";
+import { updateItemStatus } from "@/services";
+import toast from "react-hot-toast";
 
-import { KitchenMainProps, orderItems } from "@/models";
-
-export function KitchenMain({ orderItemList }: KitchenMainProps) {
-  const [orderItemListSorted, setOrderItemListSorted] = useState(
-    [] as orderItems[]
-  );
-
+export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
   const [totalOrders, setTotalOrders] = useState(0);
+  const [preparedCards, setCardsPrepared] = useState([] as Number[]);
+
+  let timeOut: string | number | NodeJS.Timeout | undefined;
+
+  const [orderList, setOrderList] = useState([] as orderItems[]);
 
   useEffect(() => {
-    const sorted = orderItemList.toSorted();
-    setOrderItemListSorted(sorted);
-    setTotalOrders(sorted.length);
+    let countOrders = 0;
+    const newOrders = orderItemList.map((order) => {
+      const id = order.id;
+      const items = order.items.filter(
+        (one_item) => one_item.status === "received"
+      );
+      return { id, items };
+    });
+
+    const prgressOrders = newOrders.filter((order) => order.items.length !== 0);
+    prgressOrders.forEach((order) => {
+      countOrders += order.items.length;
+    });
+    setOrderList(prgressOrders);
+    setTotalOrders(countOrders);
   }, [orderItemList]);
+
+  const handleUndoClick = (tID: string, item: Items) => {
+    toast.dismiss(tID);
+    clearTimeout(timeOut);
+    setCardsPrepared((prevCards) =>
+      prevCards.filter((itemnum) => itemnum !== item.id)
+    );
+  };
+
+  const handleDelete = (tID: string, item: Items) => {
+    toast.dismiss(tID);
+
+    const itemID = item.id;
+    const updateItem = {
+      tableNumber: item.tableNumber,
+      itemName: item.itemName,
+      cost: item.cost,
+      status: "prepared",
+    };
+
+    updateItemStatus(itemID, updateItem).then(onRefresh);
+  };
+
+  const handleClick = (item: Items) => {
+    if (!preparedCards.includes(item.id)) {
+      let x = "";
+      setCardsPrepared((prevCards) => [...prevCards, item.id]);
+      toast((t) => {
+        x = t.id;
+        return (
+          <UndoDeleteOrder
+            item={item}
+            handleUndoClick={() => {
+              handleUndoClick(t.id, item);
+            }}
+          />
+        );
+      });
+      timeOut = setTimeout(() => {
+        handleDelete(x, item);
+      }, 6000);
+    }
+  };
 
   return (
     <Box className="appshell-h-100 kitchen-main">
@@ -29,32 +87,52 @@ export function KitchenMain({ orderItemList }: KitchenMainProps) {
         wrap="wrap"
         bg="var(--mantine-color-blue-light)"
       >
-        {orderItemListSorted.map((order) => (
-          <Card
-            key={order.tableNumber}
-            className="kitchen-flex-items"
-            shadow="md"
-            radius="md"
-            padding="sm"
-            withBorder
-          >
-            <Flex gap="xs" justify="space-between" className="order-first-line">
-              <span>Table No.: {order.tableNumber}</span>
-              <span className="order-time">
-                Created on:{" "}
-                {order.timestamp.slice(0, order.timestamp.indexOf("."))}
-              </span>
-            </Flex>
-            <span className="small-break">Order no: {order.orderno} </span>
+        {orderList.map((order) =>
+          order.items.map((single_item) => (
+            <Card
+              key={single_item.id}
+              className={
+                "kitchen-flex-items " +
+                (preparedCards.includes(single_item.id)
+                  ? "prepped-col"
+                  : "unprepped-col")
+              }
+              shadow="md"
+              radius="md"
+              padding="sm"
+              withBorder
+              onClick={() => handleClick(single_item)}
+            >
+              <Flex
+                gap="xs"
+                justify="space-between"
+                className="order-first-line"
+              >
+                <Text size="md">Table No: {single_item.tableNumber} </Text>
+                <Text size="md" className="order-time">
+                  Created on:
+                  {single_item.timestamp.slice(
+                    0,
+                    single_item.timestamp.indexOf(".")
+                  )}
+                </Text>
+              </Flex>
+              <Text size="md">Order no. {order.id}</Text>
+              <Text size="md" mb="0.5rem">
+                Item no. {single_item.id}
+              </Text>
 
-            <span>
-              {/* {order.quantity}  */}1 x {order.itemName}
-            </span>
-            {order.alterations && (
-              <span>Alterations: {order.alterations} </span>
-            )}
-          </Card>
-        ))}
+              <Box>
+                <Text size="md">
+                  {single_item.quantity} x {single_item.itemName}
+                </Text>
+                {single_item.alterations && (
+                  <Text size="md">Alterations: {single_item.alterations}</Text>
+                )}
+              </Box>
+            </Card>
+          ))
+        )}
       </Flex>
     </Box>
   );

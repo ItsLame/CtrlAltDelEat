@@ -2,7 +2,7 @@ import { apiUrlBase } from "@/constants";
 import { failedGetError } from "@/helpers";
 import { getHeaders } from "@/services";
 
-const apiUrl = `${apiUrlBase}/api/orders/orderitems/`;
+const apiUrl = `${apiUrlBase}/api/orders/viewReceivedOrders/`;
 
 export async function getOrderItems() {
   const headersConfig = await getHeaders.json();
