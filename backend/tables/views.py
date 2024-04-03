@@ -6,21 +6,32 @@ from rest_framework.response import Response
 from .models import Tables
 from tables.serializers import TableAssistanceRequestSerializer, TableAssistedSerializer
 from rest_framework import permissions
+from authentication.permissions import IsWaitStaffOrReadOnly
 
 
-class TableAssistanceRequestedAPIView(generics.ListCreateAPIView):
+class TableAssistanceRequestedAPIViewList(generics.ListAPIView):
     """ 
-    making an API for POST requests to be sent by customer for requesting asssitance, 
-    and GET requests being sent by wait staff for retrieving customer assistance requests 
+    making an API for GET requests to be sent by waitstaff for viewing which tables need assistance,
     """
     queryset = Tables.objects.all()
     serializer_class = TableAssistanceRequestSerializer
-    permission_classes = [permissions.AllowAny]
-    authentication_classes = []
+    permission_classes =[permissions.IsAdminUser| IsWaitStaffOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save()
-    
+
+
+class TableAssistanceRequestedView(generics.CreateAPIView):
+    """
+    making an API for POST requests to be sent by customer for requesting asssitance,
+    """
+    serializer_class = TableAssistanceRequestSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+
 class TableAssistedAPIView(generics.UpdateAPIView):
     """ 
     making an API for PUT requests to be sent by wait staff for marking customer assistance requests as complete

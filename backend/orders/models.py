@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.fields import CharField, UUIDField, IntegerField, DecimalField, TextField, TimeField, AutoField
 import time
 
+
 class Item(models.Model):
     tableNumber = IntegerField()
     itemName = CharField(max_length = 60)
@@ -11,7 +12,7 @@ class Item(models.Model):
     status = CharField(max_length=15, default="in-cart")
     alterations = TextField(blank=True)
     timestamp = TimeField(auto_now_add=True)
-    #uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    orderNo = UUIDField(null=True, editable=True, default=None, blank=True)
 
     # timestamp = BigIntegerField(db_column='timestamp')
     # @property
@@ -29,8 +30,5 @@ class Item(models.Model):
     def __str__(self):
         return self.itemName
 
-
-class Order(models.Model):
-    items = models.ManyToManyField(Item)
 
 

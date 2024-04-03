@@ -52,10 +52,10 @@ const generateMenuItem = (item: cartView, key: number) => (
 
 export function ViewCartModal(viewCartProps: ViewCartModalProps) {
   const handleSubmit = () => {
-    orderCart(viewCartProps.cartItems).then((res) => {
+    orderCart(viewCartProps.tableNo).then((res) => {
       switch (res) {
       case 200:
-        toast.success("order success");
+        toast.success("Order sent to kitchen!");
         break;
       default:
         toast.error("failed to submit order");

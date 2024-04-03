@@ -1,6 +1,12 @@
+import uuid
+
+from django.http import JsonResponse
 from django.shortcuts import render
-from orders.models import Item, Order
-from orders.serializers import ItemSerializer, OrderSerializer
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+
+from orders.models import Item
+from orders.serializers import ItemSerializer
 from rest_framework import generics
 from rest_framework import permissions
 
@@ -25,11 +31,11 @@ class RemoveFromCartAPIView(generics.DestroyAPIView):
     serializer_class = ItemSerializer
     permission_classes = [permissions.AllowAny]
 
+
 class GetCartForTableAPIView(generics.ListCreateAPIView):
     """
         view items in the cart for a particular table
     """
-
     serializer_class = ItemSerializer
     permission_classes = [permissions.AllowAny]
 
@@ -42,28 +48,40 @@ class GetCartForTableAPIView(generics.ListCreateAPIView):
         return queryset
 
 
-class OrderCreateAPIView(generics.ListCreateAPIView):
+class CustomerOrderCreateView(generics.UpdateAPIView):
     """
-    order cart items
+    Order cart items.
     """
-
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
     permission_classes = [permissions.AllowAny]
 
-    def perform_create(self, serializer):
-        serializer.save()
+    def update(self, request, *args, **kwargs):
+        table_num = request.GET.get('tableNumber', None)
+        if not table_num:
+            return JsonResponse({"error": "Table number not provided"}, status=HTTP_400_BAD_REQUEST)
+
+        items = Item.objects.filter(tableNumber=table_num, status="in-cart")
+        print(items.values('id'))
+        if not items.exists():
+            return JsonResponse({"error": "No items found for the specified table number in-cart"}, status=HTTP_400_BAD_REQUEST)
+
+        uuid_val = uuid.uuid4()
+
+        # Update the status of these Items to "received" and give it an order number
+        items.update(status="received", orderNo=uuid_val)
+
+        return JsonResponse({"status": "Items updated and order created"}, status=HTTP_200_OK)
 
 
 class GetOrderAPIView(generics.ListAPIView):
     """
     view newly received orders
     """
-    serializer_class = OrderSerializer
+    serializer_class = ItemSerializer
+
     def get_queryset(self):
-        queryset = Order.objects.all()
+        queryset = Item.objects.all()
         status = "received"
-        queryset = queryset.filter(items__status=status).distinct()
+        queryset = queryset.filter(status=status, orderNo__isnull=False).distinct()
         return queryset
 
 class ChangeItemStatusAPIView(generics.UpdateAPIView):

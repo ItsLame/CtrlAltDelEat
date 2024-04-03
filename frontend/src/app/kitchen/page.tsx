@@ -9,6 +9,7 @@ import { Toaster } from "react-hot-toast";
 
 import { getOrderItems } from "@/services";
 import { orderItems } from "@/models";
+import { mapToOrderItems } from "@/helpers/kitchen";
 
 export default function Kitchen() {
   const [sidebarOpened, { toggle }] = useDisclosure();
@@ -19,7 +20,7 @@ export default function Kitchen() {
   const refreshOrderList = () => {
     setOrderItemListLoading(true);
     getOrderItems().then((res) => {
-      setOrderItemList(res);
+      setOrderItemList(mapToOrderItems(res));
       setOrderItemListLoading(false);
     });
   };

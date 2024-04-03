@@ -11,6 +11,8 @@ import { CustomerMain } from "@/components/customer/CustomerMain";
 import { ViewMenuItemModal } from "@/components";
 import { BellIcon, ReaderIcon } from "@radix-ui/react-icons";
 import { ViewCartModal } from "@/components/customer/ViewCartModal";
+import toast, { Toaster } from "react-hot-toast";
+import { requestAssistance } from "@/services/customer";
 
 export default function Customer({
   params: { tableNo },
@@ -42,6 +44,19 @@ export default function Customer({
       );
       updateItems(items);
     }
+  };
+
+  const handleRequestForAssistance = () => {
+    requestAssistance(tableNo).then((res) => {
+      switch (res) {
+      case 201:
+        toast.custom("Requested for assitance");
+        break;
+      default:
+        toast.error("Error, failed to request assistance");
+        break;
+      }
+    });
   };
 
   const handleSelectMenuItem = (menuItem: menuItems) => {
@@ -91,6 +106,7 @@ export default function Customer({
       }}
       padding="md"
     >
+      <Toaster position="top-center" toastOptions={{ duration: 1500 }} />
       <AppShell.Header>
         <div className="navbar">
           <Flex align="center" gap="sm" flex={1}>
@@ -127,7 +143,7 @@ export default function Customer({
               />
             </ActionIcon>
             <ActionIcon>
-              <BellIcon />
+              <BellIcon onClick={handleRequestForAssistance} />
             </ActionIcon>
           </Flex>
         </div>
@@ -142,7 +158,6 @@ export default function Customer({
           onRefresh={refreshCategoryList}
         />
       </AppShell.Navbar>
-
       <AppShell.Main>
         <CustomerMain
           category={category}

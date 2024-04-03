@@ -65,7 +65,7 @@ export function ViewMenuItemModal({
       case 400:
         toast.error("some sort of error here");
         break;
-      case 200:
+      case 201:
         toast.success("added item to cart");
         onClose();
         break;

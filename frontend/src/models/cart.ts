@@ -17,20 +17,6 @@ export interface cartView {
   quantity: number;
 }
 
-export interface orderItemView {
-  id: number;
-  tableNumber: number;
-  itemName: string;
-  cost: number;
-  status: string;
-  alterations: string;
-  quantity: number;
-}
-
-export interface orderView {
-  items: orderItemView[];
-}
-
 export interface ViewCartModalProps {
   isLoading: boolean;
   cartItems: cartView[];

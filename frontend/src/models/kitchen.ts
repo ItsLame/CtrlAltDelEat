@@ -1,5 +1,5 @@
 export interface orderItems {
-  id: number;
+  id: string;
   items: Items[];
 }
 
@@ -12,6 +12,7 @@ export interface Items {
   status: string;
   alterations: string;
   timestamp: string;
+  orderNo: string;
 }
 
 export interface KitchenMainProps {
