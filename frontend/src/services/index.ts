@@ -6,3 +6,4 @@ export * from "./authStore";
 export * from "./orders";
 export * from "./updateStatus";
 export * from "./waitAssistance";
+export * from "./waitOrderServe";

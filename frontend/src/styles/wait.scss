@@ -65,11 +65,18 @@
   border-radius: 1rem;
 }
 
-.status-assist {
+.status {
   border-radius: 1rem;
-  background-color: #f59f00;
   color: white;
   text-align: center;
+}
+
+.assist {
+  background-color: #f59f00;
+}
+
+.serve {
+  background-color: #40c057;
 }
 
 .light-blue {

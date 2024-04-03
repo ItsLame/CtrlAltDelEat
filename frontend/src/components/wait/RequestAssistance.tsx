@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export function RequestAssistance({
   allRequests,
-  assistBtn,
+  addAssistToProgress,
   totalAssistLen,
 }: reqAssistProps) {
   const [assistIndex, setAssistIndex] = useState(0);
@@ -50,7 +50,7 @@ export function RequestAssistance({
           <Button
             disabled={totalAssistLen === 0}
             onClick={() => {
-              assistBtn(allRequests[assistIndex].tableNumber);
+              addAssistToProgress(allRequests[assistIndex].tableNumber);
             }}
           >
             <Text size="md" c="white">

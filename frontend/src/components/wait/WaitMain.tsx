@@ -2,16 +2,32 @@ import { Box } from "@mantine/core";
 import { ReadyToServe } from "./ReadyToServe";
 import { RequestAssistance } from "./RequestAssistance";
 import { InProgress } from "./InProgress";
-import { assistRequests, updateAssistance, waitMainProps } from "@/models";
+import {
+  assistRequests,
+  Items,
+  updateAssistance,
+  waitMainProps,
+} from "@/models";
 import { useEffect, useState } from "react";
-import { updateWaitAssistance } from "@/services";
+import { updateItemStatus, updateWaitAssistance } from "@/services";
 import toast from "react-hot-toast";
 
-export function WaitMain({ custAssistReqs, refreshFunc }: waitMainProps) {
+export function WaitMain({
+  serveItemsReqs,
+  custAssistReqs,
+  refreshAssist,
+  refreshServe,
+}: waitMainProps) {
   const [toAssist, setToAssist] = useState([] as assistRequests[]);
   const [assistInProg, setAssistInProg] = useState([] as assistRequests[]);
   const [totalAssists, setTotalAssists] = useState(0);
   const [lock, setLock] = useState(false);
+
+  const [toServe, setToServe] = useState([] as Items[]);
+  const [serveInProg, setServeInProg] = useState([] as Items[]);
+  const [totalServe, setTotalServe] = useState(0);
+  const [serveLock, setServeLock] = useState(false);
+
   useEffect(() => {
     if (lock) {
       let filteredArray = custAssistReqs.filter(
@@ -35,7 +51,52 @@ export function WaitMain({ custAssistReqs, refreshFunc }: waitMainProps) {
     setLock(true);
   }, [custAssistReqs]);
 
-  const addAssistInP = (num: number) => {
+  useEffect(() => {
+    if (serveLock) {
+      let filteredArray = serveItemsReqs.filter(
+        (item1) => !serveInProg.some((item2) => item1.id === item2.id)
+      );
+      setToServe(filteredArray);
+      setTotalServe(filteredArray.length);
+      setServeLock(false);
+    }
+  }, [serveInProg, serveItemsReqs, serveLock]);
+
+  useEffect(() => {
+    setServeLock(true);
+  }, [serveItemsReqs]);
+
+  const addServeItemToInProgress = (serveItem: Items) => {
+    setServeLock(true);
+    setServeInProg((prev) => [...prev, serveItem]);
+  };
+
+  const delServeNoUpdate = (serveItem: Items) => {
+    setServeLock(true);
+    setServeInProg((prev) => prev.filter((item) => item.id !== serveItem.id));
+  };
+
+  const updateItemStatusToServed = (serveItem: Items) => {
+    const itemID = serveItem.id;
+    const updateItem = {
+      tableNumber: serveItem.tableNumber,
+      itemName: serveItem.itemName,
+      cost: serveItem.cost,
+      status: "served",
+    };
+    updateItemStatus(itemID, updateItem).then(refreshServe);
+  };
+
+  const deleteServeInProgress = (serveItem: Items) => {
+    toast.success(
+      `Served Table#${serveItem.tableNumber} Item #${serveItem.id}!`
+    );
+    updateItemStatusToServed(serveItem);
+    setLock(false);
+    setServeInProg((prev) => prev.filter((item) => item.id !== serveItem.id));
+  };
+
+  const addAssistInProgress = (num: number) => {
     const newCard = { tableNumber: num, request_assistance: true };
     setLock(true);
     setAssistInProg((prev) => [...prev, newCard]);
@@ -60,18 +121,27 @@ export function WaitMain({ custAssistReqs, refreshFunc }: waitMainProps) {
   return (
     <Box className="appshell-h-100 wait-main">
       <Box className="container">
-        <ReadyToServe />
+        <ReadyToServe
+          allRequests={toServe}
+          addToServeInProgress={addServeItemToInProgress}
+          totalServeLen={totalServe}
+          refreshFunc={refreshServe}
+        />
         <RequestAssistance
           allRequests={toAssist}
-          assistBtn={addAssistInP}
+          addAssistToProgress={addAssistInProgress}
           totalAssistLen={totalAssists}
-          refreshFunc={refreshFunc}
+          refreshFunc={refreshAssist}
         />
         <InProgress
-          allRequests={assistInProg}
+          toAssistRequests={assistInProg}
+          toServeRequests={serveInProg}
           assistUndo={delAssistNoUpdate}
           assistUpdate={deleteAssistInProgress}
-          refreshFunc={refreshFunc}
+          serveUndo={delServeNoUpdate}
+          serveUpdate={deleteServeInProgress}
+          refreshAssist={refreshAssist}
+          refreshServe={refreshServe}
         />
       </Box>
     </Box>
