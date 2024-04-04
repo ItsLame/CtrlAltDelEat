@@ -10,6 +10,7 @@ from orders.serializers import ItemSerializer
 from rest_framework import generics
 from rest_framework import permissions
 
+
 class AddToCartAPIView(generics.ListCreateAPIView):
     """
     add item to cart one at a time
@@ -22,6 +23,7 @@ class AddToCartAPIView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
+
 
 class RemoveFromCartAPIView(generics.DestroyAPIView):
     """
@@ -62,7 +64,8 @@ class CustomerOrderCreateView(generics.UpdateAPIView):
         items = Item.objects.filter(tableNumber=table_num, status="in-cart")
         print(items.values('id'))
         if not items.exists():
-            return JsonResponse({"error": "No items found for the specified table number in-cart"}, status=HTTP_400_BAD_REQUEST)
+            return JsonResponse({"error": "No items found for the specified table number in-cart"},
+                                status=HTTP_400_BAD_REQUEST)
 
         uuid_val = uuid.uuid4()
 
@@ -84,12 +87,29 @@ class GetOrderAPIView(generics.ListAPIView):
         queryset = queryset.filter(status=status, orderNo__isnull=False).distinct()
         return queryset
 
+
 class ChangeItemStatusAPIView(generics.UpdateAPIView):
     """
-    change item status
+    change item status to prepared or served
     """
-    queryset = Item.objects.all()
     serializer_class = ItemSerializer
+
+    def update(self, request, *args, **kwargs):
+        itemId = self.request.GET.get('itemId', None)
+        status = self.request.GET.get('status', None)
+
+        if not itemId:
+            return JsonResponse({"error": "Item Id not provided"}, status=HTTP_400_BAD_REQUEST)
+
+        if not status:
+            return JsonResponse({"error": "status not provided"}, status=HTTP_400_BAD_REQUEST)
+
+        items = Item.objects.filter(id=itemId)
+
+        items.update(status=status)
+
+        return JsonResponse({"status": "Item status updated"}, status=HTTP_200_OK)
+
 
 class GetPreparedItemsAPIView(generics.ListAPIView):
     """
