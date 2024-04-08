@@ -122,3 +122,19 @@ class GetPreparedItemsAPIView(generics.ListAPIView):
         status = "prepared"
         queryset = queryset.filter(status=status)
         return queryset
+
+class CustomerOrderHistoryView(generics.ListAPIView):
+    """
+    view order history
+    """
+    serializer_class = ItemSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        table_num = self.request.GET.get('tableNumber', None)
+
+        # if status is in-cart then the item is not part of an order
+        # if status is ready-to-pay then the table is no longer held by customer and is not associated with his orders
+        queryset = queryset.filter(tableNumber=table_num, status__in=['received', 'prepared', 'served'])
+        return queryset
