@@ -6,6 +6,7 @@ from django.db.models.fields import (
     BooleanField,
     URLField,
     UUIDField,
+    IntegerField
 )
 
 from django.db.models import ImageField
@@ -34,6 +35,7 @@ class Category(models.Model):
     """
     category_name = CharField(max_length=60, unique=True)
     uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    position = IntegerField(default=0)
 
     def __str__(self):
         return self.category_name
@@ -70,6 +72,7 @@ class MenuItem(models.Model):
     )
     uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
     image = ImageField(upload_to=upload_path, blank=True, null=True)
+    position = IntegerField(default=0)
     # image = URLField(max_length=200, blank=True)
 
     def __str__(self):

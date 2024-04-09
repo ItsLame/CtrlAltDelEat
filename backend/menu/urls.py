@@ -27,7 +27,13 @@ urlpatterns = [
     ),
     path(
         'ingredients/', views.IngredientListAPIView.as_view()
-    )
+    ),
+    path(
+        'menuitems/reorder/', views.UpdateMenuItemPositionAPIView.as_view()
+    ),
+        path(
+        'categories/reorder/', views.UpdateCategoryPositionAPIView.as_view()
+    ),
 
 
 ]

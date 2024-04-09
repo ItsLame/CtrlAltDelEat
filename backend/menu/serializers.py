@@ -26,8 +26,10 @@ class MenuItemSerializer(TaggitSerializer, serializers.ModelSerializer):
             'ingredients',
             'tags',
             'image',
+            'position'
         ]
         depth = 1
+        ordering = ["position"]
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -37,7 +39,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['category_name', 'url']
+        fields = ['category_name', 'url', 'position']
+        ordering = ["position"]
 
 
 class MenuSerializer(serializers.ModelSerializer):
@@ -61,3 +64,21 @@ class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = IngredientTag
         fields = ["name"]
+
+class MenuItemPositionSerializer(serializers.Serializer):
+    menuitem = serializers.HyperlinkedRelatedField(
+        view_name='menu:menuitem-detail', lookup_field='uuid', queryset=MenuItem.objects.all()
+    )
+    position = serializers.IntegerField(required=True)
+
+class MenuItemPositionListSerializer(serializers.ListSerializer):
+    child = MenuItemPositionSerializer()
+
+class CategoryPositionSerializer(serializers.Serializer):
+    category = serializers.HyperlinkedRelatedField(
+        view_name='menu:category-detail', lookup_field='uuid', queryset=Category.objects.all()
+    )
+    position = serializers.IntegerField(required=True)
+
+class CategoryPositionListSerializer(serializers.ListSerializer):
+    child = CategoryPositionSerializer()
