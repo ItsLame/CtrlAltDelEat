@@ -84,7 +84,7 @@ export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAd
   });
 
   return (
-    <Box pos="relative">
+    <Box className="appshell-h-100" pos="relative">
       <ManagerMainHeader
         category={category}
         onRefresh={onRefresh}

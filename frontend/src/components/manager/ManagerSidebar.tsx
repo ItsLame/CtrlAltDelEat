@@ -55,6 +55,7 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
 
   const handleClearNewCategoryName = () => {
     setNewCategoryName("");
+    form.reset();
   };
 
   useEffect(() => {
