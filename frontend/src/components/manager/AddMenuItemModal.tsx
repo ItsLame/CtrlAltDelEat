@@ -10,7 +10,7 @@ import { addMenuItem, uploadMenuItemImage } from "@/services";
 import { imagePlaceholder } from "@/constants";
 import { displayImage } from "@/helpers";
 
-export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, onClose, onSubmit }: AddMenuItemModalProps) {
+export function AddMenuItemModal({ category, categoryList, menuItemList, isOpened, isLoading, onClose, onSubmit }: AddMenuItemModalProps) {
   const [itemImage, setItemImage] = useState<File | null>();
 
   const form = useForm({
@@ -27,7 +27,8 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
       category: categoryList.filter(c => form.values.itemCategories.includes(c.category_name)).map(c => c.url),
       ingredients: form.values.itemIngredients,
       tags: form.values.itemTags,
-      image: itemImage && await handleUploadImageToServer()
+      image: itemImage && await handleUploadImageToServer(),
+      position: menuItemList.length
     };
 
     addMenuItem(cleanedUpMenuItemFields).then(status => {

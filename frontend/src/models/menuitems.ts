@@ -21,6 +21,7 @@ export interface addMenuItemRequest {
   ingredients: string[]
   tags: string[]
   image?: string
+  position?: number
 }
 
 export interface editMenuItemRequest {
@@ -33,6 +34,7 @@ export interface editMenuItemRequest {
   tags: string[]
   uuidUrl: string
   image?: string
+  position?: number
 }
 
 export interface deleteMenuItemRequest {

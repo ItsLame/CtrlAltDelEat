@@ -134,6 +134,7 @@ export default function Manager() {
       <AddMenuItemModal
         category={category}
         categoryList={categoryList}
+        menuItemList={menuItemList}
         isOpened={addMenuItemModalOpened}
         isLoading={isMenuItemListLoading}
         onClose={closeAddModal}

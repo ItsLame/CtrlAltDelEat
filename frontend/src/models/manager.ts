@@ -30,6 +30,7 @@ export interface ManagerMainHeaderProps {
 export interface AddMenuItemModalProps {
   category: category
   categoryList: category[]
+  menuItemList: menuItems[]
   isOpened: boolean
   isLoading: boolean
   onClose: () => void
