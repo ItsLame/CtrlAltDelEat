@@ -29,13 +29,12 @@ export async function addCategory(request: addCategoryRequest) {
 
 export async function editCategory(request: editCategoryRequest) {
   const headersConfig = await getHeaders.json();
-  const req = request;
-  const { uuidUrl } = req;
+  const { category_name, uuidUrl, position } = request;
   const endpoint = `${uuidUrl}update/`;
   const res = await fetch(endpoint, {
     method: "PATCH",
     headers: headersConfig,
-    body: JSON.stringify(req)
+    body: JSON.stringify({ category_name, position })
   });
 
   if(!res.ok && res.status !== 400 && res.status !== 401) failedPostError();

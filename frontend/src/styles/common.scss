@@ -19,7 +19,5 @@
 }
 
 .appshell-h-100 {
-  height: calc(
-    100vh - (var(--app-shell-header-height) + var(--app-shell-header-height))
-  );
+  height: calc(100vh - (var(--app-shell-header-height) + var(--app-shell-header-height)));
 }

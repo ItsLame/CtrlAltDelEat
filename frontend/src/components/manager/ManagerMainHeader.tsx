@@ -36,7 +36,7 @@ export function ManagerMainHeader ({ category, onRefresh, onAddMenuItem, onEditC
         break;
       case 200:
         toast.success(`Successfully renamed to "${cleanedUpMenuItemFields.category_name}"`);
-        onEditCategory({ category_name: form.values?.categoryName, url: category.url });
+        onEditCategory({ category_name: form.values?.categoryName, url: category.url, position: category.position });
         toggleEditCategory();
         break;
       }

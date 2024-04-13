@@ -1,14 +1,17 @@
-import { useState } from "react";
-import { CloseButton, Button, Flex, Stack, LoadingOverlay, Box, ActionIcon, TextInput } from "@mantine/core";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import { useEffect, useState } from "react";
+import { CloseButton, Button, Flex, Stack, LoadingOverlay, Box, ActionIcon, TextInput, Text, Card } from "@mantine/core";
+import { useListState } from "@mantine/hooks";
+import { DragHandleDots2Icon, ReloadIcon, TrashIcon } from "@radix-ui/react-icons";
 import toast from "react-hot-toast";
 import { useForm, zodResolver } from "@mantine/form";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
-import { addCategory } from "@/services";
-import { ManagerSidebarProps, categorySchema } from "@/models";
+import { addCategory, editCategory } from "@/services";
+import { ManagerSidebarProps, category, categorySchema } from "@/models";
 
 export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, categoryList, isLoading, onRefresh }: ManagerSidebarProps) {
   const [newCategoryName, setNewCategoryName] = useState("");
+  const [categoryListState, categoryListHandlers] = useListState([] as category[]);
 
   const form = useForm({
     validate: zodResolver(categorySchema),
@@ -16,9 +19,12 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
   });
 
   const handleAddCategory = () => {
-    const cleanedNewCategoryName = newCategoryName.trim().replace(/ +/g, " ");
+    const cleanedUpNewCategoryItem = {
+      category_name: newCategoryName.trim().replace(/ +/g, " "),
+      position: categoryList.length
+    };
 
-    addCategory({ category_name: cleanedNewCategoryName }).then(status => {
+    addCategory(cleanedUpNewCategoryItem).then(status => {
       switch(status){
       case 400:
         toast.error(`Category "${newCategoryName}" already exists!`);
@@ -34,13 +40,82 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
     });
   };
 
+  const handleReorderCategory = () => {
+    const reorder = (uuidUrl: string, position: number) => {
+      const cleanedUpCategoryItemFields = {
+        uuidUrl: uuidUrl,
+        position: position
+      };
+
+      editCategory(cleanedUpCategoryItemFields);
+    };
+
+    categoryListState.forEach((c, index) => reorder(c.url, index));
+  };
+
   const handleClearNewCategoryName = () => {
     setNewCategoryName("");
     form.reset();
   };
 
+  useEffect(() => {
+    categoryListHandlers.setState(categoryList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryList]);
+
+  useEffect(() => {
+    handleReorderCategory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryListState]);
+
+  const DraggableCategoryCard = categoryListState.map((c, index) => {
+    const isSelected = c.url === category.url;
+
+    return (
+      <Draggable key={c.url} index={index} draggableId={c.url}>
+        {(provided, snapshot) => (
+          <Box
+            {...provided.draggableProps}
+            ref={provided.innerRef}
+            onClick={() => onCategorySelect(c)}
+            mb="xs"
+          >
+            <Card
+              className={`category-item ${isSelected ? "selected" : ""} ${snapshot.isDragging ? "dragging" : ""}`}
+              shadow="sm"
+              radius="md"
+              padding={0}
+              color="blue"
+              withBorder
+            >
+              <Flex align="center">
+                <Flex className="w-100" align="center">
+                  <Flex {...provided.dragHandleProps} className="drag-handle" onClick={(e) => e.stopPropagation()} align="center" py="md" pl="md" pr="xs">
+                    <DragHandleDots2Icon width={20} height={20}/>
+                  </Flex>
+                  <Text fw={500}>{c.category_name}</Text>
+                </Flex>
+                <ActionIcon
+                  variant="subtle"
+                  color={isSelected ? "white" : "red"}
+                  mr="md"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onCategoryDelete(c);
+                  }}
+                >
+                  <TrashIcon/>
+                </ActionIcon>
+              </Flex>
+            </Card>
+          </Box>
+        )}
+      </Draggable>
+    );
+  });
+
   return (
-    <div className="manager sidebar">
+    <div className="sidebar">
       <form onSubmit={(e) => {
         e.preventDefault();
         handleAddCategory();
@@ -71,7 +146,7 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
           align="center"
           direction="row"
         >
-          <ActionIcon variant="subtle" onClick={() => {onRefresh();}}><ReloadIcon /></ActionIcon>
+          <ActionIcon variant="subtle" onClick={() => onRefresh()}><ReloadIcon /></ActionIcon>
           <Button
             type="submit"
             variant="filled"
@@ -83,22 +158,26 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
       </form>
       <Box className="h-100" pos="relative">
         <LoadingOverlay visible={isLoading} />
-        <Stack gap="xs">
-          {categoryList.map((c, k) => (
-            <Flex className="w-100" direction="row" key={k} gap={5} align="center">
-              <Button fullWidth={true}
-                variant={c.url == category.url ? "filled" : "outline"}
-                onClick={() => {onCategorySelect(c);}}
+        <DragDropContext
+          onDragEnd={({ destination, source }) => {
+            categoryListHandlers.reorder({ from: source.index, to: destination?.index || 0 });
+          }}
+        >
+          <Droppable droppableId="dnd-list" direction="vertical">
+            {(provided) => (
+              <Stack
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="category-list h-100 scrollable"
+                pb="xs"
+                gap={0}
               >
-                {c.category_name}
-              </Button>
-              <CloseButton
-                onClick={() => {onCategoryDelete(c);}}
-              />
-            </Flex>
-          )
-          )}
-        </Stack>
+                {DraggableCategoryCard}
+                {provided.placeholder}
+              </Stack>
+            )}
+          </Droppable>
+        </DragDropContext>
       </Box>
     </div>
   );

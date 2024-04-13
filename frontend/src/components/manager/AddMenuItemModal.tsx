@@ -10,7 +10,7 @@ import { addMenuItem, uploadMenuItemImage } from "@/services";
 import { imagePlaceholder } from "@/constants";
 import { displayImage } from "@/helpers";
 
-export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, onClose, onSubmit }: AddMenuItemModalProps) {
+export function AddMenuItemModal({ category, categoryList, menuItemList, isOpened, isLoading, isMobile, onClose, onSubmit }: AddMenuItemModalProps) {
   const [itemImage, setItemImage] = useState<File | null>();
 
   const form = useForm({
@@ -27,7 +27,8 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
       category: categoryList.filter(c => form.values.itemCategories.includes(c.category_name)).map(c => c.url),
       ingredients: form.values.itemIngredients,
       tags: form.values.itemTags,
-      image: itemImage && await handleUploadImageToServer()
+      image: itemImage && await handleUploadImageToServer(),
+      position: menuItemList.length
     };
 
     addMenuItem(cleanedUpMenuItemFields).then(status => {
@@ -98,7 +99,7 @@ export function AddMenuItemModal({ category, categoryList, isOpened, isLoading, 
         e.preventDefault();
         !form.validate().hasErrors && handleAddMenuItem();
       }}>
-        <Flex gap={30}>
+        <Flex gap="xl" justify="center" wrap={isMobile ? "wrap" : "nowrap"}>
           <LoadingOverlay visible={isLoading}/>
           <Stack>
             <Flex w={200} h={200}>
