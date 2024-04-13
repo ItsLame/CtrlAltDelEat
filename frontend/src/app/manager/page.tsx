@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { AddMenuItemModal, DeleteCategoryModal, DeleteMenuItemModal, EditMenuItemModal, ManagerMain, ManagerSidebar } from "@/components";
-import { getCategories, getMenuItems, getUserGroupName } from "@/services";
+import { getCategories, getMenuItems, getUserCookies } from "@/services";
 import { category, menuItems, userType } from "@/models";
 import { siteRoute } from "@/constants";
 
@@ -88,8 +88,8 @@ export default function Manager() {
   }, []);
 
   useEffect(() => {
-    getUserGroupName().then((res: userType[]) => {
-      if (res && res.includes(userType.manager)) refreshAllList();
+    getUserCookies().then((res) => {
+      if (res && (res.isSuperUser || res.groups?.includes(userType.manager))) refreshAllList();
       else router.push(siteRoute.auth);
     });
   }, [refreshAllList, router]);

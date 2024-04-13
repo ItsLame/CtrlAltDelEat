@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 
 import { accessTokenCookieName, refreshTokenCookieName, usernameCookieName, isSuperUserCookieName, userGroupsCookieName } from "@/constants";
-import { storeTokenRequest, userGroup } from "@/models";
+import { storeTokenRequest } from "@/models";
 
 export async function storeToken(request: storeTokenRequest) {
   const cookieMap = {
@@ -27,9 +27,7 @@ export async function storeToken(request: storeTokenRequest) {
 
 export async function clearAuthRefreshTokens() {
   const cookieNames = [accessTokenCookieName, refreshTokenCookieName, usernameCookieName, isSuperUserCookieName, userGroupsCookieName];
-  for (let i = 0; i < cookieNames.length; i++) {
-    cookies().delete(`${cookieNames[i]}`);
-  };
+  for (let i = 0; i < cookieNames.length; i++) cookies().delete(`${cookieNames[i]}`);
 }
 
 export async function getUserCookies() {
@@ -50,10 +48,4 @@ export async function getAuthToken() {
 export async function getRefreshToken() {
   const refreshToken = cookies().get(refreshTokenCookieName)?.value;
   return refreshToken;
-}
-
-export async function getUserGroupName() {
-  const userGroup = cookies().get(userGroupsCookieName)?.value;
-  const userGroupName = userGroup != null && JSON.parse(userGroup).map((u: userGroup) => u.name);
-  return userGroupName;
 }

@@ -3,7 +3,7 @@
 import { WaitMain } from "@/components/wait";
 import { siteRoute } from "@/constants";
 import { assistRequests, Items, userType } from "@/models";
-import { getUserGroupName, getWaitAssistance, getWaitItemsToServe } from "@/services";
+import { getUserCookies, getWaitAssistance, getWaitItemsToServe } from "@/services";
 import { AppShell, Image } from "@mantine/core";
 
 import { useRouter } from "next/navigation";
@@ -48,8 +48,8 @@ export default function Wait() {
   }, []);
 
   useEffect(() => {
-    getUserGroupName().then((res: userType[]) => {
-      if (res && res.includes(userType.waitStaff)) refreshAllList();
+    getUserCookies().then((res) => {
+      if (res && (res.isSuperUser || res.groups?.includes(userType.waitStaff))) refreshAllList();
       else router.push(siteRoute.auth);
     });
   }, [refreshAllList, router]);

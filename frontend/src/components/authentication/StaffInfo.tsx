@@ -20,7 +20,7 @@ export function StaffInfo({ onLogout }: StaffInfoProps) {
       setUsername(res.username!);
       setIsSuperUser(res.isSuperUser === "true");
       if (res.groups != null) {
-        const groups = JSON.parse(res.groups!).map((k: userGroup) => k.name);
+        const groups = JSON.parse(res.groups!).map((u: userGroup) => u.name);
         setGroups(groups);
       }
     });

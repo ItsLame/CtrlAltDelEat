@@ -15,6 +15,7 @@ export default function HomePage() {
   const [tableNo, setTableNo] = useState(1);
 
   const handleSuperLogin = () => {
+    setLoggedIn(false);
     generateAuthToken({ username: apiUser, password: apiPassword }).then((res) => storeToken(res)).finally(() => setLoggedIn(true));
   };
 

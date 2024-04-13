@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-import { getOrderItems, getUserGroupName } from "@/services";
+import { getOrderItems, getUserCookies } from "@/services";
 import { orderItems, userType } from "@/models";
 import { mapToOrderItems } from "@/helpers";
 import { siteRoute } from "@/constants";
@@ -29,8 +29,8 @@ export default function Kitchen() {
   };
 
   useEffect(() => {
-    getUserGroupName().then((res: userType[]) => {
-      if (res && res.includes(userType.kitchenStaff)) refreshOrderList();
+    getUserCookies().then((res) => {
+      if (res && (res.isSuperUser || res.groups?.includes(userType.kitchenStaff))) refreshOrderList();
       else router.push(siteRoute.auth);
     });
   }, [router]);
