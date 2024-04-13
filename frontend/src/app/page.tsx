@@ -9,7 +9,7 @@ import { apiPassword, apiUser, siteRoute } from "@/constants";
 import { StaffInfo } from "@/components";
 
 export default function HomePage() {
-  const isLocalHost = location?.hostname === "localhost" ? true : false;
+  const isDevelopment = process.env.NODE_ENV === "development" ? true : false;
 
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [tableNo, setTableNo] = useState(1);
@@ -70,8 +70,8 @@ export default function HomePage() {
           <StaffInfo onLogout={handleLogout}/>
         )}
 
-        {/* Note: Developer tool only available on localhost */}
-        {isLocalHost && (
+        {/* Note: Developer tool only available on development environment (won't appear in prod) */}
+        {isDevelopment && (
           <>
             <Title order={5} mt="lg">
               Developer Tool
