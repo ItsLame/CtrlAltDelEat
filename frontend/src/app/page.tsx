@@ -9,7 +9,7 @@ import { apiPassword, apiUser, siteRoute } from "@/constants";
 import { StaffInfo } from "@/components";
 
 export default function HomePage() {
-  const isLocalHost = location.hostname === "localhost" ? true : false;
+  const isLocalHost = location?.hostname === "localhost" ? true : false;
 
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [tableNo, setTableNo] = useState(1);
@@ -52,7 +52,7 @@ export default function HomePage() {
               onChange={(e) => setTableNo(e as number)}
             />
             <Link href={`${siteRoute.customer}/${tableNo}`}>
-              <Button>Customer</Button>
+              <Button disabled={tableNo <= 0 ? true : false}>Customer</Button>
             </Link>
           </Flex>
         </Stack>
