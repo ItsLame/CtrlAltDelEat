@@ -1,7 +1,16 @@
+/* eslint-disable */
+export enum userType {
+  customer = "Customer",
+  manager = "Manager",
+  waitStaff = "WaitStaff",
+  kitchenStaff = "KitchenStaff",
+}
+/* eslint-enable */
+
 // API groups model
 export interface userGroup {
   id: number,
-  name: string,
+  name: userType,
 }
 
 // API user model
@@ -22,4 +31,12 @@ export interface generateAuthTokenRequest {
 // API requests model
 export interface refreshAuthTokenRequest {
   refresh?: string
+}
+
+export interface LoginProps {
+  onReturn: () => void;
+}
+
+export interface StaffInfoProps {
+  onLogout: () => void;
 }

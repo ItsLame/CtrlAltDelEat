@@ -1,47 +1,47 @@
 "use client";
 
 import Link from "next/link";
-import {
-  Image,
-  Button,
-  Center,
-  Flex,
-  Stack,
-  Title,
-  Box,
-  NumberInput,
-} from "@mantine/core";
-import { useState } from "react";
+import { Image, Button, Center, Flex, Stack, Title, Box, NumberInput } from "@mantine/core";
+import { useEffect, useState } from "react";
 
-import { generateAuthToken, storeToken } from "@/services";
-import { apiPassword, apiUser } from "@/constants";
+import { clearAuthRefreshTokens, generateAuthToken, getUserCookies, storeToken } from "@/services";
+import { apiPassword, apiUser, siteRoute } from "@/constants";
+import { StaffInfo } from "@/components";
 
 export default function HomePage() {
+  const isLocalHost = location.hostname === "localhost" ? true : false;
+
+  const [isLoggedIn, setLoggedIn] = useState(false);
   const [tableNo, setTableNo] = useState(1);
 
-  const handleLogin = () => {
-    generateAuthToken({ username: apiUser, password: apiPassword }).then(
-      (res) => {
-        storeToken(res);
-      }
-    );
+  const handleSuperLogin = () => {
+    generateAuthToken({ username: apiUser, password: apiPassword }).then((res) => storeToken(res)).finally(() => setLoggedIn(true));
   };
+
+  const handleLogout = () => {
+    clearAuthRefreshTokens();
+    setLoggedIn(false);
+  };
+
+  useEffect(() => {
+    getUserCookies().then((res) => setLoggedIn(res.username ? true : false));
+  }, []);
 
   return (
     <Center>
       <Flex direction="column" align="center">
-        <Box w={200} mt={50} mb={50}>
-          <Image src="logo.svg" alt="CtrlAltDelEat Logo" />
+        <Box mt={50} mb={50}>
+          <Image w={200} src="logo.svg" alt="CtrlAltDelEat Logo" />
         </Box>
         <Title order={5}>Navigation</Title>
         <Stack gap={5} align="center">
-          <Link href="/manager">
+          <Link href={siteRoute.manager}>
             <Button>Manager</Button>
           </Link>
-          <Link href="/kitchen">
+          <Link href={siteRoute.kitchen}>
             <Button>Kitchen</Button>
           </Link>
-          <Link href="/wait">
+          <Link href={siteRoute.wait}>
             <Button>Wait Staff</Button>
           </Link>
           <Flex gap={10}>
@@ -49,21 +49,37 @@ export default function HomePage() {
               defaultValue={1}
               w={70}
               min={1}
-              onChange={(e) => {
-                setTableNo(e as number);
-              }}
+              onChange={(e) => setTableNo(e as number)}
             />
-            <Link href={`/customer/${tableNo}`}>
+            <Link href={`${siteRoute.customer}/${tableNo}`}>
               <Button>Customer</Button>
             </Link>
           </Flex>
         </Stack>
-        <Title order={5} mt={20}>
-          Developer Tool
+        <Title order={5} mt="xl">
+          {!isLoggedIn ? "Staff Login" : "Staff Detail"}
         </Title>
-        <Button variant="light" onClick={handleLogin}>
-          Authenticate
-        </Button>
+        {!isLoggedIn ? (
+          <Link href={siteRoute.auth}>
+            <Button variant="light">
+                Login
+            </Button>
+          </Link>
+        ) : (
+          <StaffInfo onLogout={handleLogout}/>
+        )}
+
+        {/* Note: Developer tool only available on localhost */}
+        {isLocalHost && (
+          <>
+            <Title order={5} mt="lg">
+              Developer Tool
+            </Title>
+            <Button variant="light" onClick={handleSuperLogin}>
+              Super Authenticate
+            </Button>
+          </>
+        )}
       </Flex>
     </Center>
   );

@@ -3,14 +3,17 @@
 import { AppShell, Burger } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Toaster } from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { AddMenuItemModal, DeleteCategoryModal, DeleteMenuItemModal, EditMenuItemModal, ManagerMain, ManagerSidebar } from "@/components";
-import { getCategories, getMenuItems } from "@/services";
-import { category, menuItems } from "@/models";
+import { getCategories, getMenuItems, getUserGroupName } from "@/services";
+import { category, menuItems, userType } from "@/models";
+import { siteRoute } from "@/constants";
 
 export default function Manager() {
+  const router = useRouter();
   const [sidebarOpened, { toggle }] = useDisclosure();
   const [addMenuItemModalOpened, { open: openAddModal, close: closeAddModal }] = useDisclosure(false);
   const [editMenuItemModalOpened, { open: openEditModal, close: closeEditModal }] = useDisclosure(false);
@@ -73,10 +76,17 @@ export default function Manager() {
     });
   };
 
-  useEffect(() => {
+  const refreshAllList = useCallback(() => {
     refreshCategoryList();
     refreshMenuList();
   }, []);
+
+  useEffect(() => {
+    getUserGroupName().then((res: userType[]) => {
+      if (res && res.includes(userType.manager)) refreshAllList();
+      else router.push(siteRoute.auth);
+    });
+  }, [refreshAllList, router]);
 
   return (
     <AppShell

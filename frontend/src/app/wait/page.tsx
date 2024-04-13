@@ -1,14 +1,17 @@
 "use client";
 
 import { WaitMain } from "@/components/wait";
-import { assistRequests, Items } from "@/models";
-import { getWaitAssistance, getWaitItemsToServe } from "@/services";
+import { siteRoute } from "@/constants";
+import { assistRequests, Items, userType } from "@/models";
+import { getUserGroupName, getWaitAssistance, getWaitItemsToServe } from "@/services";
 import { AppShell } from "@mantine/core";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 
 export default function Wait() {
+  const router = useRouter();
   const [custAssistReq, setCustAssistReq] = useState([] as assistRequests[]);
   const [tempAssistReq, setTempAssistReq] = useState([] as assistRequests[]);
 
@@ -39,10 +42,17 @@ export default function Wait() {
     setCustAssistReq(filtered);
   }, [tempAssistReq]);
 
-  useEffect(() => {
+  const refreshAllList = useCallback(() => {
     refreshAssistList();
     refreshServeList();
   }, []);
+
+  useEffect(() => {
+    getUserGroupName().then((res: userType[]) => {
+      if (res && res.includes(userType.waitStaff)) refreshAllList();
+      else router.push(siteRoute.auth);
+    });
+  }, [refreshAllList, router]);
 
   useEffect(() => {
     const intervalId = setInterval(refreshAssistList, 5000);
