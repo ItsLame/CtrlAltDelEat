@@ -73,11 +73,13 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
     return (
       <Draggable key={c.url} index={index} draggableId={c.url}>
         {(provided, snapshot) => (
-          <Box onClick={() => {onCategorySelect(c);}}>
+          <Box
+            {...provided.draggableProps}
+            ref={provided.innerRef}
+            onClick={() => onCategorySelect(c)}
+          >
             <Card
-              {...provided.draggableProps}
               className={`category-item ${isSelected ? "selected" : ""} ${snapshot.isDragging ? "dragging" : ""}`}
-              ref={provided.innerRef}
               shadow="sm"
               radius="md"
               padding={0}
