@@ -12,6 +12,7 @@ export interface ManagerSidebarProps {
 
 export interface ManagerMainProps {
   category: category
+  menuItem: menuItems
   menuItemList: menuItems[]
   isLoading: boolean
   onRefresh: (_loadingAnimation?: boolean) => void

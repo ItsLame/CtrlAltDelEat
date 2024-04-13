@@ -69,7 +69,7 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
   }, [categoryListState]);
 
   const DraggableCategoryCard = categoryListState.map((c, index) => {
-    const isSelected = c.url == category.url;
+    const isSelected = c.url === category.url;
 
     return (
       <Draggable key={c.url} index={index} draggableId={c.url}>

@@ -9,7 +9,7 @@ import { imagePlaceholder } from "@/constants";
 import { ManagerMainHeader } from "@/components";
 // import { editMenuItem } from "@/services";
 
-export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAddMenuItem, onEditMenuItem, onEditCategory }: ManagerMainProps) {
+export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRefresh, onAddMenuItem, onEditMenuItem, onEditCategory }: ManagerMainProps) {
   const [menuItemListFiltered, setMenuItemListFiltered] = useState([] as menuItems[]);
   const [menuItemListState, menuItemListHandlers] = useListState([] as menuItems[]);
 
@@ -42,6 +42,8 @@ export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAd
   }, [menuItemList, category]);
 
   const DraggableMenuItemCard = menuItemListState.map((item, index) => {
+    const isSelected = item.url == menuItem.url;
+
     return (
       <Draggable key={item.url} index={index} draggableId={item.url}>
         {(provided, snapshot) => (
@@ -52,7 +54,7 @@ export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAd
             mb="xs"
           >
             <Card
-              className={`menu-item ${snapshot.isDragging ? "dragging" : ""}`}
+              className={`menu-item ${isSelected ? "selected" : ""} ${snapshot.isDragging ? "dragging" : ""}`}
               shadow="sm"
               radius="md"
               padding="md"
@@ -71,8 +73,8 @@ export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAd
                   />
                 </Flex>
                 <Stack gap={0}>
-                  <Text size="lg" c="blue" fw={700}>{item.menuitem_name}</Text>
-                  <Text size="sm" c="dimmed">{item.description}</Text>
+                  <Text size="lg" c={isSelected ? "" : "blue"} fw={700}>{item.menuitem_name}</Text>
+                  <Text size="sm" c={isSelected ? "" : "dimmed"}>{item.description}</Text>
                   <Text size="md">${item.cost}</Text>
                 </Stack>
               </Flex>

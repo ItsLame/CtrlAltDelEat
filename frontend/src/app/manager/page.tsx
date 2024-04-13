@@ -31,9 +31,14 @@ export default function Manager() {
     setCategory(category);
   };
 
-  const handleSelectItem = async (item: menuItems) => {
+  const handleSelectItem = (item: menuItems) => {
     setMenuItem(item);
     openEditModal();
+  };
+
+  const handleUnselectItem = () => {
+    setMenuItem({} as menuItems);
+    closeEditModal();
   };
 
   const handleEditCategory = (updatedCategory: category) => {
@@ -51,7 +56,7 @@ export default function Manager() {
     refreshCategoryList(loadingAnimation);
   };
 
-  const handleMenuItemAfter = (loadingAnimation=true) => {
+  const handleDeleteMenuItemAfter = (loadingAnimation=true) => {
     closeEditModal();
     closeDeleteMenuItemModal();
     refreshMenuList(loadingAnimation);
@@ -122,6 +127,7 @@ export default function Manager() {
       <AppShell.Main pb={0}>
         <ManagerMain
           category={category}
+          menuItem={menuItem}
           menuItemList={menuItemList}
           isLoading={isMenuItemListLoading}
           onRefresh={refreshMenuList}
@@ -147,7 +153,7 @@ export default function Manager() {
         isOpened={editMenuItemModalOpened}
         isLoading={isMenuItemListLoading}
         onDeleteMenuItem={openDeleteMenuItemModal}
-        onClose={closeEditModal}
+        onClose={handleUnselectItem}
         onSubmit={refreshMenuList}
       />
 
@@ -161,7 +167,7 @@ export default function Manager() {
       <DeleteMenuItemModal
         menuItem={menuItem}
         isOpened={deleteMenuItemModalOpened}
-        onDelete={handleMenuItemAfter}
+        onDelete={handleDeleteMenuItemAfter}
         onClose={closeDeleteMenuItemModal}
       />
       <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
