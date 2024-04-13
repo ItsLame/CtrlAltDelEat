@@ -7,7 +7,7 @@ import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 import { ManagerMainProps, menuItems } from "@/models";
 import { imagePlaceholder } from "@/constants";
 import { ManagerMainHeader } from "@/components";
-// import { editMenuItem } from "@/services";
+import { editMenuItem } from "@/services";
 
 export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRefresh, onAddMenuItem, onEditMenuItem, onEditCategory }: ManagerMainProps) {
   const [menuItemListFiltered, setMenuItemListFiltered] = useState([] as menuItems[]);
@@ -15,12 +15,12 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
 
   const handleReorderCategory = () => {
     const reorder = (uuidUrl: string, position: number) => {
-      const _cleanedUpMenuItemFields = {
+      const cleanedUpMenuItemFields = {
         uuidUrl: uuidUrl,
         position: position
       };
 
-      // editMenuItem(cleanedUpMenuItemFields);
+      editMenuItem(cleanedUpMenuItemFields);
     };
 
     menuItemListState.forEach((c, index) => reorder(c.url, index));

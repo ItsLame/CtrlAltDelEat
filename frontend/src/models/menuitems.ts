@@ -25,13 +25,13 @@ export interface addMenuItemRequest {
 }
 
 export interface editMenuItemRequest {
-  menuitem_name: string
-  cost: number
-  description: string
-  available: boolean
-  category: string[]
-  ingredients: string[]
-  tags: string[]
+  menuitem_name?: string
+  cost?: number
+  description?: string
+  available?: boolean
+  category?: string[]
+  ingredients?: string[]
+  tags?: string[]
   uuidUrl: string
   image?: string
   position?: number
