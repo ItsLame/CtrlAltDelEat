@@ -1,6 +1,6 @@
 "use client";
 
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { ActionIcon, AppShell, Flex, Image, Select, Text } from "@mantine/core";
 
@@ -14,17 +14,12 @@ import { ViewCartModal } from "@/components/customer/ViewCartModal";
 import toast, { Toaster } from "react-hot-toast";
 import { requestAssistance } from "@/services/customer";
 
-export default function Customer({
-  params: { tableNo },
-}: {
-  params: { tableNo: number };
-}) {
+export default function Customer({ params: { tableNo } }: { params: { tableNo: number } }) {
+  const isMobile = useMediaQuery("(max-width: 495px)");
+
   const [sidebarOpened] = useDisclosure();
   const [viewMenuItemModalOpened, { open, close }] = useDisclosure(false);
-  const [
-    addMenuItemModalOpened,
-    { open: openCartModal, close: closeCartModal },
-  ] = useDisclosure(false);
+  const [addMenuItemModalOpened, { open: openCartModal, close: closeCartModal }] = useDisclosure(false);
 
   const [category, setCategory] = useState({} as category);
   const [menuItem, setMenuItem] = useState({} as menuItems);
@@ -39,9 +34,7 @@ export default function Customer({
   const handleSelectCategory = (category?: category) => {
     if (category) {
       setCategory(category);
-      const items = menuItemList.filter((item) =>
-        item.category.includes(category.url),
-      );
+      const items = menuItemList.filter((item) => item.category.includes(category.url));
       updateItems(items);
     }
   };
@@ -112,38 +105,33 @@ export default function Customer({
           <Flex align="center" gap="sm" flex={1}>
             <Image
               className="logo"
-              src="logo.svg"
-              width={100}
-              height={60}
+              src="/logo.svg"
+              h={isMobile ? 25 : 45}
               alt="CtrlAltDelEat Logo"
             />
-            <Text fw={700} c="dark">
+            <Text className="table-number" fw={700} c="dark" size={isMobile ? "xs" : "md"}>
               Table #{tableNo}
             </Text>
             <Select
               hiddenFrom="sm"
               size="sm"
-              w={120}
+              className="w-75"
               value={category.category_name}
               data={categoryList.map((c) => c.category_name)}
-              onChange={(e) => {
-                handleSelectCategory(
-                  categoryList.find((c) => c.category_name == e),
-                );
-              }}
+              onChange={(e) => handleSelectCategory(categoryList.find((c) => c.category_name == e))}
+              mr="md"
             />
           </Flex>
           <Flex justify="flex-end" mr={20} columnGap="sm">
-            <ActionIcon>
-              <ReaderIcon
-                onClick={() => {
-                  toggle();
-                  openCartModal();
-                }}
-              />
+            <ActionIcon
+              onClick={() => {
+                toggle();
+                openCartModal();
+              }}>
+              <ReaderIcon/>
             </ActionIcon>
-            <ActionIcon>
-              <BellIcon onClick={handleRequestForAssistance} />
+            <ActionIcon onClick={handleRequestForAssistance} >
+              <BellIcon/>
             </ActionIcon>
           </Flex>
         </div>

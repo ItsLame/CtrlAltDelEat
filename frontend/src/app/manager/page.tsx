@@ -1,16 +1,17 @@
 "use client";
 
-import { AppShell, Burger } from "@mantine/core";
+import { AppShell, Burger, Image } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 
 import { AddMenuItemModal, DeleteCategoryModal, DeleteMenuItemModal, EditMenuItemModal, ManagerMain, ManagerSidebar } from "@/components";
 import { getCategories, getMenuItems } from "@/services";
 import { category, menuItems } from "@/models";
 
 export default function Manager() {
+  const isMobile = useMediaQuery("(max-width: 495px)");
+
   const [sidebarOpened, { toggle }] = useDisclosure();
   const [addMenuItemModalOpened, { open: openAddModal, close: closeAddModal }] = useDisclosure(false);
   const [editMenuItemModalOpened, { open: openEditModal, close: closeEditModal }] = useDisclosure(false);
@@ -24,7 +25,6 @@ export default function Manager() {
 
   const [targetCategory, setTargetCategory] = useState({} as category);
 
-  const isMobile = useMediaQuery("(max-width: 495px)");
   const [isMenuItemListLoading, setMenuItemListLoading] = useState(true);
   const [isCategoryListLoading, setCategoryListLoading] = useState(true);
 
@@ -107,8 +107,7 @@ export default function Manager() {
           <Image
             className="logo"
             src="logo.svg"
-            width={100}
-            height={60}
+            h={45}
             alt="CtrlAltDelEat Logo"
           />
         </div>

@@ -3,8 +3,8 @@
 import { WaitMain } from "@/components/wait";
 import { assistRequests, Items } from "@/models";
 import { getWaitAssistance, getWaitItemsToServe } from "@/services";
-import { AppShell } from "@mantine/core";
-import Image from "next/image";
+import { AppShell, Image } from "@mantine/core";
+
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 
@@ -60,8 +60,7 @@ export default function Wait() {
           <Image
             className="logo"
             src="logo.svg"
-            width={100}
-            height={60}
+            h={45}
             alt="CtrlAltDelEat Logo"
           />
         </div>
