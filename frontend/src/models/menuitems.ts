@@ -8,6 +8,7 @@ export interface menuItems {
   tags: string[]
   url: string
   image: string
+  position: number
 }
 
 // API requests model

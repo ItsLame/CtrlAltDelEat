@@ -19,13 +19,6 @@
 }
 
 .menu-item {
-  transition: all ease 150ms;
-
-  &:hover {
-    background-color: var(--mantine-color-blue-outline-hover);
-    transition: all ease 150ms;
-  }
-  
   &:active {
     transform: translateY(3px);
   }
@@ -40,6 +33,7 @@
   }
 }
 
+.menu-item,
 .category-item {
   cursor: pointer;
   user-select: none;
