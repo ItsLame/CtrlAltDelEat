@@ -5,13 +5,10 @@ urlpatterns = [
     path('', views.MenuListAPIView.as_view()),
     path('menuitems/', views.MenuItemListCreateAPIView.as_view()),
     path(
-        'menuitems/<uuid:uuid>/',
-        views.MenuItemDetailAPIView.as_view(),
+        'menuitems/<uuid:uuid>',
+        views.MenuItemListCreateAPIView.as_view(),
         name='menuitem-detail',
     ),
-    path('menuitems/<uuid:uuid>/update/', views.MenuItemUpdateAPIView.as_view()),
-    path('menuitems/<uuid:uuid>/delete/', views.MenuItemDestroyAPIView.as_view()),
-
     path('categories/', views.CategoryListCreateAPIView.as_view(), name='category-list-create'),
     path(
         'categories/<uuid:uuid>/',
@@ -26,8 +23,16 @@ urlpatterns = [
         views.CategoryDestroyAPIView.as_view(),
     ),
     path(
-        'menuitems/images/',
-        views.MenuItemImageListCreateAPIView.as_view(),
+        'tags/', views.TagListAPIView.as_view()
+    ),
+    path(
+        'ingredients/', views.IngredientListAPIView.as_view()
+    ),
+    path(
+        'menuitems/reorder/', views.UpdateMenuItemPositionAPIView.as_view()
+    ),
+        path(
+        'categories/reorder/', views.UpdateCategoryPositionAPIView.as_view()
     ),
 
 

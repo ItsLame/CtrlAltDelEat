@@ -6,12 +6,27 @@ from django.db.models.fields import (
     BooleanField,
     URLField,
     UUIDField,
+    IntegerField
 )
+
 from django.db.models import ImageField
 from taggit.managers import TaggableManager
-from taggit.models import TaggedItemBase
+from taggit.models import TagBase, GenericTaggedItemBase
+from taggit.forms import TagField
 import os
+from django.utils.translation import gettext_lazy as _
 # Create your models here.
+
+
+class TagTag(TagBase):
+    class Meta:
+        verbose_name = _("Tag")
+        verbose_name_plural = _("Tags")
+
+class IngredientTag(TagBase):
+    class Meta:
+        verbose_name = _("Ingredient")
+        verbose_name_plural = _("Ingredients")
 
 
 class Category(models.Model):
@@ -20,23 +35,21 @@ class Category(models.Model):
     """
     category_name = CharField(max_length=60, unique=True)
     uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    position = IntegerField(default=0)
 
     def __str__(self):
         return self.category_name
 
 
-class ThroughIngredientTag(TaggedItemBase):
-    content_object = models.ForeignKey('MenuItem', on_delete=models.CASCADE)
+class ThroughIngredientTag(GenericTaggedItemBase):
+    tag = models.ForeignKey(IngredientTag, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_items",)
 
 
-class ThroughTagTag(TaggedItemBase):
-    content_object = models.ForeignKey('MenuItem', on_delete=models.CASCADE)
+class ThroughTagTag(GenericTaggedItemBase):
+    tag = models.ForeignKey(TagTag, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_items",)
 
 def upload_path(instance, filename):
     return os.path.join("images", filename)
-
-class MenuItemImage(models.Model):
-    image = ImageField(upload_to=upload_path, blank=True, null=True)
 
 class MenuItem(models.Model):
     """ 
@@ -50,16 +63,17 @@ class MenuItem(models.Model):
     available = BooleanField()
     category = models.ManyToManyField(Category, help_text="URL for category")
     ingredients = TaggableManager(
-        blank=False,
+        blank=True,
         through=ThroughIngredientTag,
-        related_name='ingredient_tags',
+        related_name="menuitem_ingredients"
     )
     tags = TaggableManager(
-        blank=True, through=ThroughTagTag, related_name='tag_tags'
+        blank=True, through=ThroughTagTag, related_name="menuitem_tag"
     )
     uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    # image = ImageField(upload_to=upload_path, blank=True, null=True)
-    image = URLField(max_length=300, blank=True, null=True)
+    image = ImageField(upload_to=upload_path, blank=True, null=True)
+    position = IntegerField(default=0)
+    # image = URLField(max_length=200, blank=True)
 
     def __str__(self):
         return self.menuitem_name
