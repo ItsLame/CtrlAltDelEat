@@ -1,16 +1,17 @@
 "use client";
 
-import { AppShell, Burger } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { AppShell, Burger, Image } from "@mantine/core";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 
 import { AddMenuItemModal, DeleteCategoryModal, DeleteMenuItemModal, EditMenuItemModal, ManagerMain, ManagerSidebar } from "@/components";
 import { getCategories, getMenuItems } from "@/services";
 import { category, menuItems } from "@/models";
 
 export default function Manager() {
+  const isMobile = useMediaQuery("(max-width: 495px)");
+
   const [sidebarOpened, { toggle }] = useDisclosure();
   const [addMenuItemModalOpened, { open: openAddModal, close: closeAddModal }] = useDisclosure(false);
   const [editMenuItemModalOpened, { open: openEditModal, close: closeEditModal }] = useDisclosure(false);
@@ -31,9 +32,14 @@ export default function Manager() {
     setCategory(category);
   };
 
-  const handleSelectItem = async (item: menuItems) => {
+  const handleSelectItem = (item: menuItems) => {
     setMenuItem(item);
     openEditModal();
+  };
+
+  const handleUnselectItem = () => {
+    setMenuItem({} as menuItems);
+    closeEditModal();
   };
 
   const handleEditCategory = (updatedCategory: category) => {
@@ -51,7 +57,7 @@ export default function Manager() {
     refreshCategoryList(loadingAnimation);
   };
 
-  const handleMenuItemAfter = (loadingAnimation=true) => {
+  const handleDeleteMenuItemAfter = (loadingAnimation=true) => {
     closeEditModal();
     closeDeleteMenuItemModal();
     refreshMenuList(loadingAnimation);
@@ -80,6 +86,7 @@ export default function Manager() {
 
   return (
     <AppShell
+      className="manager"
       header={{ height: 60 }}
       navbar={{
         width: 300,
@@ -100,8 +107,7 @@ export default function Manager() {
           <Image
             className="logo"
             src="logo.svg"
-            width={100}
-            height={60}
+            h={45}
             alt="CtrlAltDelEat Logo"
           />
         </div>
@@ -118,9 +124,10 @@ export default function Manager() {
         />
       </AppShell.Navbar>
 
-      <AppShell.Main>
+      <AppShell.Main pb={0}>
         <ManagerMain
           category={category}
+          menuItem={menuItem}
           menuItemList={menuItemList}
           isLoading={isMenuItemListLoading}
           onRefresh={refreshMenuList}
@@ -133,8 +140,10 @@ export default function Manager() {
       <AddMenuItemModal
         category={category}
         categoryList={categoryList}
+        menuItemList={menuItemList}
         isOpened={addMenuItemModalOpened}
         isLoading={isMenuItemListLoading}
+        isMobile={isMobile}
         onClose={closeAddModal}
         onSubmit={refreshMenuList}
       />
@@ -144,8 +153,9 @@ export default function Manager() {
         categoryList={categoryList}
         isOpened={editMenuItemModalOpened}
         isLoading={isMenuItemListLoading}
+        isMobile={isMobile}
         onDeleteMenuItem={openDeleteMenuItemModal}
-        onClose={closeEditModal}
+        onClose={handleUnselectItem}
         onSubmit={refreshMenuList}
       />
 
@@ -159,7 +169,7 @@ export default function Manager() {
       <DeleteMenuItemModal
         menuItem={menuItem}
         isOpened={deleteMenuItemModalOpened}
-        onDelete={handleMenuItemAfter}
+        onDelete={handleDeleteMenuItemAfter}
         onClose={closeDeleteMenuItemModal}
       />
       <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>

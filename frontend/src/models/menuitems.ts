@@ -8,6 +8,7 @@ export interface menuItems {
   tags: string[]
   url: string
   image: string
+  position: number
 }
 
 // API requests model
@@ -20,18 +21,20 @@ export interface addMenuItemRequest {
   ingredients: string[]
   tags: string[]
   image?: string
+  position?: number
 }
 
 export interface editMenuItemRequest {
-  menuitem_name: string
-  cost: number
-  description: string
-  available: boolean
-  category: string[]
-  ingredients: string[]
-  tags: string[]
+  menuitem_name?: string
+  cost?: number
+  description?: string
+  available?: boolean
+  category?: string[]
+  ingredients?: string[]
+  tags?: string[]
   uuidUrl: string
   image?: string
+  position?: number
 }
 
 export interface deleteMenuItemRequest {

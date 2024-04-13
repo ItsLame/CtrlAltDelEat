@@ -1,8 +1,8 @@
 "use client";
 
-import { AppShell, Burger } from "@mantine/core";
+import { AppShell, Burger, Image } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import Image from "next/image";
+
 import { KitchenMain } from "@/components";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
@@ -48,8 +48,7 @@ export default function Kitchen() {
           <Image
             className="logo"
             src="logo.svg"
-            width={100}
-            height={60}
+            h={45}
             alt="CtrlAltDelEat Logo"
           />
         </div>

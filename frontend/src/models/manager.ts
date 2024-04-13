@@ -12,6 +12,7 @@ export interface ManagerSidebarProps {
 
 export interface ManagerMainProps {
   category: category
+  menuItem: menuItems
   menuItemList: menuItems[]
   isLoading: boolean
   onRefresh: (_loadingAnimation?: boolean) => void
@@ -30,8 +31,10 @@ export interface ManagerMainHeaderProps {
 export interface AddMenuItemModalProps {
   category: category
   categoryList: category[]
+  menuItemList: menuItems[]
   isOpened: boolean
   isLoading: boolean
+  isMobile?: boolean
   onClose: () => void
   onSubmit: (_loadingAnimation?: boolean) => void
 }
@@ -41,6 +44,7 @@ export interface EditMenuItemModalProps {
   categoryList: category[]
   isOpened: boolean
   isLoading: boolean
+  isMobile?: boolean
   onDeleteMenuItem: () => void
   onClose: () => void
   onSubmit: (_loadingAnimation?: boolean) => void
