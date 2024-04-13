@@ -42,7 +42,7 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
   }, [menuItemList, category]);
 
   const DraggableMenuItemCard = menuItemListState.map((item, index) => {
-    const isSelected = item.url == menuItem.url;
+    const isSelected = item.url === menuItem.url;
 
     return (
       <Draggable key={item.url} index={index} draggableId={item.url}>

@@ -1,7 +1,7 @@
 "use client";
 
 import { AppShell, Burger } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -24,6 +24,7 @@ export default function Manager() {
 
   const [targetCategory, setTargetCategory] = useState({} as category);
 
+  const isMobile = useMediaQuery("(max-width: 495px)");
   const [isMenuItemListLoading, setMenuItemListLoading] = useState(true);
   const [isCategoryListLoading, setCategoryListLoading] = useState(true);
 
@@ -143,6 +144,7 @@ export default function Manager() {
         menuItemList={menuItemList}
         isOpened={addMenuItemModalOpened}
         isLoading={isMenuItemListLoading}
+        isMobile={isMobile}
         onClose={closeAddModal}
         onSubmit={refreshMenuList}
       />
@@ -152,6 +154,7 @@ export default function Manager() {
         categoryList={categoryList}
         isOpened={editMenuItemModalOpened}
         isLoading={isMenuItemListLoading}
+        isMobile={isMobile}
         onDeleteMenuItem={openDeleteMenuItemModal}
         onClose={handleUnselectItem}
         onSubmit={refreshMenuList}

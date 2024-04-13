@@ -10,7 +10,7 @@ import { addMenuItem, uploadMenuItemImage } from "@/services";
 import { imagePlaceholder } from "@/constants";
 import { displayImage } from "@/helpers";
 
-export function AddMenuItemModal({ category, categoryList, menuItemList, isOpened, isLoading, onClose, onSubmit }: AddMenuItemModalProps) {
+export function AddMenuItemModal({ category, categoryList, menuItemList, isOpened, isLoading, isMobile, onClose, onSubmit }: AddMenuItemModalProps) {
   const [itemImage, setItemImage] = useState<File | null>();
 
   const form = useForm({
@@ -99,7 +99,7 @@ export function AddMenuItemModal({ category, categoryList, menuItemList, isOpene
         e.preventDefault();
         !form.validate().hasErrors && handleAddMenuItem();
       }}>
-        <Flex gap={30}>
+        <Flex gap="xl" justify="center" wrap={isMobile ? "wrap" : "nowrap"}>
           <LoadingOverlay visible={isLoading}/>
           <Stack>
             <Flex w={200} h={200}>
