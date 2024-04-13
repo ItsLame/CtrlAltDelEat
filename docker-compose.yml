@@ -6,29 +6,22 @@ services:
             context: backend
             dockerfile: Dockerfile
         working_dir: /code/backend/
-        # command: sleep infinity
         command: >
             sh -c "python3 manage.py makemigrations 
             && python3 manage.py migrate 
             && python manage.py loaddata fixtures/initial_users 
             && python3 manage.py runserver 0.0.0.0:4000"
-        volumes:
-            - .:/code
-            - /etc/hosts:/etc/hosts
-        container_name: backend
-        depends_on:
-            - db
-
         ports:
             - "4000:4000"
-
-        environment:
-            POSTGRES_USER: django_postgres
-            POSTGRES_PASSWORD: admin_password
-            POSTGRES_NAME: django_db
-            POSTGRES_HOST: db
-            DJANGO_SUPERUSER_USERNAME: root
-            DJANGO_SUPERUSER_PASSWORD: password
+        volumes:
+            - .:/code
+        container_name: backend
+        depends_on:
+            db:
+                condition: service_healthy
+        restart: always
+        env_file:
+            - .env
 
     frontend:
         restart: always
@@ -36,29 +29,27 @@ services:
             context: frontend
             dockerfile: Dockerfile
         container_name: frontend
-        working_dir: /app/frontend
-        volumes:
-            - .:/app
-            - /node_modules
-            - /.next
-        command: npm run dev
+        env_file:
+            - .env
+        command: sh -c "npm run $NPM_COMMAND || npm run start"
         ports:
             - "3000:3000"
 
     db:
         image: postgres:13
         restart: always
+        container_name: db
         ports:
             - "5432:5432"
-            # - "4000:4000"
         volumes:
-            - postgres_data:/var/lib/postgresql/data
             - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
-        environment:
-            POSTGRES_USER: django_postgres
-            POSTGRES_PASSWORD: admin_password
-            POSTGRES_NAME: django_db
-            # POSTGRES_HOST_AUTH_METHOD: trust
+        env_file:
+            - .env
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U django_postgres"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
 
 
 volumes:

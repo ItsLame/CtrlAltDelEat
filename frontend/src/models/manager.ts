@@ -9,13 +9,6 @@ export interface ManagerSidebarProps {
   onRefresh: () => void
 }
 
-export interface ManagerCategoryProps {
-  index: number
-  category: category
-  c: category
-  onCategorySelect: (_category: category) => void
-}
-
 export interface ManagerMainProps {
   category: category
   menuItemList: menuItems[]
