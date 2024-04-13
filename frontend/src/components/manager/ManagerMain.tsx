@@ -114,7 +114,7 @@ export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAd
         </DragDropContext>
       ) : category.url && (
         <Text c="dimmed">
-              Category is empty.
+          Category is empty.
         </Text>
       )}
     </Box>
