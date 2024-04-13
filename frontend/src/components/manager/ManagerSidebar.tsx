@@ -88,7 +88,7 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
               withBorder
             >
               <Flex align="center">
-                <Flex className="w-100" align="center" gap="xs">
+                <Flex className="w-100" align="center">
                   <Flex {...provided.dragHandleProps} className="drag-handle" onClick={(e) => e.stopPropagation()} align="center" py="md" pl="md" pr="xs">
                     <DragHandleDots2Icon width={20} height={20}/>
                   </Flex>
