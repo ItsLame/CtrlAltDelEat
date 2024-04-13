@@ -27,3 +27,31 @@
     transition: all ease 150ms;
   }
 }
+
+.category-item {
+  cursor: pointer;
+  user-select: none;
+  transition: all ease 150ms;
+
+  &:hover {
+    background-color: var(--mantine-color-blue-outline-hover);
+    transition: all ease 150ms;
+  }
+
+  &.selected {
+    background-color: var(--mantine-color-blue-outline);
+    color: var(--mantine-color-white);
+  }
+  
+  &.dragging {
+    opacity: 50%;
+  }
+
+  .drag-handle:hover {
+    cursor: grab;
+  }
+
+  .drag-handle:active {
+    pointer-events: none;
+  }
+}
