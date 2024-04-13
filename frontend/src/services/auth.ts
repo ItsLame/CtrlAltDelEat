@@ -6,13 +6,12 @@ import { generateAuthTokenRequest } from "@/models";
 const apiUrl = `${apiUrlBase}/api/auth/token/`;
 
 export async function generateAuthToken(request: generateAuthTokenRequest) {
+  const headersConfig = await getHeaders.json();
   const req = request;
   const endpoint = `${apiUrl}`;
   const res = await fetch(endpoint, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: headersConfig,
     body: JSON.stringify(req),
   });
   if (!res.ok) failedAuthError();
@@ -20,22 +19,22 @@ export async function generateAuthToken(request: generateAuthTokenRequest) {
 }
 
 export async function blacklistAuthToken() {
+  const headersConfig = await getHeaders.json();
   const refreshToken = await getRefreshToken();
   const endpoint = `${apiUrl}blacklist/`;
-  if (!refreshToken)
-  {
+
+  if (!refreshToken) {
     clearAuthRefreshTokens();
     return;
   }
+
   const res = await fetch(endpoint, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify( { refresh: `${refreshToken}` } ),
+    headers: headersConfig,
+    body: JSON.stringify( { refresh: refreshToken } ),
   });
-  clearAuthRefreshTokens();
 
+  clearAuthRefreshTokens();
   if (!res.ok) failedAuthError();
 }
 
