@@ -77,6 +77,7 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
             {...provided.draggableProps}
             ref={provided.innerRef}
             onClick={() => onCategorySelect(c)}
+            mb="xs"
           >
             <Card
               className={`category-item ${isSelected ? "selected" : ""} ${snapshot.isDragging ? "dragging" : ""}`}
@@ -155,7 +156,7 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
         >
           <Droppable droppableId="dnd-list" direction="vertical">
             {(provided) => (
-              <Stack {...provided.droppableProps} ref={provided.innerRef} gap="xs">
+              <Stack {...provided.droppableProps} ref={provided.innerRef} gap={0}>
                 {DraggableCategoryCard}
                 {provided.placeholder}
               </Stack>
