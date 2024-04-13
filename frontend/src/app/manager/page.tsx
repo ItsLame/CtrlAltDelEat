@@ -80,6 +80,7 @@ export default function Manager() {
 
   return (
     <AppShell
+      className="manager"
       header={{ height: 60 }}
       navbar={{
         width: 300,
@@ -118,7 +119,7 @@ export default function Manager() {
         />
       </AppShell.Navbar>
 
-      <AppShell.Main>
+      <AppShell.Main pb={0}>
         <ManagerMain
           category={category}
           menuItemList={menuItemList}

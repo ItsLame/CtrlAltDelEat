@@ -106,7 +106,7 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
   });
 
   return (
-    <div className="manager sidebar">
+    <div className="sidebar">
       <form onSubmit={(e) => {
         e.preventDefault();
         handleAddCategory();

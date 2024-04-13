@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Card, Flex, LoadingOverlay, ScrollArea, Stack, Text, Image } from "@mantine/core";
+import { Box, Card, Flex, LoadingOverlay, Stack, Text, Image } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
@@ -84,43 +84,39 @@ export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAd
   });
 
   return (
-    <Box className="h-100" pos="relative">
+    <Box pos="relative">
       <ManagerMainHeader
         category={category}
         onRefresh={onRefresh}
         onAddMenuItem={onAddMenuItem}
         onEditCategory={onEditCategory}
       />
-      <ScrollArea className="menu-item-list appshell-h-100">
-        <LoadingOverlay zIndex={1000} visible={isLoading}/>
-        <Stack>
-
-          {menuItemListFiltered.length >= 1 ? (
-            <DragDropContext
-              onDragEnd={({ destination, source }) => {
-                menuItemListHandlers.reorder({ from: source.index, to: destination?.index || 0 });
-              }}
-            >
-              <Droppable droppableId="dnd-list" direction="vertical">
-                {(provided) => (
-                  <Stack
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    gap={0}
-                  >
-                    {DraggableMenuItemCard}
-                    {provided.placeholder}
-                  </Stack>
-                )}
-              </Droppable>
-            </DragDropContext>
-          ) : category.url && (
-            <Text c="dimmed">
+      <LoadingOverlay zIndex={1000} visible={isLoading}/>
+      {menuItemListFiltered.length >= 1 ? (
+        <DragDropContext
+          onDragEnd={({ destination, source }) => {
+            menuItemListHandlers.reorder({ from: source.index, to: destination?.index || 0 });
+          }}
+        >
+          <Droppable droppableId="dnd-list" direction="vertical">
+            {(provided) => (
+              <Stack
+                className="menu-item-list h-100 scrollable"
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                gap={0}
+              >
+                {DraggableMenuItemCard}
+                {provided.placeholder}
+              </Stack>
+            )}
+          </Droppable>
+        </DragDropContext>
+      ) : category.url && (
+        <Text c="dimmed">
               Category is empty.
-            </Text>
-          )}
-        </Stack>
-      </ScrollArea>
+        </Text>
+      )}
     </Box>
   );
 }

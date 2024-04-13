@@ -3,7 +3,16 @@
     &.h-100 {
       height: calc(100vh - (var(--app-shell-header-height) + var(--app-shell-header-height) + 50px));
     }
+  }
 
+  .menu-item-list {
+    &.h-100 {
+      height: calc(100vh - (var(--app-shell-header-height) + var(--app-shell-header-height) + 8px));
+    }
+  }
+
+  .category-list,
+  .menu-item-list {
     &.scrollable {
       overflow-y: scroll;
     }
