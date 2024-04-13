@@ -156,7 +156,13 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
         >
           <Droppable droppableId="dnd-list" direction="vertical">
             {(provided) => (
-              <Stack {...provided.droppableProps} ref={provided.innerRef} gap={0}>
+              <Stack
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="category-list h-100 scrollable"
+                pb="xs"
+                gap={0}
+              >
                 {DraggableCategoryCard}
                 {provided.placeholder}
               </Stack>

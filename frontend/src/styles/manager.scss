@@ -1,3 +1,15 @@
+.manager {
+  .category-list {
+    &.h-100 {
+      height: calc(100vh - (var(--app-shell-header-height) + var(--app-shell-header-height) + 50px));
+    }
+
+    &.scrollable {
+      overflow-y: scroll;
+    }
+  }
+}
+
 .menu-item-list {
   margin-top: 1rem;
 
