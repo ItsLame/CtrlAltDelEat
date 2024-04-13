@@ -89,12 +89,20 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
             >
               <Flex align="center">
                 <Flex className="w-100" align="center" gap="xs">
-                  <Flex {...provided.dragHandleProps} className="drag-handle" align="center" py="md" pl="md" pr="xs">
+                  <Flex {...provided.dragHandleProps} className="drag-handle" onClick={(e) => e.stopPropagation()} align="center" py="md" pl="md" pr="xs">
                     <DragHandleDots2Icon width={20} height={20}/>
                   </Flex>
                   <Text fw={500}>{c.category_name}</Text>
                 </Flex>
-                <ActionIcon variant="subtle" color={isSelected ? "white" : "red"} onClick={() => onCategoryDelete(c)} mr="md">
+                <ActionIcon
+                  variant="subtle"
+                  color={isSelected ? "white" : "red"}
+                  mr="md"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onCategoryDelete(c);
+                  }}
+                >
                   <TrashIcon/>
                 </ActionIcon>
               </Flex>
@@ -137,7 +145,7 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
           align="center"
           direction="row"
         >
-          <ActionIcon variant="subtle" onClick={() => {onRefresh();}}><ReloadIcon /></ActionIcon>
+          <ActionIcon variant="subtle" onClick={() => onRefresh()}><ReloadIcon /></ActionIcon>
           <Button
             type="submit"
             variant="filled"

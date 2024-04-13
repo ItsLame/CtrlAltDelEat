@@ -60,7 +60,7 @@ export function ManagerMain({ category, menuItemList, isLoading, onRefresh, onAd
               withBorder
             >
               <Flex gap="md">
-                <Flex {...provided.dragHandleProps} className="drag-handle" align="center" py="xl" pl="xs" pr="xs">
+                <Flex {...provided.dragHandleProps} className="drag-handle" onClick={(e) => e.stopPropagation()} align="center" py="xl" pl="xs" pr="xs">
                   <DragHandleDots2Icon width={20} height={20}/>
                 </Flex>
                 <Flex w={80}>

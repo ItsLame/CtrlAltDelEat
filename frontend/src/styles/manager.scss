@@ -27,12 +27,6 @@
   }
 }
 
-.menu-item {
-  &:active {
-    transform: translateY(3px);
-  }
-}
-
 .category-name {
   transition: all ease 150ms;
 
@@ -53,6 +47,10 @@
     transition: all ease 150ms;
   }
 
+  &:active {
+    transform: translateY(3px);
+  }
+
   &.selected {
     background-color: var(--mantine-color-blue-outline);
     color: var(--mantine-color-white);
@@ -63,10 +61,6 @@
   }
 
   .drag-handle:hover {
-    cursor: grab;
-  }
-
-  .drag-handle:active {
-    pointer-events: none;
+    cursor: move;
   }
 }
