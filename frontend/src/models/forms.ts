@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+export const loginSchema = z.object({
+  pin: z.string().min(4, { message: "Pin should contain 4 digits" }),
+});
+
 export const categorySchema = z.object({
   categoryName: z.string().refine((value) => /^[a-zA-Z ]{1,60}$$/.test(value ?? ""), "Must contain 1-60 alphabetical characters (spaces are allowed)"),
 });

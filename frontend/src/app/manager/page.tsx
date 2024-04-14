@@ -3,13 +3,16 @@
 import { AppShell, Burger, Image } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { Toaster } from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { AddMenuItemModal, DeleteCategoryModal, DeleteMenuItemModal, EditMenuItemModal, ManagerMain, ManagerSidebar } from "@/components";
-import { getCategories, getMenuItems } from "@/services";
-import { category, menuItems } from "@/models";
+import { getCategories, getMenuItems, getUserCookies } from "@/services";
+import { category, menuItems, userType } from "@/models";
+import { siteRoute } from "@/constants";
 
 export default function Manager() {
+  const router = useRouter();
   const isMobile = useMediaQuery("(max-width: 495px)");
 
   const [sidebarOpened, { toggle }] = useDisclosure();
@@ -79,10 +82,17 @@ export default function Manager() {
     });
   };
 
-  useEffect(() => {
+  const refreshAllList = useCallback(() => {
     refreshCategoryList();
     refreshMenuList();
   }, []);
+
+  useEffect(() => {
+    getUserCookies().then((res) => {
+      if (res && (res.isSuperUser || res.groups?.includes(userType.manager))) refreshAllList();
+      else router.push(siteRoute.auth);
+    });
+  }, [refreshAllList, router]);
 
   return (
     <AppShell

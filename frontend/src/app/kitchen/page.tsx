@@ -6,12 +6,15 @@ import { useDisclosure } from "@mantine/hooks";
 import { KitchenMain } from "@/components";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
-import { getOrderItems } from "@/services";
-import { orderItems } from "@/models";
-import { mapToOrderItems } from "@/helpers/kitchen";
+import { getOrderItems, getUserCookies } from "@/services";
+import { orderItems, userType } from "@/models";
+import { mapToOrderItems } from "@/helpers";
+import { siteRoute } from "@/constants";
 
 export default function Kitchen() {
+  const router = useRouter();
   const [sidebarOpened, { toggle }] = useDisclosure();
 
   const [orderItemList, setOrderItemList] = useState([] as orderItems[]);
@@ -26,8 +29,11 @@ export default function Kitchen() {
   };
 
   useEffect(() => {
-    refreshOrderList();
-  }, []);
+    getUserCookies().then((res) => {
+      if (res && (res.isSuperUser || res.groups?.includes(userType.kitchenStaff))) refreshOrderList();
+      else router.push(siteRoute.auth);
+    });
+  }, [router]);
 
   useEffect(() => {
     const intervalId = setInterval(refreshOrderList, 7000);
