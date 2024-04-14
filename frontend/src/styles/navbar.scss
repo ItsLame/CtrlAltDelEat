@@ -11,3 +11,16 @@
 .burger {
   margin-right: 5px;
 }
+
+.root-navigation {
+  div {
+    width: 100%;
+  }
+  
+  a {
+    width: 100%;
+    & button {
+      width: 100%;
+    }
+  }
+}

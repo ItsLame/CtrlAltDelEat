@@ -72,7 +72,7 @@ export function Login({ onReturn } : LoginProps) {
         <Title order={1} mb="xl">
           Staff Login
         </Title>
-        <LoginForm />
+        {LoginForm()}
       </Stack>
     </Flex>
   );

@@ -30,12 +30,12 @@ export default function HomePage() {
 
   return (
     <Center>
-      <Flex direction="column" align="center">
+      <Flex direction="column" align="center" mb="xl">
         <Box mt={50} mb={50}>
           <Image w={200} src="logo.svg" alt="CtrlAltDelEat Logo" />
         </Box>
-        <Title order={5}>Navigation</Title>
-        <Stack gap={5} align="center">
+        <Title order={4}>Navigation</Title>
+        <Stack className="root-navigation" gap={5} align="center" w={200}>
           <Link href={siteRoute.manager}>
             <Button>Manager</Button>
           </Link>
@@ -48,7 +48,7 @@ export default function HomePage() {
           <Flex gap={10}>
             <NumberInput
               defaultValue={1}
-              w={70}
+              w={100}
               min={1}
               onChange={(e) => setTableNo(e as number)}
             />
@@ -57,13 +57,14 @@ export default function HomePage() {
             </Link>
           </Flex>
         </Stack>
-        <Title order={5} mt="xl">
+
+        <Title order={4} mt="xl">
           {!isLoggedIn ? "Staff Login" : "Staff Detail"}
         </Title>
         {!isLoggedIn ? (
-          <Link href={siteRoute.auth}>
-            <Button variant="light">
-                Login
+          <Link className="w-100" href={siteRoute.auth}>
+            <Button className="w-100" variant="light">
+              Login
             </Button>
           </Link>
         ) : (
@@ -73,10 +74,10 @@ export default function HomePage() {
         {/* Note: Developer tool only available on development environment (won't appear in prod) */}
         {isDevelopment && (
           <>
-            <Title order={5} mt="lg">
+            <Title order={4} mt="lg">
               Developer Tool
             </Title>
-            <Button variant="light" onClick={handleSuperLogin}>
+            <Button variant="light" onClick={handleSuperLogin} fullWidth>
               Super Authenticate
             </Button>
           </>

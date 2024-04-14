@@ -1,4 +1,4 @@
-import { Button, Card, Stack, Text } from "@mantine/core";
+import { Button, Card, Code, Flex, Stack, Text } from "@mantine/core";
 import { useState, useEffect } from "react";
 import { useForm, zodResolver } from "@mantine/form";
 
@@ -39,12 +39,23 @@ export function StaffInfo({ onLogout }: StaffInfoProps) {
   };
 
   return (
-    <Stack gap="xs">
+    <Stack className="w-100" gap="xs">
       <Card withBorder radius="sm" shadow="md">
-        <Stack gap={0}>
-          <Text><Text span fw={500}>Username: </Text>{username}</Text>
-          {isSuperUser && <Text><Text span fw={500}>SuperUser: </Text>Yes</Text>}
-          <Text><Text span fw={500}>Group(s): </Text>{groups.length !== 0 ? groups.toString() : "No group"}</Text>
+        <Stack gap="xs">
+          <Flex justify="space-between">
+            <Text span fw={600}>Username:</Text>
+            <Code>{username}</Code>
+          </Flex>
+          {isSuperUser && (
+            <Flex justify="space-between">
+              <Text span fw={600}>SuperUser:</Text>
+              <Code>Yes</Code>
+            </Flex>
+          )}
+          <Flex justify="space-between">
+            <Text span fw={600}>Group(s):</Text>
+            <Code>{groups.length !== 0 ? groups.toString() : "No group"}</Code>
+          </Flex>
         </Stack>
       </Card>
       <Button variant="light" color="red" onClick={handleLogout}>
