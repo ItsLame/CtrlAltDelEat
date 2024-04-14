@@ -61,6 +61,7 @@ export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
       setCardsPrepared((prevCards) => [...prevCards, item.id]);
       toast((t) => {
         x = t.id;
+
         return (
           <UndoDeleteOrder
             item={item}
@@ -69,7 +70,8 @@ export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
             }}
           />
         );
-      });
+      }, { duration: 5000 });
+
       timeOut = setTimeout(() => {
         handleDelete(x, item);
       }, 6000);

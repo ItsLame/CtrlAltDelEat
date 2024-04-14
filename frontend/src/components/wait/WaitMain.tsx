@@ -88,9 +88,7 @@ export function WaitMain({
   };
 
   const deleteServeInProgress = (serveItem: Items) => {
-    toast.success(
-      `Served Table#${serveItem.tableNumber} Item #${serveItem.id}!`
-    );
+    toast.success(`Served Table#${serveItem.tableNumber} Item #${serveItem.id}!`, { duration: 5000 });
     updateItemStatusToServed(serveItem);
     setLock(false);
     setServeInProg((prev) => prev.filter((item) => item.id !== serveItem.id));

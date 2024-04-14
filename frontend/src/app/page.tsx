@@ -85,7 +85,7 @@ export default function HomePage() {
           {!isLoggedIn ? (
             <Link className="w-100" href={siteRoute.auth}>
               <Button className="w-100" variant="light">
-              Login
+                Login
               </Button>
             </Link>
           ) : (

@@ -1,5 +1,6 @@
 import { siteRoute } from "@/constants";
 import { userType } from "@/models";
+import { clearAuthRefreshTokens } from "@/services";
 import toast from "react-hot-toast";
 
 export function mapUserToRoute (name: userType) {
@@ -16,3 +17,9 @@ export function noPermissionToast() {
   toast.error("No permission to view this page!");
   toast.loading("Redirecting to login page...");
 }
+
+export async function genericLogout() {
+  clearAuthRefreshTokens().finally(() => {
+    toast("Logged out!");
+  });
+};

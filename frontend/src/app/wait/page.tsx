@@ -1,6 +1,6 @@
 "use client";
 
-import { ThemeToggle } from "@/components";
+import { LogoutButton, ThemeToggle } from "@/components";
 import { WaitMain } from "@/components/wait";
 import { siteRoute } from "@/constants";
 import { noPermissionToast } from "@/helpers";
@@ -81,7 +81,10 @@ export default function Wait() {
               alt="CtrlAltDelEat Logo"
             />
           </Flex>
-          <ThemeToggle />
+          <Flex gap="sm">
+            <ThemeToggle />
+            <LogoutButton />
+          </Flex>
         </div>
       </AppShell.Header>
 
@@ -93,7 +96,7 @@ export default function Wait() {
           refreshServe={refreshServeList}
         />
       </AppShell.Main>
-      <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
+      <Toaster position="top-center" toastOptions={{ duration: 1500 }} />
     </AppShell>
   );
 }

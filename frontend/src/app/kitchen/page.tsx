@@ -3,7 +3,7 @@
 import { AppShell, Burger, Flex, Image } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import { KitchenMain, ThemeToggle } from "@/components";
+import { KitchenMain, LogoutButton, ThemeToggle } from "@/components";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -63,7 +63,10 @@ export default function Kitchen() {
               alt="CtrlAltDelEat Logo"
             />
           </Flex>
-          <ThemeToggle />
+          <Flex gap="sm">
+            <LogoutButton />
+            <ThemeToggle />
+          </Flex>
         </div>
       </AppShell.Header>
 
@@ -74,7 +77,7 @@ export default function Kitchen() {
           onRefresh={refreshOrderList}
         />
       </AppShell.Main>
-      <Toaster position="top-center" toastOptions={{ duration: 5000 }} />
+      <Toaster position="top-center" toastOptions={{ duration: 1500 }} />
     </AppShell>
   );
 }

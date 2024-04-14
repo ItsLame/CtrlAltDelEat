@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { AddMenuItemModal, DeleteCategoryModal, DeleteMenuItemModal, EditMenuItemModal, ManagerMain, ManagerSidebar, ThemeToggle } from "@/components";
+import { AddMenuItemModal, DeleteCategoryModal, DeleteMenuItemModal, EditMenuItemModal, LogoutButton, ManagerMain, ManagerSidebar, ThemeToggle } from "@/components";
 import { getCategories, getMenuItems, getUserCookies } from "@/services";
 import { category, menuItems, userType } from "@/models";
 import { siteRoute } from "@/constants";
@@ -127,7 +127,10 @@ export default function Manager() {
               alt="CtrlAltDelEat Logo"
             />
           </Flex>
-          <ThemeToggle />
+          <Flex gap="sm">
+            <ThemeToggle />
+            <LogoutButton />
+          </Flex>
         </div>
       </AppShell.Header>
 

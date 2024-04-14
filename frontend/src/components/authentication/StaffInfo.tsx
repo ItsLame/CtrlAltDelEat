@@ -49,7 +49,7 @@ export function StaffInfo({ onLogout }: StaffInfoProps) {
         </Stack>
       </Card>
       <Button variant="light" color="red" onClick={handleLogout}>
-        Log Out
+        Logout
       </Button>
     </Stack>
   );
