@@ -10,6 +10,7 @@ import { AddMenuItemModal, DeleteCategoryModal, DeleteMenuItemModal, EditMenuIte
 import { getCategories, getMenuItems, getUserCookies } from "@/services";
 import { category, menuItems, userType } from "@/models";
 import { siteRoute } from "@/constants";
+import { noPermissionToast } from "@/helpers";
 
 export default function Manager() {
   const router = useRouter();
@@ -89,8 +90,12 @@ export default function Manager() {
 
   useEffect(() => {
     getUserCookies().then((res) => {
-      if (res && (res.isSuperUser || res.groups?.includes(userType.manager))) refreshAllList();
-      else router.push(siteRoute.auth);
+      const permittedUsers = new RegExp(`${userType.manager}`);
+      if (res && (res.isSuperUser === "true" || permittedUsers.test(res.groups || ""))) refreshAllList();
+      else {
+        router.push(siteRoute.auth);
+        noPermissionToast();
+      };
     });
   }, [refreshAllList, router]);
 

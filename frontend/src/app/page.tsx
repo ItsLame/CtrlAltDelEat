@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Image, Button, Center, Flex, Stack, Title, Box, NumberInput } from "@mantine/core";
+import { Image, Button, Center, Flex, Stack, Title, Box, NumberInput, LoadingOverlay } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 import { clearAuthRefreshTokens, generateAuthToken, getUserCookies, storeToken } from "@/services";
 import { apiPassword, apiUser, siteRoute } from "@/constants";
@@ -14,18 +15,29 @@ export default function HomePage() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [tableNo, setTableNo] = useState(1);
 
+  const [isLoginLoading, setLoginLoading] = useState(true);
+
   const handleSuperLogin = () => {
+    setLoginLoading(true);
     setLoggedIn(false);
-    generateAuthToken({ username: apiUser, password: apiPassword }).then((res) => storeToken(res)).finally(() => setLoggedIn(true));
+    generateAuthToken({ username: apiUser, password: apiPassword }).then((res) => storeToken(res))
+      .finally(() => {
+        setLoggedIn(true);
+        setLoginLoading(false);
+      });
   };
 
   const handleLogout = () => {
-    clearAuthRefreshTokens();
-    setLoggedIn(false);
+    setLoginLoading(true);
+    clearAuthRefreshTokens().finally(() => {
+      setLoggedIn(false);
+      setLoginLoading(false);
+    });
   };
 
   useEffect(() => {
-    getUserCookies().then((res) => setLoggedIn(res.username ? true : false));
+    setLoginLoading(true);
+    getUserCookies().then((res) => setLoggedIn(res.username ? true : false)).finally(() => setLoginLoading(false));
   }, []);
 
   return (
@@ -61,15 +73,18 @@ export default function HomePage() {
         <Title order={4} mt="xl">
           {!isLoggedIn ? "Staff Login" : "Staff Detail"}
         </Title>
-        {!isLoggedIn ? (
-          <Link className="w-100" href={siteRoute.auth}>
-            <Button className="w-100" variant="light">
+        <Box className="w-100" pos="relative">
+          <LoadingOverlay zIndex={1000} visible={isLoginLoading}/>
+          {!isLoggedIn ? (
+            <Link className="w-100" href={siteRoute.auth}>
+              <Button className="w-100" variant="light">
               Login
-            </Button>
-          </Link>
-        ) : (
-          <StaffInfo onLogout={handleLogout}/>
-        )}
+              </Button>
+            </Link>
+          ) : (
+            <StaffInfo onLogout={handleLogout}/>
+          )}
+        </Box>
 
         {/* Note: Developer tool only available on development environment (won't appear in prod) */}
         {isDevelopment && (
@@ -83,6 +98,7 @@ export default function HomePage() {
           </>
         )}
       </Flex>
+      <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
     </Center>
   );
 }

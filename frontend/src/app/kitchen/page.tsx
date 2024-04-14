@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 import { getOrderItems, getUserCookies } from "@/services";
 import { orderItems, userType } from "@/models";
-import { mapToOrderItems } from "@/helpers";
+import { mapToOrderItems, noPermissionToast } from "@/helpers";
 import { siteRoute } from "@/constants";
 
 export default function Kitchen() {
@@ -30,8 +30,12 @@ export default function Kitchen() {
 
   useEffect(() => {
     getUserCookies().then((res) => {
-      if (res && (res.isSuperUser || res.groups?.includes(userType.kitchenStaff))) refreshOrderList();
-      else router.push(siteRoute.auth);
+      const permittedUsers = new RegExp(`${userType.manager}|${userType.kitchenStaff}`);
+      if (res && (res.isSuperUser === "true" || permittedUsers.test(res.groups || ""))) refreshOrderList();
+      else {
+        noPermissionToast();
+        router.push(siteRoute.auth);
+      };
     });
   }, [router]);
 

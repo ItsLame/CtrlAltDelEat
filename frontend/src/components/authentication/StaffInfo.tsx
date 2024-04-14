@@ -1,19 +1,13 @@
 import { Button, Card, Code, Flex, Stack, Text } from "@mantine/core";
 import { useState, useEffect } from "react";
-import { useForm, zodResolver } from "@mantine/form";
 
 import { blacklistAuthToken, getUserCookies } from "@/services";
-import { StaffInfoProps, loginSchema, userGroup } from "@/models";
+import { StaffInfoProps, userGroup } from "@/models";
 
 export function StaffInfo({ onLogout }: StaffInfoProps) {
   const [username, setUsername] = useState("");
   const [isSuperUser, setIsSuperUser] = useState(false);
   const [groups, setGroups] = useState([]);
-
-  const form = useForm({
-    validate: zodResolver(loginSchema),
-    validateInputOnBlur: true,
-  });
 
   const refreshUser = () => {
     getUserCookies().then((res) => {
@@ -28,14 +22,10 @@ export function StaffInfo({ onLogout }: StaffInfoProps) {
 
   useEffect(() => {
     refreshUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLogout = () => {
-    blacklistAuthToken().then(() => {
-      form.reset();
-      onLogout();
-    });
+    blacklistAuthToken().then(() => onLogout());
   };
 
   return (

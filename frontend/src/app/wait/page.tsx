@@ -2,6 +2,7 @@
 
 import { WaitMain } from "@/components/wait";
 import { siteRoute } from "@/constants";
+import { noPermissionToast } from "@/helpers";
 import { assistRequests, Items, userType } from "@/models";
 import { getUserCookies, getWaitAssistance, getWaitItemsToServe } from "@/services";
 import { AppShell, Image } from "@mantine/core";
@@ -49,8 +50,12 @@ export default function Wait() {
 
   useEffect(() => {
     getUserCookies().then((res) => {
-      if (res && (res.isSuperUser || res.groups?.includes(userType.waitStaff))) refreshAllList();
-      else router.push(siteRoute.auth);
+      const permittedUsers = new RegExp(`${userType.manager}|${userType.waitStaff}`);
+      if (res && (res.isSuperUser === "true" || permittedUsers.test(res.groups || ""))) refreshAllList();
+      else {
+        noPermissionToast();
+        router.push(siteRoute.auth);
+      }
     });
   }, [refreshAllList, router]);
 
