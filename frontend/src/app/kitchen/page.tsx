@@ -1,9 +1,9 @@
 "use client";
 
-import { AppShell, Burger, Flex, Image } from "@mantine/core";
+import { AppShell, Burger, Flex } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import { KitchenMain, LogoutButton, ThemeToggle } from "@/components";
+import { KitchenMain, LogoWithLink, LogoutButton, ThemeToggle } from "@/components";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -56,12 +56,7 @@ export default function Kitchen() {
               hiddenFrom="sm"
               size="sm"
             />
-            <Image
-              className="logo"
-              src="logo.svg"
-              h={45}
-              alt="CtrlAltDelEat Logo"
-            />
+            <LogoWithLink />
           </Flex>
           <Flex gap="sm">
             <LogoutButton />

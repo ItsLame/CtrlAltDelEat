@@ -194,7 +194,7 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
           </Stack>
         </Flex>
         <Group justify="flex-end" mt="md">
-          <Button variant="outline" color="red" onClick={onDeleteMenuItem}>Delete</Button>
+          <Button variant="outline" color="red" onClick={() => onDeleteMenuItem(menuItem)}>Delete</Button>
           <Button type="submit" px="xl">Save</Button>
         </Group>
       </form>

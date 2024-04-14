@@ -180,7 +180,7 @@ export function AddMenuItemModal({ category, categoryList, menuItemList, isOpene
         </Flex>
         <Group justify="flex-end" mt="md">
           <Button variant="outline" onClick={handleClear}>Cancel</Button>
-          <Button type="submit">Add</Button>
+          <Button type="submit" px="xl">Add</Button>
         </Group>
       </form>
     </Modal>

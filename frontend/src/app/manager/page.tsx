@@ -1,12 +1,12 @@
 "use client";
 
-import { AppShell, Burger, Flex, Image } from "@mantine/core";
+import { AppShell, Burger, Flex } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { Toaster } from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { AddMenuItemModal, DeleteCategoryModal, DeleteMenuItemModal, EditMenuItemModal, LogoutButton, ManagerMain, ManagerSidebar, ThemeToggle } from "@/components";
+import { AddMenuItemModal, DeleteCategoryModal, DeleteMenuItemModal, EditMenuItemModal, LogoWithLink, LogoutButton, ManagerMain, ManagerSidebar, ThemeToggle } from "@/components";
 import { getCategories, getMenuItems, getUserCookies } from "@/services";
 import { category, menuItems, userType } from "@/models";
 import { siteRoute } from "@/constants";
@@ -28,6 +28,7 @@ export default function Manager() {
   const [categoryList, setCategoryList] = useState([] as category[]);
 
   const [targetCategory, setTargetCategory] = useState({} as category);
+  const [targetMenuItem, setTargetMenuItem] = useState({} as menuItems);
 
   const [isMenuItemListLoading, setMenuItemListLoading] = useState(true);
   const [isCategoryListLoading, setCategoryListLoading] = useState(true);
@@ -61,10 +62,20 @@ export default function Manager() {
     refreshCategoryList(loadingAnimation);
   };
 
+  const handleDeleteMenuItem = (menuItem?: menuItems) => {
+    menuItem && setTargetMenuItem(menuItem);
+    openDeleteMenuItemModal();
+  };
+
   const handleDeleteMenuItemAfter = (loadingAnimation=true) => {
     closeEditModal();
     closeDeleteMenuItemModal();
     refreshMenuList(loadingAnimation);
+  };
+
+  const handleDeleteMenuItemCancel = () => {
+    closeDeleteMenuItemModal();
+    setTargetMenuItem({} as menuItems);
   };
 
   const refreshMenuList = (loadingAnimation=true) => {
@@ -120,12 +131,7 @@ export default function Manager() {
               hiddenFrom="sm"
               size="sm"
             />
-            <Image
-              className="logo"
-              src="logo.svg"
-              h={45}
-              alt="CtrlAltDelEat Logo"
-            />
+            <LogoWithLink />
           </Flex>
           <Flex gap="sm">
             <ThemeToggle />
@@ -154,6 +160,7 @@ export default function Manager() {
           onRefresh={refreshMenuList}
           onAddMenuItem={openAddModal}
           onEditMenuItem={handleSelectItem}
+          onDeleteMenuItem={handleDeleteMenuItem}
           onEditCategory={handleEditCategory}
         />
       </AppShell.Main>
@@ -175,7 +182,7 @@ export default function Manager() {
         isOpened={editMenuItemModalOpened}
         isLoading={isMenuItemListLoading}
         isMobile={isMobile}
-        onDeleteMenuItem={openDeleteMenuItemModal}
+        onDeleteMenuItem={handleDeleteMenuItem}
         onClose={handleUnselectItem}
         onSubmit={refreshMenuList}
       />
@@ -188,10 +195,10 @@ export default function Manager() {
       />
 
       <DeleteMenuItemModal
-        menuItem={menuItem}
+        menuItem={targetMenuItem}
         isOpened={deleteMenuItemModalOpened}
         onDelete={handleDeleteMenuItemAfter}
-        onClose={closeDeleteMenuItemModal}
+        onClose={handleDeleteMenuItemCancel}
       />
       <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
     </AppShell>

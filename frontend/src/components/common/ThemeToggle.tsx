@@ -4,7 +4,7 @@ import cx from "clsx";
 
 import classes from "@/styles/modules/ThemeToggle.module.css";
 
-export function ThemeToggle () {
+export const ThemeToggle = () => {
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("light", { getInitialValueInEffect: true });
 
@@ -24,4 +24,4 @@ export function ThemeToggle () {
       <MoonIcon className={cx(classes.icon, classes.dark)}/>
     </ActionIcon>
   );
-}
+};

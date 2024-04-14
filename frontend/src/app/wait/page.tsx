@@ -1,12 +1,12 @@
 "use client";
 
-import { LogoutButton, ThemeToggle } from "@/components";
+import { LogoWithLink, LogoutButton, ThemeToggle } from "@/components";
 import { WaitMain } from "@/components/wait";
 import { siteRoute } from "@/constants";
 import { noPermissionToast } from "@/helpers";
 import { assistRequests, Items, userType } from "@/models";
 import { getUserCookies, getWaitAssistance, getWaitItemsToServe } from "@/services";
-import { AppShell, Flex, Image } from "@mantine/core";
+import { AppShell, Flex } from "@mantine/core";
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -74,12 +74,7 @@ export default function Wait() {
       <AppShell.Header>
         <div className="navbar">
           <Flex className="w-100" align="center">
-            <Image
-              className="logo"
-              src="logo.svg"
-              h={45}
-              alt="CtrlAltDelEat Logo"
-            />
+            <LogoWithLink />
           </Flex>
           <Flex gap="sm">
             <ThemeToggle />

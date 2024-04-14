@@ -17,7 +17,8 @@ export interface ManagerMainProps {
   isLoading: boolean
   onRefresh: (_loadingAnimation?: boolean) => void
   onAddMenuItem: () => void
-  onEditMenuItem: (_menuItems : menuItems) => void
+  onEditMenuItem: (_menuItem: menuItems) => void
+  onDeleteMenuItem: (_menuItem: menuItems) => void
   onEditCategory: (_category: category) => void
 }
 
@@ -45,7 +46,7 @@ export interface EditMenuItemModalProps {
   isOpened: boolean
   isLoading: boolean
   isMobile?: boolean
-  onDeleteMenuItem: () => void
+  onDeleteMenuItem: (_menuItem: menuItems) => void
   onClose: () => void
   onSubmit: (_loadingAnimation?: boolean) => void
 }
