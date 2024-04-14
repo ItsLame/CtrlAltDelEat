@@ -43,7 +43,7 @@
   transition: all ease 150ms;
 
   &:hover {
-    background-color: var(--mantine-color-blue-outline-hover);
+    background-color: var(--mantine-color-blue-light-hover);
     transition: all ease 150ms;
   }
 
@@ -52,7 +52,7 @@
   }
 
   &.selected {
-    background-color: var(--mantine-color-blue-outline);
+    background-color: var(--mantine-color-blue-filled);
     color: var(--mantine-color-white);
   }
   

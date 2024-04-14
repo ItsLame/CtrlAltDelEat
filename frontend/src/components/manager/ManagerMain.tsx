@@ -27,7 +27,7 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
   };
 
   useEffect(() => {
-    menuItemListHandlers.setState(menuItemListFiltered);
+    menuItemListHandlers.setState(menuItemListFiltered.sort((a, b) => a.position > b.position ? 1 : -1));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menuItemListFiltered]);
 

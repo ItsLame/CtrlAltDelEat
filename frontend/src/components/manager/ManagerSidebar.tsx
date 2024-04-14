@@ -59,7 +59,7 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
   };
 
   useEffect(() => {
-    categoryListHandlers.setState(categoryList);
+    categoryListHandlers.setState(categoryList.sort((a, b) => a.position > b.position ? 1 : -1));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryList]);
 
@@ -146,7 +146,11 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
           align="center"
           direction="row"
         >
-          <ActionIcon variant="subtle" onClick={() => onRefresh()}><ReloadIcon /></ActionIcon>
+          <ActionIcon variant="subtle"
+            onClick={() => onRefresh()}
+          >
+            <ReloadIcon />
+          </ActionIcon>
           <Button
             type="submit"
             variant="filled"

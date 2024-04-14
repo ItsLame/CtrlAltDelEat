@@ -95,7 +95,11 @@ export function ManagerMainHeader ({ category, onRefresh, onAddMenuItem, onEditC
             )
           }
           <Group gap="sm" align="top">
-            <ActionIcon variant="subtle" size="lg" py={17} onClick={onRefresh}><ReloadIcon /></ActionIcon>
+            <ActionIcon variant="subtle" size="lg" py={17}
+              onClick={onRefresh}
+            >
+              <ReloadIcon />
+            </ActionIcon>
             <Button onClick={onAddMenuItem}>Add Item</Button>
           </Group>
         </Flex>
