@@ -36,7 +36,11 @@ export async function orderCart(tableNo: number): Promise<number> {
   return res.status;
 }
 
-// item -> status
-// cart -> "in-cart"
-// order -> "received"
-// kitchen -> "cooking"
+export async function removeFromCart(itemNo: number): Promise<number> {
+  const apiUrl = `${apiBase}/removeFromCart/${itemNo}`;
+  const res = await fetch(apiUrl, {
+    method: "DELETE",
+  });
+
+  return res.status;
+}

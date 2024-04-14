@@ -14,10 +14,24 @@ import {
 } from "@mantine/core";
 import { imagePlaceholder } from "@/constants";
 import { TrashIcon } from "@radix-ui/react-icons";
-import { orderCart } from "@/services";
+import { orderCart, removeFromCart } from "@/services";
 import toast from "react-hot-toast";
 
-const generateMenuItem = (item: cartView, key: number) => (
+const handleRemoveItem = (itemNo: number, action: () => void) => {
+  removeFromCart(itemNo).then((res) => {
+    switch (res) {
+    case 204:
+      toast.success("Item removed from cart.");
+      action();
+      break;
+    default:
+      toast.error("Error, failed to remove item");
+      break;
+    }
+  });
+};
+
+const generateMenuItem = (item: cartView, key: number, action: () => void) => (
   <Card padding="lg" radius="md" withBorder={true} key={key}>
     <Flex gap={15}>
       <Flex w={100}>
@@ -33,7 +47,7 @@ const generateMenuItem = (item: cartView, key: number) => (
             {item.itemName}
           </Text>
           <ActionIcon color={"grey"} variant="outline" size={"lg"}>
-            <TrashIcon color={"red"} scale={2} />
+            <TrashIcon color={"red"} scale={2} onClick={() => handleRemoveItem(item.id, action)}/>
           </ActionIcon>
         </Flex>
 
@@ -42,7 +56,7 @@ const generateMenuItem = (item: cartView, key: number) => (
         </Text>
         <Text size="md">quantity: {item.quantity}</Text>
         <Text size="md">
-          item cost: ${item.cost} total: $
+                    item cost: ${item.cost} total: $
           {(item.cost * item.quantity).toFixed(2)}
         </Text>
       </Flex>
@@ -62,6 +76,7 @@ export function ViewCartModal(viewCartProps: ViewCartModalProps) {
         break;
       }
     });
+    viewCartProps.updateCart();
     viewCartProps.onClose();
   };
 
@@ -69,7 +84,7 @@ export function ViewCartModal(viewCartProps: ViewCartModalProps) {
     let totalCost = 0;
     for (let i = 0; i < viewCartProps.cartItems.length; i += 1) {
       totalCost +=
-        viewCartProps.cartItems[i].cost * viewCartProps.cartItems[i].quantity;
+                viewCartProps.cartItems[i].cost * viewCartProps.cartItems[i].quantity;
     }
     return <Text inline={true}>Subtotal: ${totalCost.toFixed(2)}</Text>;
   };
@@ -85,7 +100,7 @@ export function ViewCartModal(viewCartProps: ViewCartModalProps) {
           <Stack>
             {viewCartProps.cartItems
               ?.filter((item) => item.status == "in-cart")
-              .map((i, k) => generateMenuItem(i, k))}
+              .map((i, k) => generateMenuItem(i, k, viewCartProps.updateCart))}
           </Stack>
         </ScrollArea.Autosize>
         <Flex align={"center"} direction={"row"} justify={"space-between"}>

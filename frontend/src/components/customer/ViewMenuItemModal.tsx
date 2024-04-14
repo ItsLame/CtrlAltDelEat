@@ -35,7 +35,7 @@ export function ViewMenuItemModal({
   isOpened,
   isLoading,
   onClose,
-  // eslint-disable-next-line no-unused-vars
+                                      // eslint-disable-next-line no-unused-vars
   onSubmit,
 }: ViewMenuItemModalProps) {
   const handlersRef = useRef<NumberInputHandlers>(null);
@@ -51,7 +51,7 @@ export function ViewMenuItemModal({
   });
 
   const handleSubmit = () => {
-    // create menu item to post to api
+        // create menu item to post to api
     const menu_item_request: addToCartRequest = {
       itemName: menuItem.menuitem_name,
       cost: menuItem.cost,
@@ -67,6 +67,8 @@ export function ViewMenuItemModal({
         break;
       case 201:
         toast.success("added item to cart");
+        form.setFieldValue("itemOptionalRequest", "");
+        form.setFieldValue("itemQuantity", 1);
         onClose();
         break;
       }
@@ -101,7 +103,7 @@ export function ViewMenuItemModal({
           !form.validate().hasErrors && handleClear();
         }}
       >
-        <LoadingOverlay visible={isLoading} />
+        <LoadingOverlay visible={isLoading}/>
         <Stack w="100%">
           <Flex h={200}>
             <Image
@@ -139,7 +141,7 @@ export function ViewMenuItemModal({
               onClick={() => handlersRef.current?.decrement()}
               variant="filled"
             >
-              <MinusIcon />
+              <MinusIcon/>
             </ActionIcon>
             <NumberInput
               w={50}
@@ -155,11 +157,11 @@ export function ViewMenuItemModal({
               onClick={() => handlersRef.current?.increment()}
               variant="filled"
             >
-              <PlusIcon />
+              <PlusIcon/>
             </ActionIcon>
           </Flex>
           <Button type="submit" onClick={handleSubmit}>
-            Add to Cart
+                        Add to Cart
           </Button>
         </Group>
       </form>

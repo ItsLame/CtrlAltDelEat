@@ -29,7 +29,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
   const [isMenuItemListLoading, setMenuItemListLoading] = useState(true);
   const [isCategoryListLoading, setCategoryListLoading] = useState(true);
   const [cartItems, setCartItems] = useState([] as cartView[]);
-  const [isCartLoading, { toggle }] = useDisclosure(false);
+  const [isCartLoading, cartHandler] = useDisclosure(false);
 
   const handleSelectCategory = (category?: category) => {
     if (category) {
@@ -68,13 +68,13 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     const fetchData = async () => {
       const cart = await getCartStatus(tableNo);
       setCartItems(cart);
-      toggle();
+      cartHandler.close();
     };
 
     if (isCartLoading) {
       fetchData().catch(() => console.error("there was an error loading cart"));
     }
-  }, [cartItems, isCartLoading, tableNo, toggle]);
+  }, [cartHandler, cartItems, isCartLoading, tableNo]);
 
   const refreshCategoryList = () => {
     setCategoryListLoading(true);
@@ -99,7 +99,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
       }}
       padding="md"
     >
-      <Toaster position="top-center" toastOptions={{ duration: 1500 }} />
+      <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
       <AppShell.Header>
         <div className="navbar">
           <Flex align="center" gap="sm" flex={1}>
@@ -110,7 +110,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
               alt="CtrlAltDelEat Logo"
             />
             <Text className="table-number" fw={700} c="dark" size={isMobile ? "xs" : "md"}>
-              Table #{tableNo}
+                            Table #{tableNo}
             </Text>
             <Select
               hiddenFrom="sm"
@@ -125,12 +125,12 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
           <Flex justify="flex-end" mr={20} columnGap="sm">
             <ActionIcon
               onClick={() => {
-                toggle();
+                cartHandler.open();
                 openCartModal();
               }}>
               <ReaderIcon/>
             </ActionIcon>
-            <ActionIcon onClick={handleRequestForAssistance} >
+            <ActionIcon onClick={handleRequestForAssistance}>
               <BellIcon/>
             </ActionIcon>
           </Flex>
@@ -165,11 +165,11 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
       />
 
       <ViewCartModal
-        isLoading={isCartLoading}
         tableNo={tableNo}
         isOpen={addMenuItemModalOpened}
         onClose={closeCartModal}
         cartItems={cartItems}
+        updateCart={cartHandler.open}
       />
     </AppShell>
   );
