@@ -42,8 +42,8 @@ export default function HomePage() {
 
   return (
     <Center>
-      <Flex direction="column" align="center" mb="xl">
-        <Box mt={50} mb={50}>
+      <Flex direction="column" align="center" mb="md">
+        <Box mt={20} mb={20}>
           <Image w={200} src="logo.svg" alt="CtrlAltDelEat Logo" />
         </Box>
         <Title order={4}>Navigation</Title>
