@@ -15,11 +15,11 @@ export function mapUserToRoute (name: userType) {
 
 export function noPermissionToast() {
   toast.error("No permission to view this page!", { duration: 500 });
-  toast.loading("Redirecting to login page...", { duration: 500 });
+  toast.loading("Redirecting to login page...", { duration: 1000 });
 }
 
 export async function genericLogout() {
   clearAuthRefreshTokens().finally(() => {
-    toast("Logged out!", { duration: 500 });
+    toast("Logged out!", { duration: 1000 });
   });
 };
