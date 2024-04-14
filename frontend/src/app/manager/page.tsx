@@ -1,12 +1,12 @@
 "use client";
 
-import { AppShell, Burger, Image } from "@mantine/core";
+import { AppShell, Burger, Flex, Image } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { Toaster } from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { AddMenuItemModal, DeleteCategoryModal, DeleteMenuItemModal, EditMenuItemModal, ManagerMain, ManagerSidebar } from "@/components";
+import { AddMenuItemModal, DeleteCategoryModal, DeleteMenuItemModal, EditMenuItemModal, ManagerMain, ManagerSidebar, ThemeToggle } from "@/components";
 import { getCategories, getMenuItems, getUserCookies } from "@/services";
 import { category, menuItems, userType } from "@/models";
 import { siteRoute } from "@/constants";
@@ -112,19 +112,22 @@ export default function Manager() {
     >
       <AppShell.Header>
         <div className="navbar">
-          <Burger
-            className="burger"
-            opened={sidebarOpened}
-            onClick={toggle}
-            hiddenFrom="sm"
-            size="sm"
-          />
-          <Image
-            className="logo"
-            src="logo.svg"
-            h={45}
-            alt="CtrlAltDelEat Logo"
-          />
+          <Flex className="w-100" align="center">
+            <Burger
+              className="burger"
+              opened={sidebarOpened}
+              onClick={toggle}
+              hiddenFrom="sm"
+              size="sm"
+            />
+            <Image
+              className="logo"
+              src="logo.svg"
+              h={45}
+              alt="CtrlAltDelEat Logo"
+            />
+          </Flex>
+          <ThemeToggle />
         </div>
       </AppShell.Header>
 

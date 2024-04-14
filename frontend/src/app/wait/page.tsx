@@ -1,11 +1,12 @@
 "use client";
 
+import { ThemeToggle } from "@/components";
 import { WaitMain } from "@/components/wait";
 import { siteRoute } from "@/constants";
 import { noPermissionToast } from "@/helpers";
 import { assistRequests, Items, userType } from "@/models";
 import { getUserCookies, getWaitAssistance, getWaitItemsToServe } from "@/services";
-import { AppShell, Image } from "@mantine/core";
+import { AppShell, Flex, Image } from "@mantine/core";
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -72,12 +73,15 @@ export default function Wait() {
     <AppShell header={{ height: 60 }} padding="md">
       <AppShell.Header>
         <div className="navbar">
-          <Image
-            className="logo"
-            src="logo.svg"
-            h={45}
-            alt="CtrlAltDelEat Logo"
-          />
+          <Flex className="w-100" align="center">
+            <Image
+              className="logo"
+              src="logo.svg"
+              h={45}
+              alt="CtrlAltDelEat Logo"
+            />
+          </Flex>
+          <ThemeToggle />
         </div>
       </AppShell.Header>
 

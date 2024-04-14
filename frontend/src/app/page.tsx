@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Image, Button, Center, Flex, Stack, Title, Box, NumberInput, LoadingOverlay } from "@mantine/core";
+import { Image, Button, Center, Flex, Stack, Title, Box, NumberInput, LoadingOverlay, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 
 import { clearAuthRefreshTokens, generateAuthToken, getUserCookies, storeToken } from "@/services";
 import { apiPassword, apiUser, siteRoute } from "@/constants";
-import { StaffInfo } from "@/components";
+import { StaffInfo, ThemeToggle } from "@/components";
 
 export default function HomePage() {
   const isDevelopment = process.env.NODE_ENV === "development" ? true : false;
@@ -43,10 +43,17 @@ export default function HomePage() {
   return (
     <Center>
       <Flex direction="column" align="center" mb="md">
-        <Box mt={20} mb={20}>
+        <Box mt={20}>
           <Image w={200} src="logo.svg" alt="CtrlAltDelEat Logo" />
         </Box>
-        <Title order={4}>Navigation</Title>
+        <Title order={4} mt="lg">
+          Theme
+        </Title>
+        <Flex gap="sm" align="center">
+          <Text>Toggle Dark/Light Mode</Text>
+          <ThemeToggle />
+        </Flex>
+        <Title order={4} mt="lg">Navigation</Title>
         <Stack className="root-navigation" gap={5} align="center" w={200}>
           <Link href={siteRoute.manager}>
             <Button>Manager</Button>
@@ -70,7 +77,7 @@ export default function HomePage() {
           </Flex>
         </Stack>
 
-        <Title order={4} mt="xl">
+        <Title order={4} mt="lg">
           {!isLoggedIn ? "Staff Login" : "Staff Detail"}
         </Title>
         <Box className="w-100" pos="relative">
@@ -98,6 +105,7 @@ export default function HomePage() {
           </>
         )}
       </Flex>
+
       <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
     </Center>
   );

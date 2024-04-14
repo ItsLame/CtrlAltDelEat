@@ -8,7 +8,7 @@ import { getCartStatus, getCategories, getMenuItems } from "@/services";
 import { cartView, category, menuItems } from "@/models";
 import { CustomerSidebar } from "@/components/customer/CustomerSidebar";
 import { CustomerMain } from "@/components/customer/CustomerMain";
-import { ViewMenuItemModal } from "@/components";
+import { ThemeToggle, ViewMenuItemModal } from "@/components";
 import { BellIcon, ReaderIcon } from "@radix-ui/react-icons";
 import { ViewCartModal } from "@/components/customer/ViewCartModal";
 import toast, { Toaster } from "react-hot-toast";
@@ -109,8 +109,8 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
               h={isMobile ? 25 : 45}
               alt="CtrlAltDelEat Logo"
             />
-            <Text className="table-number" fw={700} c="dark" size={isMobile ? "xs" : "md"}>
-                            Table #{tableNo}
+            <Text className="table-number" fw={700} size={isMobile ? "xs" : "md"}>
+              Table #{tableNo}
             </Text>
             <Select
               hiddenFrom="sm"
@@ -122,17 +122,17 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
               mr="md"
             />
           </Flex>
-          <Flex justify="flex-end" mr={20} columnGap="sm">
-            <ActionIcon
-              onClick={() => {
-                cartHandler.open();
-                openCartModal();
-              }}>
+          <Flex justify="flex-end" gap="sm">
+            <ActionIcon size="lg" onClick={() => {
+              cartHandler.open();
+              openCartModal();
+            }}>
               <ReaderIcon/>
             </ActionIcon>
-            <ActionIcon onClick={handleRequestForAssistance}>
+            <ActionIcon size="lg" onClick={handleRequestForAssistance}>
               <BellIcon/>
             </ActionIcon>
+            <ThemeToggle />
           </Flex>
         </div>
       </AppShell.Header>

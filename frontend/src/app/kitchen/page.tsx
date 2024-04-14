@@ -1,9 +1,9 @@
 "use client";
 
-import { AppShell, Burger, Image } from "@mantine/core";
+import { AppShell, Burger, Flex, Image } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import { KitchenMain } from "@/components";
+import { KitchenMain, ThemeToggle } from "@/components";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -48,19 +48,22 @@ export default function Kitchen() {
     <AppShell header={{ height: 60 }} padding="md">
       <AppShell.Header>
         <div className="navbar">
-          <Burger
-            className="burger"
-            opened={sidebarOpened}
-            onClick={toggle}
-            hiddenFrom="sm"
-            size="sm"
-          />
-          <Image
-            className="logo"
-            src="logo.svg"
-            h={45}
-            alt="CtrlAltDelEat Logo"
-          />
+          <Flex className="w-100" align="center">
+            <Burger
+              className="burger"
+              opened={sidebarOpened}
+              onClick={toggle}
+              hiddenFrom="sm"
+              size="sm"
+            />
+            <Image
+              className="logo"
+              src="logo.svg"
+              h={45}
+              alt="CtrlAltDelEat Logo"
+            />
+          </Flex>
+          <ThemeToggle />
         </div>
       </AppShell.Header>
 
