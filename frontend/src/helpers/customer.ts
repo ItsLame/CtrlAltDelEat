@@ -9,7 +9,8 @@ export function mapToGroupedOrderItems(orderItemsView: orderHistoryView[]): grou
       cost: item.cost,
       id: item.id,
       itemName: item.itemName,
-      quantity: item.quantity
+      quantity: item.quantity,
+      status: item.status
     };
 
     if (group === undefined) {

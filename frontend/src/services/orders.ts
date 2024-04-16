@@ -1,7 +1,7 @@
 import { addToCartRequest, cartView, orderHistoryView } from "@/models";
-import { failedDeleteError, failedGetError, failedPostError } from "@/helpers";
+import { failedGetError, failedPostError, failedPutError, failedDeleteError } from "@/helpers";
 import { apiUrlBase } from "@/constants";
-import { getHeaders } from "@/services/auth";
+import { getHeaders } from "@/services";
 
 const apiBase = `${apiUrlBase}/api/orders`;
 
@@ -33,7 +33,7 @@ export async function orderCart(tableNo: number): Promise<number> {
     method: "PUT",
   });
 
-  if (!res.ok) failedGetError();
+  if (!res.ok) failedPutError();
   return res.status;
 }
 

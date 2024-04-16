@@ -73,6 +73,9 @@ const OrderItem = ({ item }: OrderItemProps) => (
         <Text size="sm" w="bold">{item.itemName}</Text>
         <Text size="sm" c="gray">{item.alterations}</Text>
       </Flex>
+      <Flex direction={"column"} style={{ flex: 1 }}>
+        <Text size="sm">status: {item.status}</Text>
+      </Flex>
       <Flex direction={"column"} justify="start" style={{ flex: 1 }}>
         <Text size="sm">Item cost: ${item.cost}</Text>
         <Text size="sm">Amount: {item.quantity}</Text>
