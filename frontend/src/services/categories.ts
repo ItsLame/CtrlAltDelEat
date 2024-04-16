@@ -1,15 +1,15 @@
 import { apiUrlBase } from "@/constants";
 import { getHeaders } from "@/services";
 import { failedDeleteError, failedGetError, failedPostError } from "@/helpers";
-import { addCategoryRequest, deleteCategoryRequest, editCategoryRequest } from "@/models";
+import { addCategoryRequest, category, deleteCategoryRequest, editCategoryRequest } from "@/models";
 
 const apiUrl = `${apiUrlBase}/api/menu/categories/`;
 
-export async function getCategories() {
+export async function getCategories(): Promise<category[]> {
   const endpoint = `${apiUrl}`;
   const res = await fetch(endpoint);
 
-  if(!res.ok) failedGetError();
+  if (!res.ok) failedGetError();
   return res.json();
 };
 
@@ -23,7 +23,7 @@ export async function addCategory(request: addCategoryRequest) {
     body: JSON.stringify(req)
   });
 
-  if(!res.ok && res.status !== 400 && res.status !== 401) failedPostError();
+  if (!res.ok && res.status !== 400 && res.status !== 401) failedPostError();
   return res.status;
 };
 
@@ -37,7 +37,7 @@ export async function editCategory(request: editCategoryRequest) {
     body: JSON.stringify({ category_name, position })
   });
 
-  if(!res.ok && res.status !== 400 && res.status !== 401) failedPostError();
+  if (!res.ok && res.status !== 400 && res.status !== 401) failedPostError();
   return res.status;
 };
 
@@ -50,6 +50,6 @@ export async function deleteCategory(request: deleteCategoryRequest) {
     headers: headersConfig
   });
 
-  if(!res.ok) failedDeleteError();
+  if (!res.ok) failedDeleteError();
   return res.status;
 };
