@@ -20,6 +20,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { imagePlaceholder } from "@/constants";
 import { generateBill, orderCart, removeFromCart } from "@/services";
 import { cartView, HistoryProps, itemView, menuItems, OrderItemProps, statusType, ViewCartModalProps } from "@/models";
+import { useEffect } from "react";
 
 const handleRemoveItem = (itemNo: number, action: () => void) => {
   removeFromCart(itemNo).then((res) => {
@@ -168,6 +169,12 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
     });
   };
 
+  /* Fetches every 2 seconds. Uncomment for demo. */
+  useEffect(() => {
+    const intervalId = setInterval(viewCartProps.updateOrderItems, 2000);
+    return () => clearInterval(intervalId);
+  }, [viewCartProps.updateOrderItems]);
+
   return (
     <Modal
       opened={viewCartProps.isOpen}
@@ -179,7 +186,7 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
           <Tabs.Tab value="cart">
             Cart
           </Tabs.Tab>
-          <Tabs.Tab value="orders" onClick={viewCartProps.updateOrderItems}>
+          <Tabs.Tab value="orders">
             Orders
           </Tabs.Tab>
         </Tabs.List>
