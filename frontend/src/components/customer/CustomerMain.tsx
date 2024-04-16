@@ -21,7 +21,7 @@ export function CustomerMain({ category, items, onMenuItemSelect, onViewMenuItem
             <Stack justify="space-between" gap={0}>
               <Stack className="w-100" gap={5}>
                 <Text size="lg" c="blue" fw={700} lineClamp={1}>{item.menuitem_name}</Text>
-                <Text size="sm" c="dimmed" lineClamp={2}>{item.description}</Text>
+                <Text size="sm" c="dimmed" lineClamp={2} h={45}>{item.description}</Text>
               </Stack>
               <Text size="md">${item.cost}</Text>
             </Stack>
