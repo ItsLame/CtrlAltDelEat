@@ -1,4 +1,5 @@
 import { menuItems } from "./menuitems";
+import { statusType } from "./waitAssistance";
 
 export interface addToCartRequest {
     tableNumber: number;
@@ -13,7 +14,7 @@ export interface cartView {
     tableNumber: number;
     itemName: string;
     cost: number;
-    status: string;
+    status: statusType;
     alterations: string;
     timestamp: string;
     quantity: number;
@@ -35,7 +36,7 @@ export interface orderHistoryView {
     tableNumber: number;
     itemName: string;
     cost: number;
-    status: string;
+    status: statusType;
     alterations: string;
     timestamp: string;
     quantity: number;
@@ -48,7 +49,7 @@ export interface itemView {
     cost: number;
     alterations: string;
     quantity: number;
-    status: string;
+    status: statusType;
 }
 
 export interface groupedOrders {

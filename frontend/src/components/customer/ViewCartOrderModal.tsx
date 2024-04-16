@@ -2,6 +2,7 @@
 
 import {
   ActionIcon,
+  Badge,
   Blockquote,
   Button,
   Card, Collapse,
@@ -18,7 +19,7 @@ import { useDisclosure } from "@mantine/hooks";
 
 import { imagePlaceholder } from "@/constants";
 import { generateBill, orderCart, removeFromCart } from "@/services";
-import { cartView, HistoryProps, itemView, menuItems, OrderItemProps, ViewCartModalProps } from "@/models";
+import { cartView, HistoryProps, itemView, menuItems, OrderItemProps, statusType, ViewCartModalProps } from "@/models";
 
 const handleRemoveItem = (itemNo: number, action: () => void) => {
   removeFromCart(itemNo).then((res) => {
@@ -38,7 +39,7 @@ const generateMenuItem = (item: cartView, key: number, itemList: menuItems[], ac
   const itemImage = itemList.find((mi) => mi.menuitem_name === item.itemName)?.image;
 
   return (
-    <Card padding="lg" radius="md" withBorder={true} key={key}>
+    <Card key={key} padding="md" radius="md" withBorder>
       <Flex gap="sm">
         <Image
           src={itemImage}
@@ -49,43 +50,53 @@ const generateMenuItem = (item: cartView, key: number, itemList: menuItems[], ac
         />
 
         <Flex className="w-100" direction={"column"}>
-          <Text size="lg" c="blue" fw={700}>{item.itemName}</Text>
+          <Flex>
+            <Text className="w-100" size="lg" c="blue" fw={700}>{item.itemName}</Text>
+            <ActionIcon variant="light" size="xl" color="red">
+              <TrashIcon onClick={() => handleRemoveItem(item.id, action)}/>
+            </ActionIcon>
+          </Flex>
           <Text size="md">Quantity: {item.quantity}</Text>
-          <Blockquote p={0} pl="xs" c="dimmed" fs="italic">{item.alterations}</Blockquote>
-
           <Flex gap={5}>
             <Text size="md">${(item.cost * item.quantity).toFixed(2)}</Text>
             <Text c="dimmed">(${item.cost} x {item.quantity})</Text>
           </Flex>
-
+          <Blockquote p={0} pl="xs" c="dimmed" fs="italic">{item.alterations}</Blockquote>
         </Flex>
 
-        <ActionIcon variant="light" size="xl" color="red">
-          <TrashIcon onClick={() => handleRemoveItem(item.id, action)}/>
-        </ActionIcon>
       </Flex>
     </Card>
   );
 };
 
-const OrderItem = ({ item }: OrderItemProps) => (
-  <Card padding="lg" radius="md" withBorder>
-    <Flex direction={"row"} justify="space-between" style={{ width: "100%" }} gap={15}>
-      <Flex direction={"column"} style={{ flex: 1 }}>
-        <Text size="sm" w="bold">{item.itemName}</Text>
-        <Text size="sm" c="gray">{item.alterations}</Text>
+const OrderItem = ({ item }: OrderItemProps) => {
+  const statusBadgeColor = (itemStatus: statusType) => {
+    switch(itemStatus) {
+    case statusType.received: return "gray";
+    case statusType.prepared: return "yellow";
+    case statusType.serving: return "blue";
+    case statusType.served: return "green";
+    default: return "gray";
+    }
+  };
+
+  return (
+    <Card padding="sm" radius="md" withBorder>
+      <Flex direction={"row"} justify="space-between" style={{ width: "100%" }} gap={15}>
+        <Flex direction={"column"} style={{ flex: 1 }}>
+          <Text size="sm" fw="bold">{item.itemName}</Text>
+          <Text size="sm" c="dimmed" fs="italic" fz="sm">{item.alterations}</Text>
+        </Flex>
+        <Flex direction="column" align="flex-end" style={{ flex: 1 }}>
+          <Badge mb={5} color={statusBadgeColor(item.status)}>{item.status}</Badge>
+          <Text size="sm">Quantity: {item.quantity}</Text>
+          <Text size="sm" c="dimmed">(${item.cost} x {item.quantity})</Text>
+          <Text size="sm">${(item.quantity * item.cost).toFixed(2)} </Text>
+        </Flex>
       </Flex>
-      <Flex direction={"column"} style={{ flex: 1 }}>
-        <Text size="sm">status: {item.status}</Text>
-      </Flex>
-      <Flex direction={"column"} justify="start" style={{ flex: 1 }}>
-        <Text size="sm">Item cost: ${item.cost}</Text>
-        <Text size="sm">Amount: {item.quantity}</Text>
-        <Text size="sm">Total: ${(item.quantity * item.cost).toFixed(2)}</Text>
-      </Flex>
-    </Flex>
-  </Card>
-);
+    </Card>
+  );
+};
 
 const OrderHistoryItem = ({ groupedOrders, index }: HistoryProps) => {
   const [opened, { toggle }] = useDisclosure(false);
@@ -95,10 +106,10 @@ const OrderHistoryItem = ({ groupedOrders, index }: HistoryProps) => {
       <Card className={`order-list-toggle ${opened ? "selected" : ""}`} padding="lg" radius="md" shadow="sm" withBorder>
         <Flex direction={"row"} align={"center"} justify={"space-between"}>
           <Flex gap="md" align="center">
-            {opened ? <ChevronUpIcon /> : <ChevronDownIcon />}
-            <Text size="sm">Order number: {index + 1}</Text>
+            {opened ? <ChevronUpIcon width={20} height={20}/> : <ChevronDownIcon width={20} height={20}/>}
+            <Text size="md">Order number: {index + 1}</Text>
           </Flex>
-          <Text size="sm">${groupedOrders.totalCost}</Text>
+          <Text size="md">${groupedOrders.totalCost}</Text>
         </Flex>
       </Card>
       <Collapse in={opened}>
@@ -132,15 +143,14 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
   const generateTotalCartCost = () => {
     let totalCost = 0;
     for (let i = 0; i < viewCartProps.cartItems.length; i += 1) {
-      totalCost +=
-                viewCartProps.cartItems[i].cost * viewCartProps.cartItems[i].quantity;
+      totalCost += viewCartProps.cartItems[i].cost * viewCartProps.cartItems[i].quantity;
     }
-    return <Text inline={true}>Subtotal: ${totalCost.toFixed(2)}</Text>;
+    return <Text inline>Subtotal: ${totalCost.toFixed(2)}</Text>;
   };
 
   const generateTotalOrderCost = () => {
     const cost = viewCartProps.orderHistoryList.reduce((acc, item) => acc + item.totalCost, 0);
-    return <Text inline={true}>Subtotal: ${cost.toFixed(2)}</Text>;
+    return <Text inline>Subtotal: ${cost.toFixed(2)}</Text>;
   };
 
   const handlePayBill = () => {
@@ -149,14 +159,15 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
       case 200:
         viewCartProps.updateOrderItems();
         viewCartProps.onClose();
-        toast.success("Bill paid, have a good night!");
+        toast.success("Bill sent! Please approach the counter to finalize payment.", { duration: 5000 });
         break;
       default:
-        toast.error("failed to pay bill");
+        toast.error("Failed to request for bill");
         break;
       }
     });
   };
+
   return (
     <Modal
       opened={viewCartProps.isOpen}
@@ -175,11 +186,11 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
 
         <Tabs.Panel value="cart">
           <Flex direction={"column"} gap={"sm"}>
-            <ScrollArea.Autosize scrollbars={"y"} mah={550}>
+            <ScrollArea.Autosize scrollbars="y" mah={430}>
               {viewCartProps.cartItems.length >= 1 ? (
                 <Stack gap="xs">
                   {viewCartProps.cartItems
-                    ?.filter((item) => item.status == "in-cart")
+                    ?.filter((item) => item.status === statusType.inCart)
                     .map((i, k) => generateMenuItem(i, k, viewCartProps.menuItemList, viewCartProps.updateCart))
                   }
                 </Stack>
@@ -195,7 +206,7 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
 
         <Tabs.Panel value="orders">
           <Flex direction="column" gap="xs">
-            <ScrollArea.Autosize scrollbars="y" mah={550}>
+            <ScrollArea.Autosize scrollbars="y" mah={430}>
               {viewCartProps.orderHistoryList.length >= 1 ? (
                 <Stack pb="xs" gap="xs">
                   {viewCartProps.orderHistoryList.map((order, index) => (
