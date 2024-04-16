@@ -1,18 +1,14 @@
 "use client";
 
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { useEffect, useState } from "react";
-import { ActionIcon, AppShell, Flex, Image, Select, Text } from "@mantine/core";
-
-import { getCartStatus, getCategories, getMenuItems, getOrderHistory } from "@/services";
-import { cartView, category, groupedOrders, menuItems } from "@/models";
-import { CustomerSidebar } from "@/components/customer/CustomerSidebar";
-import { CustomerMain } from "@/components/customer/CustomerMain";
-import { ThemeToggle, ViewMenuItemModal } from "@/components";
-import { BellIcon, ReaderIcon } from "@radix-ui/react-icons";
-import { ViewCartOrderModal } from "@/components/customer/ViewCartOrderModal";
 import toast, { Toaster } from "react-hot-toast";
-import { requestAssistance } from "@/services/customer";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { ActionIcon, AppShell, Flex, Image, Select, Text } from "@mantine/core";
+import { BellIcon, ReaderIcon } from "@radix-ui/react-icons";
+
+import { getCartStatus, getCategories, getMenuItems, getOrderHistory, requestAssistance } from "@/services";
+import { cartView, category, groupedOrders, menuItems } from "@/models";
+import { ThemeToggle, ViewMenuItemModal, ViewCartOrderModal, CustomerSidebar, CustomerMain } from "@/components";
 import { mapToGroupedOrderItems } from "@/helpers";
 
 export default function Customer({ params: { tableNo } }: { params: { tableNo: number } }) {

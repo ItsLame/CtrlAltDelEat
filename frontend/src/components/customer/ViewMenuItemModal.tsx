@@ -19,6 +19,7 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
+import toast from "react-hot-toast";
 
 import {
   ViewMenuItemModalProps,
@@ -27,7 +28,6 @@ import {
 } from "@/models";
 import { imagePlaceholder } from "@/constants";
 import { addItemToCart } from "@/services";
-import toast from "react-hot-toast";
 
 export function ViewMenuItemModal({
   tableNo,
@@ -35,7 +35,7 @@ export function ViewMenuItemModal({
   isOpened,
   isLoading,
   onClose,
-                                      // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   onSubmit,
 }: ViewMenuItemModalProps) {
   const handlersRef = useRef<NumberInputHandlers>(null);

@@ -16,7 +16,7 @@ export default function Manager() {
   const router = useRouter();
   const isMobile = useMediaQuery("(max-width: 495px)");
 
-  const [sidebarOpened, { toggle }] = useDisclosure();
+  const [sidebarOpened, { toggle: toggleSidebar }] = useDisclosure();
   const [addMenuItemModalOpened, { open: openAddModal, close: closeAddModal }] = useDisclosure(false);
   const [editMenuItemModalOpened, { open: openEditModal, close: closeEditModal }] = useDisclosure(false);
   const [deleteMenuItemModalOpened, { open: openDeleteMenuItemModal, close: closeDeleteMenuItemModal }] = useDisclosure(false);
@@ -35,6 +35,7 @@ export default function Manager() {
 
   const handleSelectCategory = (category: category) => {
     setCategory(category);
+    toggleSidebar();
   };
 
   const handleSelectItem = (item: menuItems) => {
@@ -127,7 +128,7 @@ export default function Manager() {
             <Burger
               className="burger"
               opened={sidebarOpened}
-              onClick={toggle}
+              onClick={toggleSidebar}
               hiddenFrom="sm"
               size="sm"
             />

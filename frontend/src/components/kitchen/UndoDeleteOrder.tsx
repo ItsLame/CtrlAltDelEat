@@ -7,7 +7,7 @@ export function UndoDeleteOrder({ item, handleUndoClick }: UndoOrderProps) {
       <Flex align="center">
         <span className="undo-span">Order #{item.id} READY!</span>
         <Button
-          variant="light"
+          variant="filled"
           className="undo-button"
           color="red"
           onClick={handleUndoClick}

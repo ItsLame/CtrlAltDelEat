@@ -5,13 +5,24 @@ export const loginSchema = z.object({
 });
 
 export const categorySchema = z.object({
-  categoryName: z.string().refine((value) => /^[a-zA-Z ]{1,60}$$/.test(value ?? ""), "Must contain 1-60 alphabetical characters (spaces are allowed)"),
+  categoryName: z.string()
+    .refine((value) => /^[a-zA-Z ]{1,60}$/.test(value ?? ""), "Must contain 1-60 alphabetical characters (spaces are allowed)"),
 });
 
 export const menuItemSchema = z.object({
-  itemName: z.string().min(2, { message: "Name should have at least 2 letters" }),
-  itemPrice: z.number().min(0, { message: "Price can't be empty" }),
-  itemDescription: z.string().min(1, { message: "Description can't be empty" }),
+  itemName: z.string()
+    .min(2, { message: "Name should have at least 2 characters" })
+    .max(60, { message: "Name can't be longer than 60 characters" }),
+
+  itemPrice: z.number()
+    .min(0, { message: "Price can't be empty" })
+    .lte(100000, { message: "Price must be lesser than 100,000" })
+    .multipleOf(0.01, { message: "Price must only contain 2 decimal places" }),
+
+  itemDescription: z.string()
+    .min(1, { message: "Description can't be empty" })
+    .max(255, { message: "Description can't be longer than 255 characters" }),
+
   itemAvailable: z.boolean(),
   itemCategories: z.array(z.string()).min(1, { message: "Should at least pick 1 category" }),
   itemIngredients: z.array(z.string()).optional(),

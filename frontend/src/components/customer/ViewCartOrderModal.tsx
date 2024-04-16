@@ -1,6 +1,5 @@
 "use client";
 
-import { cartView, HistoryProps, itemView, OrderItemProps, ViewCartModalProps } from "@/models";
 import {
   ActionIcon,
   Button,
@@ -12,11 +11,13 @@ import {
   Stack, Tabs,
   Text, UnstyledButton,
 } from "@mantine/core";
-import { imagePlaceholder } from "@/constants";
 import { TrashIcon } from "@radix-ui/react-icons";
-import { generateBill, orderCart, removeFromCart } from "@/services";
 import toast from "react-hot-toast";
 import { useDisclosure } from "@mantine/hooks";
+
+import { imagePlaceholder } from "@/constants";
+import { generateBill, orderCart, removeFromCart } from "@/services";
+import { cartView, HistoryProps, itemView, OrderItemProps, ViewCartModalProps } from "@/models";
 
 const handleRemoveItem = (itemNo: number, action: () => void) => {
   removeFromCart(itemNo).then((res) => {

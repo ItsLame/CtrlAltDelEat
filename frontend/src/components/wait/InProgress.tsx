@@ -1,10 +1,9 @@
-import { assistRequests, inProgProps } from "@/models";
-import { Box, Button, Flex, Title } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { Badge, Box, Button, Card, Flex, Text, Title } from "@mantine/core";
+
+import { inProgProps, statusType } from "@/models";
 
 export function InProgress({
-  toAssistRequests,
-  toServeRequests,
+  allRequests,
   assistUndo,
   assistUpdate,
   serveUndo,
@@ -12,114 +11,103 @@ export function InProgress({
   refreshAssist,
   refreshServe,
 }: inProgProps) {
-  const [inProg, setInProg] = useState([] as assistRequests[]);
-
-  useEffect(() => {
-    setInProg(
-      toAssistRequests.filter((item) => item.request_assistance === true)
-    );
-  }, [toAssistRequests]);
 
   return (
-    <section className="wait-grid-item progress-grid ">
-      <Title order={1} m="md">
+    <Box className="appshell-h-100">
+      <Title order={2} my="xs">
         In Progress
       </Title>
-      <Flex
-        mih="90%"
-        mah="90%"
-        direction="column"
-        gap="sm"
-        align="flex-start"
-        justify="start"
-        className="progress-container"
-        p="md"
-        wrap="wrap"
-      >
-        {inProg.map((req) => (
-          <Flex
-            key={req.tableNumber}
-            direction="column"
-            className="wait-card"
-            w="25rem"
-            p="md"
-          >
-            <Title order={2} className="status assist">
-              Status : ASSIST
-            </Title>
-            <Title order={3} mt="sm" ta="center">
-              Table #{req.tableNumber}
-            </Title>
-            <Flex justify="space-evenly">
-              <Button
-                size="md"
-                w="45%"
-                mt="md"
-                onClick={() => assistUndo(req.tableNumber)}
-              >
-                Cancel
-              </Button>
-              <Button
-                size="md"
-                w="45%"
-                mt="md"
-                onClick={() => {
-                  assistUpdate(req.tableNumber);
-                  refreshAssist();
-                }}
-              >
-                Complete
-              </Button>
-            </Flex>
-          </Flex>
-        ))}
-        {toServeRequests.map((req) => (
-          <Flex
-            key={req.id}
-            direction="column"
-            className="wait-card"
-            w="25rem"
-            p="md"
-          >
-            <Title order={3} className="status serve" mb="sm">
-              Status : SERVE
-            </Title>
 
-            <Flex justify="space-between" mb="sm">
-              <Box>
-                <Title order={3}>Table #{req.tableNumber}</Title>
-                <Title order={3}>Table #{req.id}</Title>
-              </Box>
-              <Title order={3} c="red">
-                Ready on {req.timestamp.slice(0, req.timestamp.indexOf("."))}
-              </Title>
-            </Flex>
+      <Box className="progress-container">
+        <Flex
+          className="prog-align-content bordered br-10"
+          direction={{ base: "row", sm: "row", md: "column" }}
+          gap="sm"
+          justify="start"
+          h={{ md: "100%" }}
+          wrap="wrap"
+          p="sm"
+        >
+          {allRequests.length > 0 ? allRequests.map ((req, key) => (
+            <Card
+              key={key}
+              className="prog-item-card w-100"
+              radius="md"
+              shadow="sm"
+              withBorder
+            >
+              {req.reqType === statusType.assist ? (
+                <>
+                  <Badge color="yellow" size="xl" fullWidth>Status : ASSIST</Badge>
+                  <Flex py="sm" justify="space-between" className="order-first-line w-100" >
+                    <Text size="md">Table No: {req.tableNumber}</Text>
+                    <Text size="md" c="red">
+                      Requested on: {req.timestamp.slice(0, req.timestamp.indexOf("."))}
+                    </Text>
+                  </Flex>
 
-            <Title order={3}>
-              {" "}
-              {req.quantity} x {req.itemName}
-            </Title>
+                  <Flex className="w-100" gap="sm">
+                    <Button
+                      fullWidth
+                      onClick={() => assistUndo(req.tableNumber)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      fullWidth
+                      onClick={() => {
+                        assistUpdate(req.tableNumber);
+                        refreshAssist();
+                      }}
+                    >
+                      Complete
+                    </Button>
+                  </Flex>
+                </>
+              ) : (
+                <>
+                  <Badge color="green" size="xl" fullWidth >Status : SERVE</Badge>
+                  <Flex pt="sm" justify="space-between" className="order-first-line w-100" >
+                    <Text size="md">Table No: {req.tableNumber}</Text>
+                    <Text size="md" c="red">
+                      Ready on: {req.timestamp.slice(0, req.timestamp.indexOf("."))}
+                    </Text>
+                  </Flex>
 
-            <Flex justify="space-evenly">
-              <Button size="md" w="45%" mt="md" onClick={() => serveUndo(req)}>
-                Cancel
-              </Button>
+                  <Text size="md" mb="xs">Item No: {req.itemID}</Text>
 
-              <Button
-                size="md"
-                w="45%"
-                mt="md"
-                onClick={() => {
-                  serveUpdate(req);
-                  refreshServe();
-                }}
-              >
-                Complete
-              </Button>
-            </Flex>
-          </Flex>
-        ))}
-      </Flex>
-    </section>
+                  <Box className="order-items" p="xs" mb="sm">
+                    <Flex justify="space-between">
+                      <Title className="item-name" order={5} textWrap="balance">{req.itemName}</Title>
+                      <Title order={4}>x {req.quantity}</Title>
+                    </Flex>
+                    {req.alterations !== "" && <Text size="md" c="dimmed" className="alterations">{req.alterations}</Text>}
+                  </Box>
+
+                  <Flex className="w-100" gap="sm">
+                    <Button
+                      fullWidth
+                      onClick={() => serveUndo(req.itemID)}
+                    >
+                      Cancel
+                    </Button>
+
+                    <Button
+                      fullWidth
+                      onClick={() => {
+                        serveUpdate(req.itemID, req.tableNumber);
+                        refreshServe();
+                      }}
+                    >
+                      Complete
+                    </Button>
+                  </Flex>
+                </>
+              )}
+            </Card>
+          )): <Text m="md" c="dimmed">No items serving or tables assisting right now.</Text>}
+        </Flex>
+      </Box>
+    </Box>
   );
 }

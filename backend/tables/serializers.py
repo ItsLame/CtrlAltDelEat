@@ -7,7 +7,7 @@ from .models import Tables
 class TableAssistanceRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tables
-        fields = ['tableNumber', 'request_assistance']
+        fields = ['tableNumber', 'request_assistance', 'timestamp']
 
 class TableAssistedSerializer(serializers.ModelSerializer):
     class Meta:

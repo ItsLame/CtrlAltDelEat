@@ -25,10 +25,3 @@ export interface UndoOrderProps {
   item: Items;
   handleUndoClick: () => void;
 }
-
-export interface changeItemStatus {
-  tableNumber: number;
-  itemName: string;
-  cost: number;
-  status: string;
-}

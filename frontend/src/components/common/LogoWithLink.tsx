@@ -10,7 +10,7 @@ export const LogoWithLink = () => {
 
   return (
     <Image
-      className="logo pointer"
+      className="logo link pointer"
       src="logo.svg"
       h={45}
       alt="CtrlAltDelEat Logo"
