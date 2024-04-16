@@ -13,7 +13,7 @@
        "model":"auth.group",
        "pk":2,
        "fields":{
-          "name":"WaitStaff",
+          "name":"KitchenStaff",
           "permissions":[
              
           ]
@@ -23,7 +23,7 @@
        "model":"auth.group",
        "pk":3,
        "fields":{
-          "name":"KitchenStaff",
+          "name":"WaitStaff",
           "permissions":[
              
           ]

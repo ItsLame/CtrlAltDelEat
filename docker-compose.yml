@@ -12,6 +12,7 @@ services:
             sh -c "python3 manage.py makemigrations 
             && python3 manage.py migrate 
             && python manage.py loaddata fixtures/initial_users 
+            && python manage.py loaddata fixtures/initial_menu_images
             && python3 manage.py runserver 0.0.0.0:4000"
         volumes:
             - .:/code
