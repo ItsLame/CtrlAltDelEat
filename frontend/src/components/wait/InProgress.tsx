@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Card, Flex, Text, Title } from "@mantine/core";
+import { Badge, Blockquote, Box, Button, Card, Flex, Text, Title } from "@mantine/core";
 
 import { inProgProps, statusType } from "@/models";
 
@@ -81,7 +81,9 @@ export function InProgress({
                       <Title className="item-name" order={5} textWrap="balance">{req.itemName}</Title>
                       <Title order={4}>x {req.quantity}</Title>
                     </Flex>
-                    {req.alterations !== "" && <Text size="md" c="dimmed" className="alterations">{req.alterations}</Text>}
+                    {req.alterations !== "" &&
+                      <Blockquote p={0} pl="xs" c="dimmed" fs="italic">{req.alterations}</Blockquote>
+                    }
                   </Box>
 
                   <Flex className="w-100" gap="sm">

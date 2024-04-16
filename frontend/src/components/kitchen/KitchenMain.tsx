@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Card, Flex, Text, Title } from "@mantine/core";
+import { Blockquote, Box, Card, Flex, Text, Title } from "@mantine/core";
 import toast from "react-hot-toast";
 
 import { UndoDeleteOrder } from "@/components";
@@ -98,7 +98,7 @@ export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
                 <Title order={4}>x {singleItem.quantity}</Title>
               </Flex>
 
-              {singleItem.alterations != "" && <Text size="md" c="dimmed" className="alterations">{singleItem.alterations}</Text>}
+              {singleItem.alterations != "" && <Blockquote p={0} pl="xs" c="dimmed" fs="italic">{singleItem.alterations}</Blockquote>}
             </Box>
           </Card>
         ))) : <Text p="md" c="dimmed">No items ordered yet.</Text>}

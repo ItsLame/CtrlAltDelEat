@@ -194,6 +194,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         updateCart={cartHandler.open}
         orderHistoryList={orderHistory}
         updateOrderItems={ordersHandler.open}
+        menuItemList={menuItemList}
       />
     </AppShell>
   );

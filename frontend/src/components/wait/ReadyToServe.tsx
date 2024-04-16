@@ -1,5 +1,5 @@
 import { serveProps } from "@/models";
-import { Button, Card, Text, Flex, Title, Box, ActionIcon } from "@mantine/core";
+import { Button, Card, Text, Flex, Title, Box, ActionIcon, Blockquote } from "@mantine/core";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
@@ -41,8 +41,9 @@ export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) 
                     <Title className="item-name" order={5} textWrap="balance">{allRequests[serveIndex].itemName}</Title>
                     <Title order={4}>x {allRequests[serveIndex].quantity}</Title>
                   </Flex>
-
-                  {allRequests[serveIndex].alterations !== "" && <Text size="md" c="dimmed" className="alterations">{allRequests[serveIndex].alterations}</Text>}
+                  {allRequests[serveIndex].alterations !== "" &&
+                    <Blockquote p={0} pl="xs" c="dimmed" fs="italic">{allRequests[serveIndex].alterations}</Blockquote>
+                  }
                 </Box>
               </Card>
             </Flex>

@@ -2,6 +2,7 @@
 
 import {
   ActionIcon,
+  Blockquote,
   Button,
   Card, Collapse,
   Flex,
@@ -17,7 +18,7 @@ import { useDisclosure } from "@mantine/hooks";
 
 import { imagePlaceholder } from "@/constants";
 import { generateBill, orderCart, removeFromCart } from "@/services";
-import { cartView, HistoryProps, itemView, OrderItemProps, ViewCartModalProps } from "@/models";
+import { cartView, HistoryProps, itemView, menuItems, OrderItemProps, ViewCartModalProps } from "@/models";
 
 const handleRemoveItem = (itemNo: number, action: () => void) => {
   removeFromCart(itemNo).then((res) => {
@@ -33,38 +34,39 @@ const handleRemoveItem = (itemNo: number, action: () => void) => {
   });
 };
 
-const generateMenuItem = (item: cartView, key: number, action: () => void) => (
-  <Card padding="lg" radius="md" withBorder={true} key={key}>
-    <Flex gap={15}>
-      <Flex w={100}>
+const generateMenuItem = (item: cartView, key: number, itemList: menuItems[], action: () => void) => {
+  const itemImage = itemList.find((mi) => mi.menuitem_name === item.itemName)?.image;
+
+  return (
+    <Card padding="lg" radius="md" withBorder={true} key={key}>
+      <Flex gap="sm">
         <Image
-          src={null}
+          src={itemImage}
           alt={`A picture of ${item.itemName}`}
           fallbackSrc={imagePlaceholder}
+          mah={80}
+          miw={80}
         />
-      </Flex>
-      <Flex className="w-100" direction={"column"}>
-        <Flex direction={"row"} justify="space-between">
-          <Text size="lg" c="blue" fw={700}>
-            {item.itemName}
-          </Text>
-          <ActionIcon variant="light" size={"lg"} color="red">
-            <TrashIcon scale={2} onClick={() => handleRemoveItem(item.id, action)}/>
-          </ActionIcon>
+
+        <Flex className="w-100" direction={"column"}>
+          <Text size="lg" c="blue" fw={700}>{item.itemName}</Text>
+          <Text size="md">Quantity: {item.quantity}</Text>
+          <Blockquote p={0} pl="xs" c="dimmed" fs="italic">{item.alterations}</Blockquote>
+
+          <Flex gap={5}>
+            <Text size="md">${(item.cost * item.quantity).toFixed(2)}</Text>
+            <Text c="dimmed">(${item.cost} x {item.quantity})</Text>
+          </Flex>
+
         </Flex>
 
-        <Text size="sm" c="dimmed">
-          {item.alterations}
-        </Text>
-        <Text size="md">Quantity: {item.quantity}</Text>
-        <Flex gap={5}>
-          <Text size="md">${(item.cost * item.quantity).toFixed(2)}</Text>
-          <Text c="dimmed">(${item.cost} x {item.quantity})</Text>
-        </Flex>
+        <ActionIcon variant="light" size="xl" color="red">
+          <TrashIcon onClick={() => handleRemoveItem(item.id, action)}/>
+        </ActionIcon>
       </Flex>
-    </Flex>
-  </Card>
-);
+    </Card>
+  );
+};
 
 const OrderItem = ({ item }: OrderItemProps) => (
   <Card padding="lg" radius="md" withBorder>
@@ -178,10 +180,10 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
                 <Stack gap="xs">
                   {viewCartProps.cartItems
                     ?.filter((item) => item.status == "in-cart")
-                    .map((i, k) => generateMenuItem(i, k, viewCartProps.updateCart))}
+                    .map((i, k) => generateMenuItem(i, k, viewCartProps.menuItemList, viewCartProps.updateCart))
+                  }
                 </Stack>
-              ): <Text c="dimmed">Cart is empty.</Text>
-              }
+              ): <Text c="dimmed">Cart is empty.</Text>}
 
             </ScrollArea.Autosize>
             <Flex align={"center"} direction={"row"} justify={"space-between"}>
@@ -200,13 +202,12 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
                     <OrderHistoryItem groupedOrders={order} index={index} key={index}/>
                   ))}
                 </Stack>
-              ): <Text c="dimmed">Order history is empty.</Text>
-              }
+              ): <Text c="dimmed">Order history is empty.</Text>}
             </ScrollArea.Autosize>
 
             <Flex align={"center"} direction={"row"} justify={"space-between"}>
               {generateTotalOrderCost()}
-              <Button onClick={handlePayBill} px="xl" disabled={viewCartProps.orderHistoryList.length <= 0}>Pay Bill</Button>
+              <Button onClick={handlePayBill} px="xl" color="green" disabled={viewCartProps.orderHistoryList.length <= 0}>Pay Bill</Button>
             </Flex>
           </Flex>
         </Tabs.Panel>

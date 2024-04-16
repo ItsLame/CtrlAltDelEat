@@ -1,3 +1,5 @@
+import { menuItems } from "./menuitems";
+
 export interface addToCartRequest {
     tableNumber: number;
     itemName: string;
@@ -20,6 +22,7 @@ export interface cartView {
 export interface ViewCartModalProps {
     cartItems: cartView[];
     orderHistoryList: groupedOrders[];
+    menuItemList: menuItems[]
     tableNo: number;
     isOpen: boolean;
     onClose: () => void;
