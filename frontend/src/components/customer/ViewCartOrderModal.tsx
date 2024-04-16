@@ -63,7 +63,6 @@ const generateMenuItem = (item: cartView, key: number, itemList: menuItems[], ac
           </Flex>
           <Blockquote p={0} pl="xs" c="dimmed" fs="italic">{item.alterations}</Blockquote>
         </Flex>
-
       </Flex>
     </Card>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   Flex,
   LoadingOverlay,
@@ -23,8 +23,8 @@ import toast from "react-hot-toast";
 
 import {
   ViewMenuItemModalProps,
-  menuItemSchema,
   addToCartRequest,
+  orderItemSchema,
 } from "@/models";
 import { imagePlaceholder } from "@/constants";
 import { addItemToCart } from "@/services";
@@ -41,12 +41,8 @@ export function ViewMenuItemModal({
   const handlersRef = useRef<NumberInputHandlers>(null);
 
   const form = useForm({
-    validate: zodResolver(menuItemSchema),
+    validate: zodResolver(orderItemSchema),
     validateInputOnChange: true,
-    initialValues: {
-      itemQuantity: 1,
-      itemOptionalRequest: "",
-    },
   });
 
   const handleSubmit = () => {
@@ -56,7 +52,7 @@ export function ViewMenuItemModal({
       cost: menuItem.cost,
       tableNumber: tableNo,
       quantity: form.values.itemQuantity,
-      alterations: form.values.itemOptionalRequest,
+      alterations: form.values.itemOptionalRequest.trim(),
     };
 
     addItemToCart(menu_item_request).then((res) => {
@@ -74,17 +70,22 @@ export function ViewMenuItemModal({
     });
   };
 
-  const handleAddMenuItem = () => {
-    const _cleanedUpMenuItemFields = {
-      quantity: form.values.itemQuantity,
-      optionalRequest: form.values.itemOptionalRequest.trim(),
-    };
-  };
-
   const handleClear = () => {
     form.reset();
     onClose();
   };
+
+  const initForm = () => {
+    form.setValues({
+      itemQuantity: 1,
+      itemOptionalRequest: "",
+    });
+  };
+
+  useEffect(() => {
+    isOpened && initForm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpened]);
 
   return (
     <Modal
@@ -97,7 +98,7 @@ export function ViewMenuItemModal({
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          !form.validate().hasErrors && handleAddMenuItem();
+          !form.validate().hasErrors && handleSubmit();
           !form.validate().hasErrors && handleClear();
         }}
       >
@@ -127,7 +128,9 @@ export function ViewMenuItemModal({
           <Textarea
             label="Optional requests"
             placeholder="e.g., less spicy, no tomato"
+            defaultValue={form.values?.itemDescription}
             onChange={(e) => form.setFieldValue("itemOptionalRequest", e.target.value)}
+            error={form.errors?.itemOptionalRequest}
           />
         </Stack>
 
@@ -144,9 +147,10 @@ export function ViewMenuItemModal({
             <NumberInput
               w={50}
               min={1}
-              defaultValue={1}
-              onChange={(value) => form.setFieldValue("itemQuantity", value as number)}
+              defaultValue={form.values?.itemQuantity}
+              onChange={(value) => form.setFieldValue("itemQuantity", +value as number)}
               handlersRef={handlersRef}
+              error={form.errors.itemQuantity ? true : false}
               hideControls
             />
             <ActionIcon
@@ -158,10 +162,11 @@ export function ViewMenuItemModal({
               <PlusIcon/>
             </ActionIcon>
           </Flex>
-          <Button type="submit" onClick={handleSubmit}>
-                        Add to Cart
+          <Button type="submit">
+            Add to Cart
           </Button>
         </Group>
+        <Text size="xs" c="red">{form.errors.itemQuantity}</Text>
       </form>
     </Modal>
   );
