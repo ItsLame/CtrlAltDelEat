@@ -85,11 +85,11 @@ export function ManagerMainHeader ({ category, onRefresh, onAddMenuItem, onEditC
                         type="submit"
                         disabled={form.values?.categoryName === category.category_name || form.errors?.categoryName ? true : false}
                       >
-                        <CheckIcon />
+                        <CheckIcon height={20} width={20}/>
                       </ActionIcon>
                     )}
                   />
-                  <Button variant="subtle" color="gray" onClick={toggleEditCategory}>Cancel</Button>
+                  <Button variant="outline" color="gray" onClick={toggleEditCategory}>Cancel</Button>
                 </Group>
               </form>
             )
