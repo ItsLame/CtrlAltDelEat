@@ -216,7 +216,7 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
             <ScrollArea.Autosize scrollbars="y" mah={430}>
               {viewCartProps.orderHistoryList.length >= 1 ? (
                 <Stack pb="xs" gap="xs">
-                  {viewCartProps.orderHistoryList.map((order, index) => (
+                  {viewCartProps.orderHistoryList.sort((a, b) => a.timestamp > b.timestamp ? 1 : -1).map((order, index) => (
                     <OrderHistoryItem groupedOrders={order} index={index} key={index}/>
                   ))}
                 </Stack>
