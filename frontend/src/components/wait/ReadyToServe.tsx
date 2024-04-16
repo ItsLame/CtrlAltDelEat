@@ -15,7 +15,7 @@ export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) 
         Ready To Be Served
       </Title>
 
-      <Box >
+      <Box>
         {allRequests.length > 0 ? (
           <Flex direction="column" justify="space-between" className="">
             <Flex direction="column" justify="start" >

@@ -74,7 +74,9 @@ export default function Wait() {
 
   useEffect(() => {
     if (assistLock.current) {
-      const tableToAssist = custAssistReqs.filter((item) => item.request_assistance &&
+      const tableToAssist = custAssistReqs
+        .sort((a, b) => a.timestamp > b.timestamp ? 1 : -1)
+        .filter((item) => item.request_assistance &&
         !allInProgress.some((i) => item.tableNumber === i.tableNumber && i.reqType === statusType.assist));
       setToAssist(tableToAssist);
       assistLock.current = false;
@@ -87,8 +89,10 @@ export default function Wait() {
 
   useEffect(() => {
     if (serveLock.current) {
-      let filteredArray = serveItemsReqs.filter((item1) => !allInProgress.some((item2) => item1.id === item2.itemID));
-      setToServe(filteredArray);
+      let orderToServe = serveItemsReqs
+        .sort((a, b) => a.timestamp > b.timestamp ? 1 : -1)
+        .filter((item1) => !allInProgress.some((item2) => item1.id === item2.itemID));
+      setToServe(orderToServe);
       serveLock.current = false;
     }
   }, [allInProgress, serveItemsReqs]);

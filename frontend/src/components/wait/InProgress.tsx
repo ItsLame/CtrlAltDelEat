@@ -38,7 +38,7 @@ export function InProgress({
             >
               {req.reqType === statusType.assist ? (
                 <>
-                  <Badge color="yellow" size="xl" fullWidth>Status : ASSIST</Badge>
+                  <Badge color="grape" size="xl" fullWidth>Status: ASSISTING</Badge>
                   <Flex py="sm" justify="space-between" className="order-first-line w-100" >
                     <Text size="md">Table No: {req.tableNumber}</Text>
                     <Text size="md" c="red">
@@ -49,6 +49,8 @@ export function InProgress({
                   <Flex className="w-100" gap="sm">
                     <Button
                       fullWidth
+                      variant="outline"
+                      color="gray"
                       onClick={() => assistUndo(req.tableNumber)}
                     >
                       Cancel
@@ -66,7 +68,7 @@ export function InProgress({
                 </>
               ) : (
                 <>
-                  <Badge color="green" size="xl" fullWidth >Status : SERVE</Badge>
+                  <Badge color="green" size="xl" fullWidth>Status: SERVING</Badge>
                   <Flex pt="sm" justify="space-between" className="order-first-line w-100" >
                     <Text size="md">Table No: {req.tableNumber}</Text>
                     <Text size="md" c="red">
@@ -89,6 +91,8 @@ export function InProgress({
                   <Flex className="w-100" gap="sm">
                     <Button
                       fullWidth
+                      variant="outline"
+                      color="gray"
                       onClick={() => serveUndo(req.itemID)}
                     >
                       Cancel
