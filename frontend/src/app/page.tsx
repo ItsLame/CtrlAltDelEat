@@ -17,7 +17,7 @@ export default function HomePage() {
   const [tableNo, setTableNo] = useState(1);
 
   const [isLoginLoading, setLoginLoading] = useState(true);
-  const [isLogoAnimated, setLogoAnimated] = useState(false);
+  const [isLogoAnimated, setLogoAnimated] = useState(true);
 
   const handleSuperLogin = () => {
     setLoginLoading(true);
@@ -59,7 +59,10 @@ export default function HomePage() {
           </Flex>
           <Flex className="w-100" justify="space-between" align="center">
             <Text>Turn {isLogoAnimated ? "Off" : "On"} Logo Flicker</Text>
-            <ActionIcon color="grape" variant="light" radius="xl" size="lg" onClick={() => setLogoAnimated(prev => !prev)}>
+            <ActionIcon color="grape" variant="light" radius="xl" size="lg"
+              onClick={() => setLogoAnimated(prev => !prev)}
+              aria-label="Toggle logo flicker animation"
+            >
               {isLogoAnimated ? <EyeClosedIcon /> : <EyeOpenIcon />}
             </ActionIcon>
           </Flex>
@@ -69,24 +72,27 @@ export default function HomePage() {
           Navigation
         </Title>
         <Stack className="root-navigation" gap={5} align="center" w={200}>
-          <Link href={siteRoute.manager}>
-            <Button>Manager</Button>
+          <Link href={siteRoute.manager} aria-label="Press enter to navigate to manager page">
+            <Button tabIndex={-1}>Manager</Button>
           </Link>
-          <Link href={siteRoute.kitchen}>
-            <Button>Kitchen</Button>
+          <Link href={siteRoute.kitchen} aria-label="Press enter to navigate to kitchen staff page">
+            <Button tabIndex={-1}>Kitchen</Button>
           </Link>
-          <Link href={siteRoute.wait}>
-            <Button>Wait Staff</Button>
+          <Link href={siteRoute.wait} aria-label="Press enter to navigate to wait staff page">
+            <Button tabIndex={-1}>Wait Staff</Button>
           </Link>
           <Flex gap={10}>
             <NumberInput
               defaultValue={1}
               w={100}
               min={1}
+              allowNegative={false}
+              allowDecimal={false}
               onChange={(e) => setTableNo(e as number)}
+              aria-label="Enter table number for customer"
             />
-            <Link href={`${siteRoute.customer}/${tableNo}`}>
-              <Button disabled={tableNo <= 0 ? true : false}>Customer</Button>
+            <Link href={`${siteRoute.customer}/${tableNo}`} aria-label="Press enter to navigate to wait staff page">
+              <Button tabIndex={-1} disabled={tableNo <= 0 ? true : false}>Customer</Button>
             </Link>
           </Flex>
         </Stack>

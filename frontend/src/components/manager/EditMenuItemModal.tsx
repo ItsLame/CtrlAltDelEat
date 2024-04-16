@@ -157,6 +157,7 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
               withAsterisk
               label="Item price"
               min={0}
+              allowNegative={false}
               error={form.errors?.itemPrice}
               defaultValue={form.values?.itemPrice as number}
               onChange={(e) => {form.setFieldValue("itemPrice", e as number);}}

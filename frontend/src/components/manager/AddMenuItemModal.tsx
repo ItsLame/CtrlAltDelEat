@@ -144,6 +144,7 @@ export function AddMenuItemModal({ category, categoryList, menuItemList, isOpene
               min={0}
               error={form.errors?.itemPrice}
               defaultValue={form.values?.itemPrice}
+              allowNegative={false}
               onChange={(e) => {form.setFieldValue("itemPrice", e as number);}}
             />
             <Textarea

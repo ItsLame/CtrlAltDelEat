@@ -148,6 +148,8 @@ export function ViewMenuItemModal({
             <NumberInput
               w={50}
               min={1}
+              allowNegative={false}
+              allowDecimal={false}
               defaultValue={form.values?.itemQuantity}
               onChange={(value) => form.setFieldValue("itemQuantity", +value as number)}
               handlersRef={handlersRef}
