@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { ActionIcon, AppShell, Card, Flex, Image, Paper, Select, Text } from "@mantine/core";
+import { ActionIcon, AppShell, Flex, Image, Paper, Select, Text } from "@mantine/core";
 import { BellIcon, ReaderIcon } from "@radix-ui/react-icons";
 
 import { getCartStatus, getCategories, getMenuItems, getOrderHistory, requestAssistance } from "@/services";

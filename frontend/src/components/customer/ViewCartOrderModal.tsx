@@ -71,7 +71,7 @@ const generateMenuItem = (item: cartView, key: number, itemList: menuItems[], ac
 
 const OrderItem = ({ item }: OrderItemProps) => {
   const statusBadgeColor = (itemStatus: statusType) => {
-    switch(itemStatus) {
+    switch (itemStatus) {
     case statusType.received: return "gray";
     case statusType.prepared: return "yellow";
     case statusType.serving: return "blue";
