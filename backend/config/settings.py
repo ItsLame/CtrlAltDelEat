@@ -30,7 +30,7 @@ SECRET_KEY = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1""localhost", "127.0.0.1", "api.ctrlaltdeleat.com"]
+ALLOWED_HOSTS = ["localhost", "170.64.249.120", "127.0.0.1", "api.ctrlaltdeleat.com"]
 
 # Application definition
 
@@ -100,6 +100,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:3000',
     'http://127.0.0.1:4000',
     'http://api.ctrlaltdeleat.com',
+    'http://170.64.249.120'
 ]
 
 # CORS_ORIGIN_ALLOW_ALL = True
@@ -184,7 +185,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Australia/Sydney'
 
 USE_I18N = True
 
