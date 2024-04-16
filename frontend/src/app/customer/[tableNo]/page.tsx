@@ -4,15 +4,16 @@ import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { ActionIcon, AppShell, Flex, Image, Select, Text } from "@mantine/core";
 
-import { getCartStatus, getCategories, getMenuItems } from "@/services";
-import { cartView, category, menuItems } from "@/models";
+import { getCartStatus, getCategories, getMenuItems, getOrderHistory } from "@/services";
+import { cartView, category, groupedOrders, menuItems } from "@/models";
 import { CustomerSidebar } from "@/components/customer/CustomerSidebar";
 import { CustomerMain } from "@/components/customer/CustomerMain";
 import { ThemeToggle, ViewMenuItemModal } from "@/components";
 import { BellIcon, ReaderIcon } from "@radix-ui/react-icons";
-import { ViewCartModal } from "@/components/customer/ViewCartModal";
+import { ViewCartOrderModal } from "@/components/customer/ViewCartOrderModal";
 import toast, { Toaster } from "react-hot-toast";
 import { requestAssistance } from "@/services/customer";
+import { mapToGroupedOrderItems } from "@/helpers";
 
 export default function Customer({ params: { tableNo } }: { params: { tableNo: number } }) {
   const isMobile = useMediaQuery("(max-width: 495px)");
@@ -30,6 +31,8 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
   const [isCategoryListLoading, setCategoryListLoading] = useState(true);
   const [cartItems, setCartItems] = useState([] as cartView[]);
   const [isCartLoading, cartHandler] = useDisclosure(false);
+  const [orderHistory, setOrders] = useState([] as groupedOrders[]);
+  const [isOrderLoading, ordersHandler] = useDisclosure(true);
 
   const handleSelectCategory = (category?: category) => {
     if (category) {
@@ -75,6 +78,19 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
       fetchData().catch(() => console.error("there was an error loading cart"));
     }
   }, [cartHandler, cartItems, isCartLoading, tableNo]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const orderHistory = await getOrderHistory(tableNo);
+      const groupedOrders = mapToGroupedOrderItems(orderHistory);
+      setOrders(groupedOrders);
+      ordersHandler.close();
+    };
+
+    if (isOrderLoading) {
+      fetchData().catch(() => console.error("error loading order history"));
+    }
+  }, [isOrderLoading, ordersHandler, tableNo]);
 
   const refreshCategoryList = () => {
     setCategoryListLoading(true);
@@ -164,12 +180,14 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         onSubmit={refreshMenuList}
       />
 
-      <ViewCartModal
+      <ViewCartOrderModal
         tableNo={tableNo}
         isOpen={addMenuItemModalOpened}
         onClose={closeCartModal}
         cartItems={cartItems}
         updateCart={cartHandler.open}
+        orderHistoryList={orderHistory}
+        updateOrderItems={ordersHandler.open}
       />
     </AppShell>
   );

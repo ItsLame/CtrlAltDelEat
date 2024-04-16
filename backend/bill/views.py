@@ -17,7 +17,7 @@ class GenerateBillView(generics.ListCreateAPIView):
         queryset = Item.objects.all()
         table_num = self.request.GET.get('tableNumber', None)
 
-        queryset = queryset.filter(tableNumber=table_num, status='served').values('orderNo').annotate(total_cost=Sum('cost'))
+        queryset = queryset.filter(tableNumber=table_num).values('orderNo').annotate(total_cost=Sum('cost'))
         orderNoList = []
 
         for item in queryset:
@@ -29,7 +29,7 @@ class GenerateBillView(generics.ListCreateAPIView):
             orderNoList.append(item['orderNo'])
 
         # change item status from served to ready-to-pay
-        items = Item.objects.filter(tableNumber=table_num, status='served')
+        items = Item.objects.filter(tableNumber=table_num)
         items.update(status='ready-to-pay')
 
         bill = Bill.objects.filter(orderNo__in=orderNoList)

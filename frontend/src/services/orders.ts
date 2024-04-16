@@ -1,4 +1,4 @@
-import { addToCartRequest, cartView } from "@/models";
+import { addToCartRequest, cartView, orderHistoryView } from "@/models";
 import { failedGetError, failedPostError } from "@/helpers";
 import { apiUrlBase } from "@/constants";
 import { getHeaders } from "@/services/auth";
@@ -42,5 +42,19 @@ export async function removeFromCart(itemNo: number): Promise<number> {
     method: "DELETE",
   });
 
+  return res.status;
+}
+
+export async function getOrderHistory(tableNo: number): Promise<orderHistoryView[]> {
+  const apiUrl = `${apiBase}/viewOrderHistory?tableNumber=${tableNo}`;
+  const res = await fetch(apiUrl);
+  if (!res.ok) failedGetError();
+  return res.json();
+}
+
+export async function generateBill(tableNo: number): Promise<number> {
+  const apiUrl = `${apiUrlBase}/api/bill/generateBill?tableNumber=${tableNo}`;
+  const res = await fetch(apiUrl);
+  if (!res.ok) failedGetError();
   return res.status;
 }
