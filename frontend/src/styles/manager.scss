@@ -37,7 +37,8 @@
 }
 
 .menu-item,
-.category-item {
+.category-item,
+.order-list-toggle {
   cursor: pointer;
   user-select: none;
   transition: all ease 150ms;

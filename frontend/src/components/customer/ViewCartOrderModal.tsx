@@ -11,7 +11,7 @@ import {
   Stack, Tabs,
   Text, UnstyledButton,
 } from "@mantine/core";
-import { TrashIcon } from "@radix-ui/react-icons";
+import { ChevronDownIcon, ChevronUpIcon, TrashIcon } from "@radix-ui/react-icons";
 import toast from "react-hot-toast";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -67,7 +67,7 @@ const generateMenuItem = (item: cartView, key: number, action: () => void) => (
 );
 
 const OrderItem = ({ item }: OrderItemProps) => (
-  <Card padding="lg" radius="md" withBorder={true}>
+  <Card padding="lg" radius="md" withBorder>
     <Flex direction={"row"} justify="space-between" style={{ width: "100%" }} gap={15}>
       <Flex direction={"column"} style={{ flex: 1 }}>
         <Text size="sm" w="bold">{item.itemName}</Text>
@@ -90,14 +90,21 @@ const OrderHistoryItem = ({ groupedOrders, index }: HistoryProps) => {
 
   return (
     <UnstyledButton onClick={toggle} key={index}>
-      <Card padding="lg" radius="md" withBorder={true}>
-        <Flex direction={"row"} align={"center"} gap="xl" justify={"space-between"}>
-          <Text size="sm">Order number: {index + 1}</Text>
+      <Card className={`order-list-toggle ${opened ? "selected" : ""}`} padding="lg" radius="md" shadow="sm" withBorder>
+        <Flex direction={"row"} align={"center"} justify={"space-between"}>
+          <Flex gap="md" align="center">
+            {opened ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            <Text size="sm">Order number: {index + 1}</Text>
+          </Flex>
           <Text size="sm">${groupedOrders.totalCost}</Text>
         </Flex>
       </Card>
       <Collapse in={opened}>
-        {groupedOrders.items.map((item: itemView, k: number) => <OrderItem item={item} key={k}/>)}
+        <Card p="xs" withBorder>
+          <Stack gap="xs">
+            {groupedOrders.items.map((item: itemView, k: number) => <OrderItem item={item} key={k}/>)}
+          </Stack>
+        </Card>
       </Collapse>
     </UnstyledButton>
   );
@@ -168,7 +175,7 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
           <Flex direction={"column"} gap={"sm"}>
             <ScrollArea.Autosize scrollbars={"y"} mah={550}>
               {viewCartProps.cartItems.length >= 1 ? (
-                <Stack>
+                <Stack gap="xs">
                   {viewCartProps.cartItems
                     ?.filter((item) => item.status == "in-cart")
                     .map((i, k) => generateMenuItem(i, k, viewCartProps.updateCart))}
@@ -185,18 +192,18 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
         </Tabs.Panel>
 
         <Tabs.Panel value="orders">
-          <Flex direction={"column"} gap="sm">
-            <ScrollArea.Autosize scrollbars={"y"} mah={550}>
+          <Flex direction="column" gap="xs">
+            <ScrollArea.Autosize scrollbars="y" mah={550}>
               {viewCartProps.orderHistoryList.length >= 1 ? (
-                <Stack>
+                <Stack pb="xs" gap="xs">
                   {viewCartProps.orderHistoryList.map((order, index) => (
                     <OrderHistoryItem groupedOrders={order} index={index} key={index}/>
                   ))}
                 </Stack>
               ): <Text c="dimmed">Order history is empty.</Text>
               }
-
             </ScrollArea.Autosize>
+
             <Flex align={"center"} direction={"row"} justify={"space-between"}>
               {generateTotalOrderCost()}
               <Button onClick={handlePayBill} px="xl" disabled={viewCartProps.orderHistoryList.length <= 0}>Pay Bill</Button>
