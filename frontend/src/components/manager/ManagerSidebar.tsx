@@ -146,7 +146,9 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
           align="center"
           direction="row"
         >
-          <ActionIcon variant="subtle"
+          <ActionIcon
+            variant="subtle"
+            size="lg"
             onClick={() => onRefresh()}
           >
             <ReloadIcon />
