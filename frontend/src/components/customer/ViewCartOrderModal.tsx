@@ -134,8 +134,9 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
         break;
       }
     });
-    viewCartProps.updateCart();
+
     viewCartProps.onClose();
+    viewCartProps.updateCart();
     viewCartProps.updateOrderItems();
   };
 
@@ -178,7 +179,7 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
           <Tabs.Tab value="cart">
             Cart
           </Tabs.Tab>
-          <Tabs.Tab value="orders">
+          <Tabs.Tab value="orders" onClick={viewCartProps.updateOrderItems}>
             Orders
           </Tabs.Tab>
         </Tabs.List>

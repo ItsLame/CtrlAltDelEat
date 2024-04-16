@@ -63,7 +63,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     };
 
     if (isCartLoading) {
-      fetchData().catch(() => console.error("there was an error loading cart"));
+      fetchData().catch(() => console.error("There was an error loading cart"));
     }
   }, [cartHandler, cartItems, isCartLoading, tableNo]);
 
@@ -76,7 +76,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     };
 
     if (isOrderLoading) {
-      fetchData().catch(() => console.error("error loading order history"));
+      fetchData().catch(() => console.error("Error loading order history"));
     }
   }, [isOrderLoading, ordersHandler, tableNo]);
 
@@ -100,7 +100,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     };
 
     if (isMenuItemListLoading || isCategoryListLoading) {
-      fetchData().catch(() => console.error("error refreshing menu"));
+      fetchData().catch(() => console.error("Error refreshing menu"));
     }
   }, [categoryListHandler, isCategoryListLoading, isMenuItemListLoading, menuItemListHandler]);
 
