@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
   Flex,
   LoadingOverlay,
@@ -23,8 +23,8 @@ import toast from "react-hot-toast";
 
 import {
   ViewMenuItemModalProps,
-  menuItemSchema,
   addToCartRequest,
+  orderItemSchema,
 } from "@/models";
 import { imagePlaceholder } from "@/constants";
 import { addItemToCart } from "@/services";
@@ -39,34 +39,29 @@ export function ViewMenuItemModal({
   onSubmit,
 }: ViewMenuItemModalProps) {
   const handlersRef = useRef<NumberInputHandlers>(null);
-  const [itemImage, setItemImage] = useState<string | undefined>();
 
   const form = useForm({
-    validate: zodResolver(menuItemSchema),
+    validate: zodResolver(orderItemSchema),
     validateInputOnChange: true,
-    initialValues: {
-      itemQuantity: 1,
-      itemOptionalRequest: "",
-    },
   });
 
   const handleSubmit = () => {
-        // create menu item to post to api
+    // create menu item to post to api
     const menu_item_request: addToCartRequest = {
       itemName: menuItem.menuitem_name,
       cost: menuItem.cost,
       tableNumber: tableNo,
       quantity: form.values.itemQuantity,
-      alterations: form.values.itemOptionalRequest,
+      alterations: form.values.itemOptionalRequest.trim(),
     };
 
     addItemToCart(menu_item_request).then((res) => {
       switch (res) {
       case 400:
-        toast.error("some sort of error here");
+        toast.error("Error, failed to add item to cart");
         break;
       case 201:
-        toast.success("added item to cart");
+        toast.success("Added item to cart");
         form.setFieldValue("itemOptionalRequest", "");
         form.setFieldValue("itemQuantity", 1);
         onClose();
@@ -75,18 +70,22 @@ export function ViewMenuItemModal({
     });
   };
 
-  const handleAddMenuItem = () => {
-    const _cleanedUpMenuItemFields = {
-      quantity: form.values.itemQuantity,
-      optionalRequest: form.values.itemOptionalRequest.trim(),
-    };
-  };
-
   const handleClear = () => {
-    setItemImage(undefined);
     form.reset();
     onClose();
   };
+
+  const initForm = () => {
+    form.setValues({
+      itemQuantity: 1,
+      itemOptionalRequest: "",
+    });
+  };
+
+  useEffect(() => {
+    isOpened && initForm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpened]);
 
   return (
     <Modal
@@ -99,7 +98,7 @@ export function ViewMenuItemModal({
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          !form.validate().hasErrors && handleAddMenuItem();
+          !form.validate().hasErrors && handleSubmit();
           !form.validate().hasErrors && handleClear();
         }}
       >
@@ -108,7 +107,7 @@ export function ViewMenuItemModal({
           <Flex h={200}>
             <Image
               mt={10}
-              src={itemImage}
+              src={menuItem.image}
               fallbackSrc={imagePlaceholder}
               alt="Preview of uploaded image"
             />
@@ -116,7 +115,7 @@ export function ViewMenuItemModal({
           {menuItem.tags?.length >= 1 && (
             <Flex gap={5}>
               {menuItem.tags.map((tag, k) => (
-                <Badge key={k} variant="light" color="dark">
+                <Badge key={k} variant="light" color="gray">
                   {tag}
                 </Badge>
               ))}
@@ -129,41 +128,50 @@ export function ViewMenuItemModal({
           <Textarea
             label="Optional requests"
             placeholder="e.g., less spicy, no tomato"
-            onChange={(e) => {
-              form.setFieldValue("itemOptionalRequest", e.target.value);
-            }}
+            defaultValue={form.values?.itemDescription}
+            onChange={(e) => form.setFieldValue("itemOptionalRequest", e.target.value)}
+            error={form.errors?.itemOptionalRequest}
           />
         </Stack>
 
         <Group justify="space-between" mt="md">
-          <Flex align="center" gap={5}>
+          <Flex align="center" gap="xs">
             <ActionIcon
               onClick={() => handlersRef.current?.decrement()}
-              variant="filled"
+              variant="outline"
+              size="lg"
+              radius="xl"
+              aria-label="Decrease quantity"
             >
               <MinusIcon/>
             </ActionIcon>
             <NumberInput
               w={50}
               min={1}
-              defaultValue={1}
-              onChange={(value) => {
-                form.setFieldValue("itemQuantity", value as number);
-              }}
+              allowNegative={false}
+              allowDecimal={false}
+              defaultValue={form.values?.itemQuantity}
+              onChange={(value) => form.setFieldValue("itemQuantity", +value as number)}
               handlersRef={handlersRef}
+              error={form.errors.itemQuantity ? true : false}
               hideControls
+              aria-label="Item quantity"
             />
             <ActionIcon
               onClick={() => handlersRef.current?.increment()}
-              variant="filled"
+              variant="outline"
+              size="lg"
+              radius="xl"
+              aria-label="Increase quantity"
             >
               <PlusIcon/>
             </ActionIcon>
           </Flex>
-          <Button type="submit" onClick={handleSubmit}>
-                        Add to Cart
+          <Button type="submit">
+            Add to Cart
           </Button>
         </Group>
+        <Text size="xs" c="red">{form.errors.itemQuantity}</Text>
       </form>
     </Modal>
   );

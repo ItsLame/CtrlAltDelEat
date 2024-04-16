@@ -1,5 +1,5 @@
 import { serveProps } from "@/models";
-import { Button, Card, Text, Flex, Title, Box, ActionIcon } from "@mantine/core";
+import { Button, Card, Text, Flex, Title, Box, ActionIcon, Blockquote } from "@mantine/core";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
@@ -15,7 +15,7 @@ export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) 
         Ready To Be Served
       </Title>
 
-      <Box >
+      <Box>
         {allRequests.length > 0 ? (
           <Flex direction="column" justify="space-between" className="">
             <Flex direction="column" justify="start" >
@@ -41,8 +41,9 @@ export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) 
                     <Title className="item-name" order={5} textWrap="balance">{allRequests[serveIndex].itemName}</Title>
                     <Title order={4}>x {allRequests[serveIndex].quantity}</Title>
                   </Flex>
-
-                  {allRequests[serveIndex].alterations !== "" && <Text size="md" c="dimmed" className="alterations">{allRequests[serveIndex].alterations}</Text>}
+                  {allRequests[serveIndex].alterations !== "" &&
+                    <Blockquote p={0} pl="xs" c="dimmed" fs="italic">{allRequests[serveIndex].alterations}</Blockquote>
+                  }
                 </Box>
               </Card>
             </Flex>
@@ -53,6 +54,9 @@ export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) 
               fullWidth
               disabled={allRequests.length === 0}
               onClick={() => addToServeInProgress(allRequests[serveIndex])}
+              aria-label={`Serve ${allRequests[serveIndex].quantity} ${allRequests[serveIndex].itemName} 
+              to table number ${allRequests[serveIndex].tableNumber}, 
+              requested on ${allRequests[serveIndex].timestamp.slice(0, 9)}`}
             >
               Serve
             </Button>
@@ -64,6 +68,7 @@ export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) 
                 disabled={serveIndex === 0}
                 size="xl"
                 radius="xl"
+                aria-label="Press enter to go to previous item ready to serve"
               >
                 <ChevronLeftIcon />
               </ActionIcon>
@@ -76,6 +81,7 @@ export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) 
                 disabled={serveIndex === allRequests.length - 1 || allRequests.length === 0}
                 size="xl"
                 radius="xl"
+                aria-label="Press enter to go to next item ready to serve"
               >
                 <ChevronRightIcon />
               </ActionIcon>

@@ -142,6 +142,7 @@ export function AddMenuItemModal({ category, categoryList, menuItemList, isOpene
               withAsterisk
               label="Item price"
               min={0}
+              allowNegative={false}
               error={form.errors?.itemPrice}
               defaultValue={form.values?.itemPrice}
               onChange={(e) => {form.setFieldValue("itemPrice", e as number);}}
@@ -179,8 +180,19 @@ export function AddMenuItemModal({ category, categoryList, menuItemList, isOpene
           </Stack>
         </Flex>
         <Group justify="flex-end" mt="md">
-          <Button variant="outline" onClick={handleClear}>Cancel</Button>
-          <Button type="submit" px="xl">Add</Button>
+          <Button
+            variant="outline"
+            onClick={handleClear}
+            aria-label={`Cancel adding ${form.values?.itemName} menu item`}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit" px="xl"
+            aria-label={`Submit new menu item called ${form.values?.itemName}`}
+          >
+            Add
+          </Button>
         </Group>
       </form>
     </Modal>

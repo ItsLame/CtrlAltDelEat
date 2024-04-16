@@ -39,6 +39,7 @@ export function RequestAssistance({ allRequests, addAssistToProgress }: reqAssis
             fullWidth
             disabled={allRequests.length === 0}
             onClick={() => addAssistToProgress(allRequests[assistIndex].tableNumber, allRequests[assistIndex].timestamp.slice(0, 9))}
+            aria-label={`Assist table number ${allRequests[assistIndex].tableNumber}, requested on ${allRequests[assistIndex].timestamp.slice(0, 9)}`}
           >
             Assist
           </Button>
@@ -50,6 +51,7 @@ export function RequestAssistance({ allRequests, addAssistToProgress }: reqAssis
               disabled={assistIndex === 0}
               size="xl"
               radius="xl"
+              aria-label="Press enter to go to next  assistance request"
             >
               <ChevronLeftIcon />
             </ActionIcon>
@@ -64,6 +66,7 @@ export function RequestAssistance({ allRequests, addAssistToProgress }: reqAssis
               disabled={assistIndex === allRequests.length - 1 || allRequests.length === 0}
               size="xl"
               radius="xl"
+              aria-label="Press enter to go to previous assistance request"
             >
               <ChevronRightIcon />
             </ActionIcon>

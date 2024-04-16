@@ -14,7 +14,10 @@ export const LogoWithLink = () => {
       src="logo.svg"
       h={45}
       alt="CtrlAltDelEat Logo"
+      aria-label="Press enter to   go back to navigation page"
+      tabIndex={0}
       onClick={handleBackToNavigation}
+      onKeyDown={(e) => e.key === "Enter" && handleBackToNavigation}
     />
   );
 };

@@ -77,8 +77,11 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
           <Box
             {...provided.draggableProps}
             ref={provided.innerRef}
-            onClick={() => onCategorySelect(c)}
             mb="xs"
+            tabIndex={0}
+            onClick={() => onCategorySelect(c)}
+            onKeyDown={(e) => e.key === "Enter" && onCategorySelect(c)}
+            aria-label={`${c.category_name} category`}
           >
             <Card
               className={`category-item ${isSelected ? "selected" : ""} ${snapshot.isDragging ? "dragging" : ""}`}
@@ -90,7 +93,11 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
             >
               <Flex align="center">
                 <Flex className="w-100" align="center">
-                  <Flex {...provided.dragHandleProps} className="drag-handle" onClick={(e) => e.stopPropagation()} align="center" py="md" pl="md" pr="xs">
+                  <Flex {...provided.dragHandleProps} className="drag-handle"
+                    align="center" py="md" pl="md" pr="xs"
+                    onClick={(e) => e.stopPropagation()}
+                    onKeyDown={(e) => e.key === "Enter" && e.stopPropagation()}
+                  >
                     <DragHandleDots2Icon width={20} height={20}/>
                   </Flex>
                   <Text fw={500}>{c.category_name}</Text>
@@ -99,9 +106,14 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
                   variant="subtle"
                   color={isSelected ? "white" : "red"}
                   mr="md"
+                  aria-label={`Delete ${c.category_name} category`}
                   onClick={(e) => {
                     e.stopPropagation();
                     onCategoryDelete(c);
+                  }}
+                  onKeyDown={(e) => {
+                    e.stopPropagation();
+                    e.key === "Enter" && onCategoryDelete(c);
                   }}
                 >
                   <TrashIcon/>
@@ -146,8 +158,11 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
           align="center"
           direction="row"
         >
-          <ActionIcon variant="subtle"
+          <ActionIcon
+            variant="subtle"
+            size="lg"
             onClick={() => onRefresh()}
+            aria-label="Reload category list"
           >
             <ReloadIcon />
           </ActionIcon>
@@ -155,6 +170,7 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
             type="submit"
             variant="filled"
             disabled={form.errors?.categoryName || newCategoryName === "" ? true: false}
+            aria-label={`Add new category ${newCategoryName}`}
           >
             Add
           </Button>

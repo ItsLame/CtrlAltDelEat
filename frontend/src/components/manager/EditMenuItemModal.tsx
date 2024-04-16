@@ -114,7 +114,7 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
                 mt={10}
                 src={form.values?.itemImage}
                 fallbackSrc={imagePlaceholder}
-                alt="Preview of uploaded image"
+                alt={`A picture of ${menuItem.menuitem_name}`}
               />
             </Flex>
             <FileButton
@@ -157,6 +157,7 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
               withAsterisk
               label="Item price"
               min={0}
+              allowNegative={false}
               error={form.errors?.itemPrice}
               defaultValue={form.values?.itemPrice as number}
               onChange={(e) => {form.setFieldValue("itemPrice", e as number);}}
@@ -194,8 +195,19 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
           </Stack>
         </Flex>
         <Group justify="flex-end" mt="md">
-          <Button variant="outline" color="red" onClick={() => onDeleteMenuItem(menuItem)}>Delete</Button>
-          <Button type="submit" px="xl">Save</Button>
+          <Button
+            variant="outline" color="red"
+            onClick={() => onDeleteMenuItem(menuItem)}
+            aria-label={`Delete ${menuItem.menuitem_name} menu item`}
+          >
+            Delete
+          </Button>
+          <Button
+            type="submit" px="xl"
+            aria-label={`Save changes for ${menuItem.menuitem_name} menu item`}
+          >
+            Save
+          </Button>
         </Group>
       </form>
     </Modal>

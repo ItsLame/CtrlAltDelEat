@@ -45,6 +45,11 @@ export const getHeaders = {
       Authorization: `Bearer ${await getAuthToken()}`,
     };
   },
+  async jsonNoToken() {
+    return {
+      "Content-Type": "application/json",
+    };
+  },
   async form() {
     return {
       // "Content-Type": "multipart/form-data",

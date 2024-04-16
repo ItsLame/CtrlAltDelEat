@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { ActionIcon, AppShell, Flex, Image, Select, Text } from "@mantine/core";
+import { ActionIcon, AppShell, Flex, Image, Paper, Select, Text } from "@mantine/core";
 import { BellIcon, ReaderIcon } from "@radix-ui/react-icons";
 
 import { getCartStatus, getCategories, getMenuItems, getOrderHistory, requestAssistance } from "@/services";
@@ -42,7 +42,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     requestAssistance(tableNo).then((res) => {
       switch (res) {
       case 201:
-        toast.custom("Requested for assitance");
+        toast("Requested for assistance!");
         break;
       default:
         toast.error("Error, failed to request assistance");
@@ -63,7 +63,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     };
 
     if (isCartLoading) {
-      fetchData().catch(() => console.error("there was an error loading cart"));
+      fetchData().catch(() => console.error("There was an error loading cart"));
     }
   }, [cartHandler, cartItems, isCartLoading, tableNo]);
 
@@ -76,7 +76,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     };
 
     if (isOrderLoading) {
-      fetchData().catch(() => console.error("error loading order history"));
+      fetchData().catch(() => console.error("Error loading order history"));
     }
   }, [isOrderLoading, ordersHandler, tableNo]);
 
@@ -100,7 +100,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     };
 
     if (isMenuItemListLoading || isCategoryListLoading) {
-      fetchData().catch(() => console.error("error refreshing menu"));
+      fetchData().catch(() => console.error("Error refreshing menu"));
     }
   }, [categoryListHandler, isCategoryListLoading, isMenuItemListLoading, menuItemListHandler]);
 
@@ -123,33 +123,43 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
               src="/logo.svg"
               h={isMobile ? 25 : 45}
               alt="CtrlAltDelEat Logo"
+              tabIndex={0}
             />
-            <Text className="table-number" fw={700} size={isMobile ? "xs" : "md"}>
-                            Table #{tableNo}
+            <Text className="table-number" fw={700} size={isMobile ? "sm" : "md"} tabIndex={0}>
+              Table #{tableNo}
             </Text>
-            <Select
-              hiddenFrom="sm"
-              size="sm"
-              className="w-75"
-              value={category.category_name}
-              data={categoryList.map((c) => c.category_name)}
-              onChange={(e) => handleSelectCategory(categoryList.find((c) => c.category_name == e))}
-              mr="md"
-            />
           </Flex>
           <Flex justify="flex-end" gap="sm">
-            <ActionIcon size="lg" onClick={() => {
-              cartHandler.open();
-              openCartModal();
-            }}>
+            <ActionIcon size="lg"
+              onClick={() => {
+                cartHandler.open();
+                openCartModal();
+              }}
+              aria-label="View order history"
+            >
               <ReaderIcon/>
             </ActionIcon>
-            <ActionIcon size="lg" onClick={handleRequestForAssistance}>
+            <ActionIcon size="lg" onClick={handleRequestForAssistance} aria-label="Request for assistance">
               <BellIcon/>
             </ActionIcon>
             <ThemeToggle/>
           </Flex>
         </div>
+        <Paper pb="xs" shadow="sm" radius={0} hiddenFrom="sm">
+          <Flex justify="center">
+            <Select
+              hiddenFrom="sm"
+              checkIconPosition="left"
+              allowDeselect={false}
+              size="md"
+              className="w-100"
+              value={category.category_name}
+              data={categoryList.map((c) => c.category_name)}
+              onChange={(e) => handleSelectCategory(categoryList.find((c) => c.category_name == e))}
+              mx="md"
+            />
+          </Flex>
+        </Paper>
       </AppShell.Header>
 
       <AppShell.Navbar p="md">
@@ -161,6 +171,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
           onRefresh={categoryListHandler.open}
         />
       </AppShell.Navbar>
+
       <AppShell.Main>
         <CustomerMain
           category={category}
@@ -187,6 +198,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         updateCart={cartHandler.open}
         orderHistoryList={orderHistory}
         updateOrderItems={ordersHandler.open}
+        menuItemList={menuItemList}
       />
     </AppShell>
   );

@@ -35,7 +35,8 @@ export default function Manager() {
 
   const handleSelectCategory = (category: category) => {
     setCategory(category);
-    toggleSidebar();
+    refreshMenuList(false);
+    sidebarOpened && toggleSidebar();
   };
 
   const handleSelectItem = (item: menuItems) => {

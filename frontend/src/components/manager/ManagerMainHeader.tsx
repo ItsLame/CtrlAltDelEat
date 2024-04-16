@@ -57,6 +57,7 @@ export function ManagerMainHeader ({ category, onRefresh, onAddMenuItem, onEditC
               <UnstyledButton
                 className="category-name"
                 onClick={toggleEditCategory}
+                aria-label={`Press enter to modify category name for ${category.category_name}`}
               >
                 <Title order={2}>
                   {category.category_name}
@@ -84,23 +85,36 @@ export function ManagerMainHeader ({ category, onRefresh, onAddMenuItem, onEditC
                       <ActionIcon
                         type="submit"
                         disabled={form.values?.categoryName === category.category_name || form.errors?.categoryName ? true : false}
+                        aria-label={`Save name changes for category name from ${category.category_name} to ${form.values?.categoryName}`}
                       >
-                        <CheckIcon />
+                        <CheckIcon height={20} width={20}/>
                       </ActionIcon>
                     )}
                   />
-                  <Button variant="subtle" color="gray" onClick={toggleEditCategory}>Cancel</Button>
+                  <Button
+                    variant="outline" color="gray"
+                    onClick={toggleEditCategory}
+                    aria-label={`Cancel changes for ${category.category_name} category name`}
+                  >
+                    Cancel
+                  </Button>
                 </Group>
               </form>
             )
           }
           <Group gap="sm" align="top">
-            <ActionIcon variant="subtle" size="lg" py={17}
+            <ActionIcon
+              variant="subtle" size="lg" py={17}
               onClick={onRefresh}
+              aria-label="Reload menu item list"
             >
               <ReloadIcon />
             </ActionIcon>
-            <Button onClick={onAddMenuItem}>Add Item</Button>
+            <Button
+              onClick={onAddMenuItem}
+              aria-label={`Add new menu item for ${category.category_name} category `}>
+              Add Item
+            </Button>
           </Group>
         </Flex>
       ): (

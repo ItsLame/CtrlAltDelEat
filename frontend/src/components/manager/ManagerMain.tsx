@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Card, Flex, LoadingOverlay, Stack, Text, Image, ActionIcon } from "@mantine/core";
-import { useListState } from "@mantine/hooks";
+import { useListState, useMediaQuery } from "@mantine/hooks";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
 
@@ -10,6 +10,7 @@ import { ManagerMainHeader } from "@/components";
 import { editMenuItem } from "@/services";
 
 export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRefresh, onAddMenuItem, onEditMenuItem, onDeleteMenuItem, onEditCategory }: ManagerMainProps) {
+  const isMobile = useMediaQuery("(max-width: 370px)");
 
   const [menuItemListFiltered, setMenuItemListFiltered] = useState([] as menuItems[]);
   const [menuItemListState, menuItemListHandlers] = useListState([] as menuItems[]);
@@ -51,8 +52,11 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
           <Box
             {...provided.draggableProps}
             ref={provided.innerRef}
-            onClick={() => onEditMenuItem(item)}
             mb="xs"
+            tabIndex={0}
+            onClick={() => onEditMenuItem(item)}
+            onKeyDown={(e) => e.key === "Enter" && onEditMenuItem(item)}
+            aria-label={`${item.menuitem_name} item, ${item.description}, ${item.cost} dollars`}
           >
             <Card
               className={`menu-item ${isSelected ? "selected" : ""} ${snapshot.isDragging ? "dragging" : ""}`}
@@ -64,24 +68,26 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
             >
               <Flex align="center">
                 <Flex gap="md" className="w-100">
-                  <Flex {...provided.dragHandleProps} className="drag-handle" onClick={(e) => e.stopPropagation()} align="center" py="xl" pl="xs" pr="xs">
+                  <Flex {...provided.dragHandleProps} className="drag-handle"
+                    align="center" py="xl" pl="xs" pr="xs"
+                    onClick={(e) => e.stopPropagation()}
+                    onKeyDown={(e) => e.key === "Enter" && e.stopPropagation()}
+                  >
                     <DragHandleDots2Icon width={20} height={20}/>
                   </Flex>
-
-                  <Flex>
-                    <Image
-                      src={item.image}
-                      alt={`A picture of ${item.menuitem_name}`}
-                      fallbackSrc={imagePlaceholder}
-                      w={100}
-                      h={100}
-                    />
-                  </Flex>
-
-                  <Stack justify="space-between">
+                  <Image
+                    className={isMobile ? "hidden" : ""}
+                    src={item.image}
+                    alt={`A picture of ${item.menuitem_name}`}
+                    fallbackSrc={imagePlaceholder}
+                    pos="relative"
+                    mah={100}
+                    miw={100}
+                  />
+                  <Stack justify="space-between" gap={0}>
                     <Stack className="w-100" gap={5}>
                       <Text size="lg" c={isSelected ? "" : "blue"} fw={700} lineClamp={1}>{item.menuitem_name}</Text>
-                      <Text size="sm" c={isSelected ? "" : "dimmed"} lineClamp={2}>{item.description}</Text>
+                      <Text size="sm" c={isSelected ? "" : "dimmed"} lineClamp={2} h={45}>{item.description}</Text>
                     </Stack>
                     <Text size="md">${item.cost}</Text>
                   </Stack>
@@ -95,6 +101,11 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
                     e.stopPropagation();
                     onDeleteMenuItem(item);
                   }}
+                  onKeyDown={(e) => {
+                    e.stopPropagation();
+                    e.key === "Enter" && onDeleteMenuItem(item);
+                  }}
+                  aria-label={`Delete ${item.menuitem_name} item`}
                 >
                   <TrashIcon width={20} height={20}/>
                 </ActionIcon>
