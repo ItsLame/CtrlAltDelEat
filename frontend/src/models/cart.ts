@@ -45,6 +45,7 @@ export interface itemView {
     cost: number;
     alterations: string;
     quantity: number;
+    status: string;
 }
 
 export interface groupedOrders {

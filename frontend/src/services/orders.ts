@@ -1,17 +1,15 @@
 import { addToCartRequest, cartView, orderHistoryView } from "@/models";
-import { failedGetError, failedPostError } from "@/helpers";
+import { failedGetError, failedPostError, failedPutError } from "@/helpers";
 import { apiUrlBase } from "@/constants";
-import { getHeaders } from "@/services/auth";
 
 const apiBase = `${apiUrlBase}/api/orders`;
 
 export async function addItemToCart(request: addToCartRequest) {
-  const headersConfig = await getHeaders.json();
   const apiUrl = `${apiBase}/addtocart/`;
 
   const res = await fetch(apiUrl, {
     method: "POST",
-    headers: headersConfig,
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(request),
   });
 
@@ -32,7 +30,7 @@ export async function orderCart(tableNo: number): Promise<number> {
     method: "PUT",
   });
 
-  if (!res.ok) failedGetError();
+  if (!res.ok) failedPutError();
   return res.status;
 }
 
