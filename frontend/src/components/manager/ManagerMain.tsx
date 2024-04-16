@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Card, Flex, LoadingOverlay, Stack, Text, Image, ActionIcon } from "@mantine/core";
-import { useListState } from "@mantine/hooks";
+import { useListState, useMediaQuery } from "@mantine/hooks";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
 
@@ -10,6 +10,7 @@ import { ManagerMainHeader } from "@/components";
 import { editMenuItem } from "@/services";
 
 export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRefresh, onAddMenuItem, onEditMenuItem, onDeleteMenuItem, onEditCategory }: ManagerMainProps) {
+  const isMobile = useMediaQuery("(max-width: 370px)");
 
   const [menuItemListFiltered, setMenuItemListFiltered] = useState([] as menuItems[]);
   const [menuItemListState, menuItemListHandlers] = useListState([] as menuItems[]);
@@ -68,10 +69,11 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
                     <DragHandleDots2Icon width={20} height={20}/>
                   </Flex>
                   <Image
+                    className={isMobile ? "hidden" : ""}
                     src={item.image}
                     alt={`A picture of ${item.menuitem_name}`}
                     fallbackSrc={imagePlaceholder}
-                    style={{ position: "relative" }}
+                    pos="relative"
                     mah={100}
                     miw={100}
                   />

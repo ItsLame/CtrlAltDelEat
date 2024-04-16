@@ -2,8 +2,11 @@ import { Card, Flex, Stack, UnstyledButton, Image, Text, Title } from "@mantine/
 
 import { menuItems, CustomerMainProps } from "@/models";
 import { imagePlaceholder } from "@/constants";
+import { useMediaQuery } from "@mantine/hooks";
 
 export function CustomerMain({ category, items, onMenuItemSelect, onViewMenuItem }: CustomerMainProps) {
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   const generateMenuItem = (item: menuItems, k: number) => {
     return (
       <UnstyledButton key={k} onClick={() => {
@@ -11,11 +14,12 @@ export function CustomerMain({ category, items, onMenuItemSelect, onViewMenuItem
         onViewMenuItem();
       }}>
         <Card className="menu-item" shadow="sm" padding="lg" radius="md" withBorder={true}>
-          <Flex gap={15}>
+          <Flex gap="md">
             <Image
               src={item.image}
               alt={`A picture of ${item.menuitem_name}`}
               fallbackSrc={imagePlaceholder}
+              pos="relative"
               mah={100}
               miw={100}
             />
@@ -34,7 +38,7 @@ export function CustomerMain({ category, items, onMenuItemSelect, onViewMenuItem
 
   return (
     <div>
-      <Stack gap="xs">
+      <Stack gap="xs" mt={isMobile ? 50 : 0}>
         <Title order={2} visibleFrom="sm">{category.category_name}</Title>
         {items.map((item, k) => generateMenuItem(item, k))}
       </Stack>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { ActionIcon, AppShell, Flex, Image, Select, Text } from "@mantine/core";
+import { ActionIcon, AppShell, Card, Flex, Image, Select, Text } from "@mantine/core";
 import { BellIcon, ReaderIcon } from "@radix-ui/react-icons";
 
 import { getCartStatus, getCategories, getMenuItems, getOrderHistory, requestAssistance } from "@/services";
@@ -124,18 +124,9 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
               h={isMobile ? 25 : 45}
               alt="CtrlAltDelEat Logo"
             />
-            <Text className="table-number" fw={700} size={isMobile ? "xs" : "md"}>
-                            Table #{tableNo}
+            <Text className="table-number" fw={700} size={isMobile ? "sm" : "md"}>
+              Table #{tableNo}
             </Text>
-            <Select
-              hiddenFrom="sm"
-              size="sm"
-              className="w-75"
-              value={category.category_name}
-              data={categoryList.map((c) => c.category_name)}
-              onChange={(e) => handleSelectCategory(categoryList.find((c) => c.category_name == e))}
-              mr="md"
-            />
           </Flex>
           <Flex justify="flex-end" gap="sm">
             <ActionIcon size="lg" onClick={() => {
@@ -150,6 +141,21 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
             <ThemeToggle/>
           </Flex>
         </div>
+        <Card p={0} pb="xs" shadow="sm" hiddenFrom="sm">
+          <Flex justify="center">
+            <Select
+              hiddenFrom="sm"
+              checkIconPosition="left"
+              allowDeselect={false}
+              size="md"
+              className="w-100"
+              value={category.category_name}
+              data={categoryList.map((c) => c.category_name)}
+              onChange={(e) => handleSelectCategory(categoryList.find((c) => c.category_name == e))}
+              mx="md"
+            />
+          </Flex>
+        </Card>
       </AppShell.Header>
 
       <AppShell.Navbar p="md">
@@ -161,6 +167,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
           onRefresh={categoryListHandler.open}
         />
       </AppShell.Navbar>
+
       <AppShell.Main>
         <CustomerMain
           category={category}

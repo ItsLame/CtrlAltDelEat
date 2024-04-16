@@ -26,6 +26,10 @@
   cursor: pointer;
 }
 
+.hidden {
+  display: none;
+}
+
 .bordered {
   border: 1px solid var(--mantine-color-default-border);
 }
