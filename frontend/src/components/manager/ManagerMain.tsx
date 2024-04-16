@@ -52,8 +52,11 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
           <Box
             {...provided.draggableProps}
             ref={provided.innerRef}
-            onClick={() => onEditMenuItem(item)}
             mb="xs"
+            tabIndex={0}
+            onClick={() => onEditMenuItem(item)}
+            onKeyDown={(e) => e.key === "Enter" && onEditMenuItem(item)}
+            aria-label={`${item.menuitem_name} item, ${item.description}, ${item.cost} dollars`}
           >
             <Card
               className={`menu-item ${isSelected ? "selected" : ""} ${snapshot.isDragging ? "dragging" : ""}`}
@@ -65,7 +68,11 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
             >
               <Flex align="center">
                 <Flex gap="md" className="w-100">
-                  <Flex {...provided.dragHandleProps} className="drag-handle" onClick={(e) => e.stopPropagation()} align="center" py="xl" pl="xs" pr="xs">
+                  <Flex {...provided.dragHandleProps} className="drag-handle"
+                    align="center" py="xl" pl="xs" pr="xs"
+                    onClick={(e) => e.stopPropagation()}
+                    onKeyDown={(e) => e.key === "Enter" && e.stopPropagation()}
+                  >
                     <DragHandleDots2Icon width={20} height={20}/>
                   </Flex>
                   <Image
@@ -94,6 +101,11 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
                     e.stopPropagation();
                     onDeleteMenuItem(item);
                   }}
+                  onKeyDown={(e) => {
+                    e.stopPropagation();
+                    e.key === "Enter" && onDeleteMenuItem(item);
+                  }}
+                  aria-label={`Delete ${item.menuitem_name} item`}
                 >
                   <TrashIcon width={20} height={20}/>
                 </ActionIcon>

@@ -78,6 +78,12 @@ export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
             withBorder
             className={`kitchen-items ${(preparedCards.includes(singleItem.id)? "prepped" : "")}`}
             onClick={() => handleClick(singleItem)}
+            onKeyDown={(e) => {
+              e.stopPropagation();
+              e.key === "Enter" && handleClick(singleItem);
+            }}
+            tabIndex={0}
+            aria-label={`Press enter to set ${singleItem.itemName} for table number ${singleItem.tableNumber} as ready to serve`}
           >
             <Flex
               gap="xs"

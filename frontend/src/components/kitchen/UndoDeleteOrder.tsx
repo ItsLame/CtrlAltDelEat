@@ -10,6 +10,7 @@ export function UndoDeleteOrder({ item, handleUndoClick }: UndoOrderProps) {
           variant="filled"
           className="undo-button"
           color="red"
+          w={150}
           onClick={handleUndoClick}
         >
           Tap to undo

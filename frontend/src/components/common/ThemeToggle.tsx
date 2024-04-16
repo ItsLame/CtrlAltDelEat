@@ -19,6 +19,7 @@ export const ThemeToggle = () => {
       variant="light"
       color="grape"
       onClick={() => toggleColorScheme()}
+      aria-label="Toggle dark/light mode"
     >
       <SunIcon className={cx(classes.icon, classes.light)}/>
       <MoonIcon className={cx(classes.icon, classes.dark)}/>

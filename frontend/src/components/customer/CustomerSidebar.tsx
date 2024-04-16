@@ -15,7 +15,10 @@ export function CustomerSidebar({ category, categoryList, isLoading, onCategoryS
           return (
             <Box
               key={k}
+              tabIndex={0}
               onClick={() => onCategorySelect(c)}
+              onKeyDown={(e) => e.key === "Enter" && onCategorySelect(c)}
+              aria-label={`${c.category_name} category`}
             >
               <Card
                 className={`category-item ${isSelected ? "selected" : ""}`}

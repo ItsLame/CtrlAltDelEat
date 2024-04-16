@@ -52,6 +52,7 @@ export function InProgress({
                       variant="outline"
                       color="gray"
                       onClick={() => assistUndo(req.tableNumber)}
+                      aria-label={`Put assistance request for table number ${req.tableNumber} back to queue`}
                     >
                       Cancel
                     </Button>
@@ -61,6 +62,7 @@ export function InProgress({
                         assistUpdate(req.tableNumber);
                         refreshAssist();
                       }}
+                      aria-label={`Successfully assisted table number ${req.tableNumber}`}
                     >
                       Complete
                     </Button>
@@ -94,6 +96,7 @@ export function InProgress({
                       variant="outline"
                       color="gray"
                       onClick={() => serveUndo(req.itemID)}
+                      aria-label={`Put order  ${req.quantity} ${req.itemName} for table number ${req.tableNumber} back to queue`}
                     >
                       Cancel
                     </Button>
@@ -104,6 +107,7 @@ export function InProgress({
                         serveUpdate(req.itemID, req.tableNumber);
                         refreshServe();
                       }}
+                      aria-label={`Completed order ${req.quantity} ${req.itemName} for table number ${req.tableNumber}`}
                     >
                       Complete
                     </Button>

@@ -141,6 +141,7 @@ export function ViewMenuItemModal({
               variant="outline"
               size="lg"
               radius="xl"
+              aria-label="Decrease quantity"
             >
               <MinusIcon/>
             </ActionIcon>
@@ -158,6 +159,7 @@ export function ViewMenuItemModal({
               variant="outline"
               size="lg"
               radius="xl"
+              aria-label="Increase quantity"
             >
               <PlusIcon/>
             </ActionIcon>

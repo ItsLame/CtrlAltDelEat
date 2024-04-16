@@ -95,8 +95,10 @@ export function ManagerMainHeader ({ category, onRefresh, onAddMenuItem, onEditC
             )
           }
           <Group gap="sm" align="top">
-            <ActionIcon variant="subtle" size="lg" py={17}
+            <ActionIcon
+              variant="subtle" size="lg" py={17}
               onClick={onRefresh}
+              aria-label="Reload menu item list"
             >
               <ReloadIcon />
             </ActionIcon>

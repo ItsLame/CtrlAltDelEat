@@ -53,8 +53,12 @@ const generateMenuItem = (item: cartView, key: number, itemList: menuItems[], ac
         <Flex className="w-100" direction={"column"}>
           <Flex>
             <Text className="w-100" size="lg" c="blue" fw={700}>{item.itemName}</Text>
-            <ActionIcon variant="light" size="xl" color="red">
-              <TrashIcon onClick={() => handleRemoveItem(item.id, action)}/>
+            <ActionIcon
+              variant="light" size="xl" color="red"
+              onClick={() => handleRemoveItem(item.id, action)}
+              aria-label={`Remove ${item.quantity} ${item.itemName} from cart`}
+            >
+              <TrashIcon />
             </ActionIcon>
           </Flex>
           <Text size="md">Quantity: {item.quantity}</Text>
@@ -146,12 +150,12 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
     for (let i = 0; i < viewCartProps.cartItems.length; i += 1) {
       totalCost += viewCartProps.cartItems[i].cost * viewCartProps.cartItems[i].quantity;
     }
-    return <Text inline>Subtotal: ${totalCost.toFixed(2)}</Text>;
+    return <Text tabIndex={0} inline>Subtotal: ${totalCost.toFixed(2)}</Text>;
   };
 
   const generateTotalOrderCost = () => {
     const cost = viewCartProps.orderHistoryList.reduce((acc, item) => acc + item.totalCost, 0);
-    return <Text inline>Subtotal: ${cost.toFixed(2)}</Text>;
+    return <Text tabIndex={0} inline>Subtotal: ${cost.toFixed(2)}</Text>;
   };
 
   const handlePayBill = () => {
@@ -225,7 +229,13 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
 
             <Flex align={"center"} direction={"row"} justify={"space-between"}>
               {generateTotalOrderCost()}
-              <Button onClick={handlePayBill} px="xl" color="green" disabled={viewCartProps.orderHistoryList.length <= 0}>Pay Bill</Button>
+              <Button
+                px="xl" color="green"
+                disabled={viewCartProps.orderHistoryList.length <= 0}
+                onClick={handlePayBill}
+              >
+                Pay Bill
+              </Button>
             </Flex>
           </Flex>
         </Tabs.Panel>

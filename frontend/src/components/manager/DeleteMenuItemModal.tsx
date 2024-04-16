@@ -38,8 +38,18 @@ export function DeleteMenuItemModal ({ menuItem, isOpened, onDelete, onClose }: 
         <Code block>{menuItem.menuitem_name}</Code>
       </Flex>
       <Flex gap="sm" justify="flex-end">
-        <Button onClick={onClose}>Cancel</Button>
-        <Button variant="outline" color="red" onClick={() => handleDeleteMenuItem(menuItem)}>Yes</Button>
+        <Button
+          onClick={onClose}
+          aria-label={`Cancel deletion of ${menuItem.menuitem_name} item`}
+        >
+          Cancel
+        </Button>
+        <Button variant="outline" color="red"
+          onClick={() => handleDeleteMenuItem(menuItem)}
+          aria-label={`Confirm deletion of ${menuItem.menuitem_name} item`}
+        >
+          Yes
+        </Button>
       </Flex>
     </Modal>
   );

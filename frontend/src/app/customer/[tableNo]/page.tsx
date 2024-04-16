@@ -123,19 +123,23 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
               src="/logo.svg"
               h={isMobile ? 25 : 45}
               alt="CtrlAltDelEat Logo"
+              tabIndex={0}
             />
-            <Text className="table-number" fw={700} size={isMobile ? "sm" : "md"}>
+            <Text className="table-number" fw={700} size={isMobile ? "sm" : "md"} tabIndex={0}>
               Table #{tableNo}
             </Text>
           </Flex>
           <Flex justify="flex-end" gap="sm">
-            <ActionIcon size="lg" onClick={() => {
-              cartHandler.open();
-              openCartModal();
-            }}>
+            <ActionIcon size="lg"
+              onClick={() => {
+                cartHandler.open();
+                openCartModal();
+              }}
+              aria-label="View order history"
+            >
               <ReaderIcon/>
             </ActionIcon>
-            <ActionIcon size="lg" onClick={handleRequestForAssistance}>
+            <ActionIcon size="lg" onClick={handleRequestForAssistance} aria-label="Request for assistance">
               <BellIcon/>
             </ActionIcon>
             <ThemeToggle/>

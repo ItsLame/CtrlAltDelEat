@@ -54,6 +54,9 @@ export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) 
               fullWidth
               disabled={allRequests.length === 0}
               onClick={() => addToServeInProgress(allRequests[serveIndex])}
+              aria-label={`Serve ${allRequests[serveIndex].quantity} ${allRequests[serveIndex].itemName} 
+              to table number ${allRequests[serveIndex].tableNumber}, 
+              requested on ${allRequests[serveIndex].timestamp.slice(0, 9)}`}
             >
               Serve
             </Button>
@@ -65,6 +68,7 @@ export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) 
                 disabled={serveIndex === 0}
                 size="xl"
                 radius="xl"
+                aria-label="Press enter to go to previous item ready to serve"
               >
                 <ChevronLeftIcon />
               </ActionIcon>
@@ -77,6 +81,7 @@ export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) 
                 disabled={serveIndex === allRequests.length - 1 || allRequests.length === 0}
                 size="xl"
                 radius="xl"
+                aria-label="Press enter to go to next item ready to serve"
               >
                 <ChevronRightIcon />
               </ActionIcon>

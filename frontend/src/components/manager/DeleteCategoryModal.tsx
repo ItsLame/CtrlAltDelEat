@@ -38,8 +38,18 @@ export function DeleteCategoryModal ({ category, isOpened, onDelete, onClose }: 
         <Code block>{category.category_name}</Code>
       </Flex>
       <Flex gap="sm" justify="flex-end">
-        <Button onClick={onClose}>Cancel</Button>
-        <Button variant="outline" color="red" onClick={() => handleDeleteCategory(category)}>Yes</Button>
+        <Button
+          onClick={onClose}
+          aria-label={`Cancel deletion of ${category.category_name} category`}
+        >
+          Cancel
+        </Button>
+        <Button variant="outline" color="red"
+          onClick={() => handleDeleteCategory(category)}
+          aria-label={`Confirm deletion of ${category.category_name} category`}
+        >
+          Yes
+        </Button>
       </Flex>
     </Modal>
   );

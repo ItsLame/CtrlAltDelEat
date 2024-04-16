@@ -114,7 +114,7 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
                 mt={10}
                 src={form.values?.itemImage}
                 fallbackSrc={imagePlaceholder}
-                alt="Preview of uploaded image"
+                alt={`A picture of ${menuItem.menuitem_name}`}
               />
             </Flex>
             <FileButton
