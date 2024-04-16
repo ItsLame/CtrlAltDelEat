@@ -132,7 +132,7 @@ export default function Wait() {
   const deleteServeInProgress = (serveItemId: number, serveTable:number) => {
     toast.success(`Served Table No: ${serveTable}, Item No: ${serveItemId}!`);
     updateItemStatusToServed(serveItemId);
-    assistLock.current = false;
+    serveLock.current = false;
     setAllInProgress((prev) => prev.filter((item) => checkServe(serveItemId, item.itemID, item.reqType)));
   };
 
