@@ -28,7 +28,8 @@ SECRET_KEY = (
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ["localhost", "170.64.249.120", "127.0.0.1", "api.ctrlaltdeleat.com"]
 
