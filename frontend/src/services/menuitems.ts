@@ -1,11 +1,17 @@
 import { apiUrlBase } from "@/constants";
 import { getHeaders } from "@/services";
 import { failedDeleteError, failedGetError, failedPostError } from "@/helpers";
-import { addMenuItemRequest, deleteMenuItemRequest, editMenuItemRequest, uploadMenuItemImageRequest } from "@/models";
+import {
+  addMenuItemRequest,
+  deleteMenuItemRequest,
+  editMenuItemRequest,
+  menuItems,
+  uploadMenuItemImageRequest
+} from "@/models";
 
 const apiUrl = `${apiUrlBase}/api/menu/menuitems/`;
 
-export async function getMenuItems() {
+export async function getMenuItems(): Promise<menuItems[]> {
   const endpoint = `${apiUrl}`;
   const res = await fetch(endpoint);
 
@@ -71,6 +77,6 @@ export async function uploadMenuItemImage(request: uploadMenuItemImageRequest) {
     body: formData
   });
 
-  if(!res.ok && res.status != 400 && res.status != 401) failedPostError();
+  if (!res.ok && res.status != 400 && res.status != 401) failedPostError();
   return res.json();
 }

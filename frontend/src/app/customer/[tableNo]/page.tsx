@@ -23,8 +23,8 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
   const [filteredItemList, updateItems] = useState([] as menuItems[]);
   const [menuItemList, setMenuItemList] = useState([] as menuItems[]);
   const [categoryList, setCategoryList] = useState([] as category[]);
-  const [isMenuItemListLoading, setMenuItemListLoading] = useState(true);
-  const [isCategoryListLoading, setCategoryListLoading] = useState(true);
+  const [isMenuItemListLoading, menuItemListHandler] = useDisclosure(true);
+  const [isCategoryListLoading, categoryListHandler] = useDisclosure(true);
   const [cartItems, setCartItems] = useState([] as cartView[]);
   const [isCartLoading, cartHandler] = useDisclosure(false);
   const [orderHistory, setOrders] = useState([] as groupedOrders[]);
@@ -55,14 +55,6 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     setMenuItem(menuItem);
   };
 
-  const refreshMenuList = () => {
-    setMenuItemListLoading(true);
-    getMenuItems().then((res) => {
-      setMenuItemList(res);
-      setMenuItemListLoading(false);
-    });
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       const cart = await getCartStatus(tableNo);
@@ -88,18 +80,34 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     }
   }, [isOrderLoading, ordersHandler, tableNo]);
 
-  const refreshCategoryList = () => {
-    setCategoryListLoading(true);
-    getCategories().then((res) => {
-      setCategoryList(res);
-      setCategoryListLoading(false);
-    });
-  };
-
   useEffect(() => {
-    refreshCategoryList();
-    refreshMenuList();
-  }, []);
+    const fetchData = async () => {
+      const menuItems: menuItems[] = await getMenuItems();
+      const orderedItems = menuItems.sort((a) => a.position);
+      setMenuItemList(orderedItems);
+
+      const categories = await getCategories();
+      let categoriesSet = new Set();
+      menuItems.forEach((item) => item.category.forEach((cat) => categoriesSet.add(cat)));
+      const filteredSortedCategories = categories
+        .filter((c) => categoriesSet.has(c.url))
+        .sort((c) => c.position);
+
+      setCategoryList(filteredSortedCategories);
+
+      console.log(categories);
+      console.log(categoriesSet);
+      console.log(menuItems);
+      console.log(filteredSortedCategories);
+
+      menuItemListHandler.close();
+      categoryListHandler.close();
+    };
+
+    if (isMenuItemListLoading || isCategoryListLoading) {
+      fetchData().catch(() => console.error("error refreshing menu"));
+    }
+  }, [categoryListHandler, isCategoryListLoading, isMenuItemListLoading, menuItemListHandler]);
 
   return (
     <AppShell
@@ -122,7 +130,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
               alt="CtrlAltDelEat Logo"
             />
             <Text className="table-number" fw={700} size={isMobile ? "xs" : "md"}>
-              Table #{tableNo}
+                            Table #{tableNo}
             </Text>
             <Select
               hiddenFrom="sm"
@@ -144,7 +152,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
             <ActionIcon size="lg" onClick={handleRequestForAssistance}>
               <BellIcon/>
             </ActionIcon>
-            <ThemeToggle />
+            <ThemeToggle/>
           </Flex>
         </div>
       </AppShell.Header>
@@ -155,7 +163,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
           categoryList={categoryList}
           isLoading={isCategoryListLoading}
           onCategorySelect={handleSelectCategory}
-          onRefresh={refreshCategoryList}
+          onRefresh={categoryListHandler.open}
         />
       </AppShell.Navbar>
       <AppShell.Main>
@@ -173,7 +181,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         isOpened={viewMenuItemModalOpened}
         isLoading={isMenuItemListLoading}
         onClose={close}
-        onSubmit={refreshMenuList}
+        onSubmit={menuItemListHandler.open}
       />
 
       <ViewCartOrderModal

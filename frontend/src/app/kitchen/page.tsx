@@ -25,7 +25,7 @@ export default function Kitchen() {
     });
   };
 
-  /* Fetches every second. Uncomment for demo. */
+    /* Fetches every second. Uncomment for demo. */
   useEffect(() => {
     const intervalId = setInterval(refreshOrderList, 1000);
     return () => clearInterval(intervalId);
@@ -38,7 +38,7 @@ export default function Kitchen() {
       else {
         noPermissionToast();
         router.push(siteRoute.auth);
-      };
+      }
     });
   }, [router]);
 
@@ -47,11 +47,11 @@ export default function Kitchen() {
       <AppShell.Header>
         <div className="navbar">
           <Flex className="w-100" align="center">
-            <LogoWithLink />
+            <LogoWithLink/>
           </Flex>
           <Flex gap="sm">
-            <ThemeToggle />
-            <LogoutButton />
+            <ThemeToggle/>
+            <LogoutButton/>
           </Flex>
         </div>
       </AppShell.Header>
@@ -63,7 +63,7 @@ export default function Kitchen() {
           onRefresh={refreshOrderList}
         />
       </AppShell.Main>
-      <Toaster position="top-center" toastOptions={{ duration: 1500 }} />
+      <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
     </AppShell>
   );
 }
