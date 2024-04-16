@@ -16,7 +16,8 @@ export function CustomerMain({ category, items, onMenuItemSelect, onViewMenuItem
               src={item.image}
               alt={`A picture of ${item.menuitem_name}`}
               fallbackSrc={imagePlaceholder}
-              w={100}
+              mah={100}
+              miw={100}
             />
             <Stack justify="space-between" gap={0}>
               <Stack className="w-100" gap={5}>

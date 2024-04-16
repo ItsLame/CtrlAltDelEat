@@ -71,7 +71,9 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
                     src={item.image}
                     alt={`A picture of ${item.menuitem_name}`}
                     fallbackSrc={imagePlaceholder}
-                    w={100}
+                    style={{ position: "relative" }}
+                    mah={100}
+                    miw={100}
                   />
                   <Stack justify="space-between" gap={0}>
                     <Stack className="w-100" gap={5}>
