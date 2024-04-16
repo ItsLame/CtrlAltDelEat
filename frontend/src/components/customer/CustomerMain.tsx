@@ -13,7 +13,7 @@ export function CustomerMain({ category, items, onMenuItemSelect, onViewMenuItem
         <Flex gap={15}>
           <Flex w={80}>
             <Image
-              src={null}
+              src={item.image}
               alt={`A picture of ${item.menuitem_name}`}
               fallbackSrc={imagePlaceholder}
             />

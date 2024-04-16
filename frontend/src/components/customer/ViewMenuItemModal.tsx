@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import {
   Flex,
   LoadingOverlay,
@@ -39,7 +39,6 @@ export function ViewMenuItemModal({
   onSubmit,
 }: ViewMenuItemModalProps) {
   const handlersRef = useRef<NumberInputHandlers>(null);
-  const [itemImage, setItemImage] = useState<string | undefined>();
 
   const form = useForm({
     validate: zodResolver(menuItemSchema),
@@ -51,7 +50,7 @@ export function ViewMenuItemModal({
   });
 
   const handleSubmit = () => {
-        // create menu item to post to api
+    // create menu item to post to api
     const menu_item_request: addToCartRequest = {
       itemName: menuItem.menuitem_name,
       cost: menuItem.cost,
@@ -63,10 +62,10 @@ export function ViewMenuItemModal({
     addItemToCart(menu_item_request).then((res) => {
       switch (res) {
       case 400:
-        toast.error("some sort of error here");
+        toast.error("Error, failed to add item to cart");
         break;
       case 201:
-        toast.success("added item to cart");
+        toast.success("Added item to cart");
         form.setFieldValue("itemOptionalRequest", "");
         form.setFieldValue("itemQuantity", 1);
         onClose();
@@ -83,7 +82,6 @@ export function ViewMenuItemModal({
   };
 
   const handleClear = () => {
-    setItemImage(undefined);
     form.reset();
     onClose();
   };
@@ -108,7 +106,7 @@ export function ViewMenuItemModal({
           <Flex h={200}>
             <Image
               mt={10}
-              src={itemImage}
+              src={menuItem.image}
               fallbackSrc={imagePlaceholder}
               alt="Preview of uploaded image"
             />
@@ -129,17 +127,17 @@ export function ViewMenuItemModal({
           <Textarea
             label="Optional requests"
             placeholder="e.g., less spicy, no tomato"
-            onChange={(e) => {
-              form.setFieldValue("itemOptionalRequest", e.target.value);
-            }}
+            onChange={(e) => form.setFieldValue("itemOptionalRequest", e.target.value)}
           />
         </Stack>
 
         <Group justify="space-between" mt="md">
-          <Flex align="center" gap={5}>
+          <Flex align="center" gap="xs">
             <ActionIcon
               onClick={() => handlersRef.current?.decrement()}
-              variant="filled"
+              variant="outline"
+              size="lg"
+              radius="xl"
             >
               <MinusIcon/>
             </ActionIcon>
@@ -147,15 +145,15 @@ export function ViewMenuItemModal({
               w={50}
               min={1}
               defaultValue={1}
-              onChange={(value) => {
-                form.setFieldValue("itemQuantity", value as number);
-              }}
+              onChange={(value) => form.setFieldValue("itemQuantity", value as number)}
               handlersRef={handlersRef}
               hideControls
             />
             <ActionIcon
               onClick={() => handlersRef.current?.increment()}
-              variant="filled"
+              variant="outline"
+              size="lg"
+              radius="xl"
             >
               <PlusIcon/>
             </ActionIcon>

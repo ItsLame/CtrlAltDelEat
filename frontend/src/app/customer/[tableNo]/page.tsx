@@ -42,7 +42,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     requestAssistance(tableNo).then((res) => {
       switch (res) {
       case 201:
-        toast.custom("Requested for assitance");
+        toast("Requested for assistance!");
         break;
       default:
         toast.error("Error, failed to request assistance");

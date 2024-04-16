@@ -23,7 +23,7 @@ const handleRemoveItem = (itemNo: number, action: () => void) => {
   removeFromCart(itemNo).then((res) => {
     switch (res) {
     case 204:
-      toast.success("Item removed from cart.");
+      toast.success("Item removed from cart");
       action();
       break;
     default:
@@ -43,24 +43,24 @@ const generateMenuItem = (item: cartView, key: number, action: () => void) => (
           fallbackSrc={imagePlaceholder}
         />
       </Flex>
-      <Flex direction={"column"}>
+      <Flex className="w-100" direction={"column"}>
         <Flex direction={"row"} justify="space-between">
           <Text size="lg" c="blue" fw={700}>
             {item.itemName}
           </Text>
-          <ActionIcon color={"grey"} variant="outline" size={"lg"}>
-            <TrashIcon color={"red"} scale={2} onClick={() => handleRemoveItem(item.id, action)}/>
+          <ActionIcon variant="light" size={"lg"} color="red">
+            <TrashIcon scale={2} onClick={() => handleRemoveItem(item.id, action)}/>
           </ActionIcon>
         </Flex>
 
         <Text size="sm" c="dimmed">
           {item.alterations}
         </Text>
-        <Text size="md">quantity: {item.quantity}</Text>
-        <Text size="md">
-                    item cost: ${item.cost} total: $
-          {(item.cost * item.quantity).toFixed(2)}
-        </Text>
+        <Text size="md">Quantity: {item.quantity}</Text>
+        <Flex gap={5}>
+          <Text size="md">${(item.cost * item.quantity).toFixed(2)}</Text>
+          <Text c="dimmed">(${item.cost} x {item.quantity})</Text>
+        </Flex>
       </Flex>
     </Flex>
   </Card>
@@ -149,30 +149,34 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
     <Modal
       opened={viewCartProps.isOpen}
       onClose={viewCartProps.onClose}
-      title="Order information"
+      title="Order Information"
     >
-      <Tabs defaultValue="cart">
-        <Tabs.List>
+      <Tabs variant="outline" defaultValue="cart">
+        <Tabs.List mb="sm">
           <Tabs.Tab value="cart">
-                        Cart
+            Cart
           </Tabs.Tab>
           <Tabs.Tab value="orders">
-                        Orders
+            Orders
           </Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="cart">
           <Flex direction={"column"} gap={"sm"}>
             <ScrollArea.Autosize scrollbars={"y"} mah={550}>
-              <Stack>
-                {viewCartProps.cartItems
-                  ?.filter((item) => item.status == "in-cart")
-                  .map((i, k) => generateMenuItem(i, k, viewCartProps.updateCart))}
-              </Stack>
+              {viewCartProps.cartItems.length >= 1 ? (
+                <Stack>
+                  {viewCartProps.cartItems
+                    ?.filter((item) => item.status == "in-cart")
+                    .map((i, k) => generateMenuItem(i, k, viewCartProps.updateCart))}
+                </Stack>
+              ): <Text c="dimmed">Cart is empty.</Text>
+              }
+
             </ScrollArea.Autosize>
             <Flex align={"center"} direction={"row"} justify={"space-between"}>
-              <Button onClick={handleSubmit}>Submit Order!</Button>
               {generateTotalCartCost()}
+              <Button onClick={handleSubmit} disabled={!(viewCartProps.cartItems.length >= 1)}>Submit Order</Button>
             </Flex>
           </Flex>
         </Tabs.Panel>
@@ -180,15 +184,19 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
         <Tabs.Panel value="orders">
           <Flex direction={"column"} gap="sm">
             <ScrollArea.Autosize scrollbars={"y"} mah={550}>
-              <Stack>
-                {viewCartProps.orderHistoryList.map((order, index) => (
-                  <OrderHistoryItem groupedOrders={order} index={index} key={index}/>
-                ))}
-              </Stack>
+              {viewCartProps.orderHistoryList.length >= 1 ? (
+                <Stack>
+                  {viewCartProps.orderHistoryList.map((order, index) => (
+                    <OrderHistoryItem groupedOrders={order} index={index} key={index}/>
+                  ))}
+                </Stack>
+              ): <Text c="dimmed">Order history is empty.</Text>
+              }
+
             </ScrollArea.Autosize>
             <Flex align={"center"} direction={"row"} justify={"space-between"}>
-              <Button onClick={handlePayBill}>Pay bill</Button>
               {generateTotalOrderCost()}
+              <Button onClick={handlePayBill} px="xl">Pay Bill</Button>
             </Flex>
           </Flex>
         </Tabs.Panel>
