@@ -170,7 +170,7 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
             type="submit"
             variant="filled"
             disabled={form.errors?.categoryName || newCategoryName === "" ? true: false}
-            aria-label="Add category"
+            aria-label={`Add new category ${newCategoryName}`}
           >
             Add
           </Button>
