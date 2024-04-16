@@ -155,6 +155,7 @@ export function ViewMenuItemModal({
               handlersRef={handlersRef}
               error={form.errors.itemQuantity ? true : false}
               hideControls
+              aria-label="Item quantity"
             />
             <ActionIcon
               onClick={() => handlersRef.current?.increment()}
