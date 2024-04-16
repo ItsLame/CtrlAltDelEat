@@ -95,11 +95,6 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
 
       setCategoryList(filteredSortedCategories);
 
-      console.log(categories);
-      console.log(categoriesSet);
-      console.log(menuItems);
-      console.log(filteredSortedCategories);
-
       menuItemListHandler.close();
       categoryListHandler.close();
     };

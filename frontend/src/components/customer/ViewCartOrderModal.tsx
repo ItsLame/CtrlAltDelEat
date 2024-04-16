@@ -176,7 +176,7 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
             </ScrollArea.Autosize>
             <Flex align={"center"} direction={"row"} justify={"space-between"}>
               {generateTotalCartCost()}
-              <Button onClick={handleSubmit} disabled={!(viewCartProps.cartItems.length >= 1)}>Submit Order</Button>
+              <Button onClick={handleSubmit} disabled={viewCartProps.cartItems.length <= 0}>Submit Order</Button>
             </Flex>
           </Flex>
         </Tabs.Panel>
@@ -196,7 +196,7 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
             </ScrollArea.Autosize>
             <Flex align={"center"} direction={"row"} justify={"space-between"}>
               {generateTotalOrderCost()}
-              <Button onClick={handlePayBill} px="xl">Pay Bill</Button>
+              <Button onClick={handlePayBill} px="xl" disabled={viewCartProps.orderHistoryList.length <= 0}>Pay Bill</Button>
             </Flex>
           </Flex>
         </Tabs.Panel>

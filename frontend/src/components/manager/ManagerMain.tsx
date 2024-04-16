@@ -67,18 +67,13 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
                   <Flex {...provided.dragHandleProps} className="drag-handle" onClick={(e) => e.stopPropagation()} align="center" py="xl" pl="xs" pr="xs">
                     <DragHandleDots2Icon width={20} height={20}/>
                   </Flex>
-
-                  <Flex>
-                    <Image
-                      src={item.image}
-                      alt={`A picture of ${item.menuitem_name}`}
-                      fallbackSrc={imagePlaceholder}
-                      w={100}
-                      h={100}
-                    />
-                  </Flex>
-
-                  <Stack justify="space-between">
+                  <Image
+                    src={item.image}
+                    alt={`A picture of ${item.menuitem_name}`}
+                    fallbackSrc={imagePlaceholder}
+                    w={100}
+                  />
+                  <Stack justify="space-between" gap={0}>
                     <Stack className="w-100" gap={5}>
                       <Text size="lg" c={isSelected ? "" : "blue"} fw={700} lineClamp={1}>{item.menuitem_name}</Text>
                       <Text size="sm" c={isSelected ? "" : "dimmed"} lineClamp={2}>{item.description}</Text>

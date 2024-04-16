@@ -114,7 +114,7 @@ export function ViewMenuItemModal({
           {menuItem.tags?.length >= 1 && (
             <Flex gap={5}>
               {menuItem.tags.map((tag, k) => (
-                <Badge key={k} variant="light" color="dark">
+                <Badge key={k} variant="light" color="gray">
                   {tag}
                 </Badge>
               ))}
