@@ -23,3 +23,8 @@ export interface ViewMenuItemModalProps {
     onClose: () => void
     onSubmit: () => void
 }
+
+export interface CustomerQRProps {
+    isOpened: boolean
+    onClose: () => void
+}

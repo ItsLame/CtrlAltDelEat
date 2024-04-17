@@ -8,7 +8,7 @@ import { BellIcon, ReaderIcon } from "@radix-ui/react-icons";
 
 import { getCartStatus, getCategories, getMenuItems, getOrderHistory, requestAssistance } from "@/services";
 import { cartView, category, groupedOrders, menuItems } from "@/models";
-import { ThemeToggle, ViewMenuItemModal, ViewCartOrderModal, CustomerSidebar, CustomerMain } from "@/components";
+import { ThemeToggle, ViewMenuItemModal, ViewCartOrderModal, CustomerSidebar, CustomerMain, CustomerQR } from "@/components";
 import { mapToGroupedOrderItems } from "@/helpers";
 
 export default function Customer({ params: { tableNo } }: { params: { tableNo: number } }) {
@@ -17,6 +17,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
   const [sidebarOpened] = useDisclosure();
   const [viewMenuItemModalOpened, { open, close }] = useDisclosure(false);
   const [addMenuItemModalOpened, { open: openCartModal, close: closeCartModal }] = useDisclosure(false);
+  const [qrModalOpened, { open: openQRModal, close: closeQRModal }] = useDisclosure(false);
 
   const [category, setCategory] = useState({} as category);
   const [menuItem, setMenuItem] = useState({} as menuItems);
@@ -81,10 +82,6 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
   }, [isOrderLoading, ordersHandler, tableNo]);
 
   useEffect(() => {
-    document.title = "CtrlAltDelEat - Customer";
-  }, []);
-
-  useEffect(() => {
     const fetchData = async () => {
       const menuItems: menuItems[] = await getMenuItems();
       const orderedItems = menuItems.sort((a) => a.position);
@@ -108,6 +105,10 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     }
   }, [categoryListHandler, isCategoryListLoading, isMenuItemListLoading, menuItemListHandler]);
 
+  useEffect(() => {
+    document.title = "CtrlAltDelEat - Customer";
+  }, []);
+
   return (
     <AppShell
       header={{ height: 60 }}
@@ -123,10 +124,13 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         <div className="navbar">
           <Flex align="center" gap="sm" flex={1}>
             <Image
-              className="logo"
+              className="logo link pointer"
               src="/logo.svg"
               h={isMobile ? 25 : 45}
               alt="CtrlAltDelEat Logo"
+              aria-label="Press enter to view table QR code"
+              onClick={openQRModal}
+              onKeyDown={(e) => e.key === "Enter" && openQRModal()}
               tabIndex={0}
             />
             <Text className="table-number" fw={700} size={isMobile ? "sm" : "md"} tabIndex={0}>
@@ -203,6 +207,11 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         orderHistoryList={orderHistory}
         updateOrderItems={ordersHandler.open}
         menuItemList={menuItemList}
+      />
+
+      <CustomerQR
+        isOpened={qrModalOpened}
+        onClose={closeQRModal}
       />
     </AppShell>
   );
