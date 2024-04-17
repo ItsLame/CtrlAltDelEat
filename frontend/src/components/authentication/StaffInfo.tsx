@@ -29,8 +29,8 @@ export function StaffInfo({ onLogout }: StaffInfoProps) {
   };
 
   return (
-    <Stack className="w-100" gap="xs">
-      <Card withBorder radius="sm" shadow="md">
+    <Stack className="w-100" gap="xs" align="center">
+      <Card className="w-100" withBorder radius="sm" shadow="md">
         <Stack gap="xs">
           <Flex justify="space-between">
             <Text span fw={600}>Username:</Text>
@@ -48,7 +48,7 @@ export function StaffInfo({ onLogout }: StaffInfoProps) {
           </Flex>
         </Stack>
       </Card>
-      <Button variant="light" color="red" onClick={handleLogout}>
+      <Button variant="light" color="red" onClick={handleLogout} fullWidth>
         Logout
       </Button>
     </Stack>

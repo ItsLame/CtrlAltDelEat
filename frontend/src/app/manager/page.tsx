@@ -112,6 +112,10 @@ export default function Manager() {
     });
   }, [refreshAllList, router]);
 
+  useEffect(() => {
+    document.title = "CtrlAltDelEat - Manager";
+  }, []);
+
   return (
     <AppShell
       className="manager"

@@ -103,7 +103,7 @@ export default function HomePage() {
         <Box className="w-100" pos="relative">
           <LoadingOverlay zIndex={1000} visible={isLoginLoading}/>
           {!isLoggedIn ? (
-            <Link className="w-100" href={siteRoute.auth}>
+            <Link href={siteRoute.auth}>
               <Button className="w-100" variant="light">
                 Login
               </Button>

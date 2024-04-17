@@ -42,6 +42,10 @@ export default function Kitchen() {
     });
   }, [router]);
 
+  useEffect(() => {
+    document.title = "CtrlAltDelEat - Kitchen";
+  }, []);
+
   return (
     <AppShell header={{ height: 60 }} padding="md">
       <AppShell.Header>

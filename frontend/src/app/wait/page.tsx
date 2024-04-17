@@ -178,13 +178,19 @@ export default function Wait() {
     setAllInProgress((prev) => prev.filter((item) => checkAssist(num, item.tableNumber, item.reqType)));
   };
 
+  useEffect(() => {
+    document.title = "CtrlAltDelEat - Wait";
+  }, []);
+
   return (
-    <AppShell header={{ height: 60 }} navbar={{
-      width: 400,
-      breakpoint: "sm",
-      collapsed: { mobile: !opened }
-    }}
-    padding="md" >
+    <AppShell header={{ height: 60 }}
+      navbar={{
+        width: 400,
+        breakpoint: "sm",
+        collapsed: { mobile: !opened }
+      }}
+      padding="md"
+    >
       <AppShell.Header>
         <div className="navbar">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" px="lg"/>

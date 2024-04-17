@@ -81,6 +81,10 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
   }, [isOrderLoading, ordersHandler, tableNo]);
 
   useEffect(() => {
+    document.title = "CtrlAltDelEat - Customer";
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       const menuItems: menuItems[] = await getMenuItems();
       const orderedItems = menuItems.sort((a) => a.position);
