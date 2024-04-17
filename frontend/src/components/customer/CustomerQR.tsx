@@ -21,7 +21,7 @@ export function CustomerQR({ isOpened, onClose }: CustomerQRProps) {
         onClose={onClose}
         title="Table QR Code"
       >
-        <Flex direction="column" align="center" justify="center">
+        <Flex direction="column" align="center" justify="center" gap="sm">
           {currentUrl !== "" && (
             <Canvas
               text={currentUrl}
@@ -33,7 +33,7 @@ export function CustomerQR({ isOpened, onClose }: CustomerQRProps) {
               }}
             />
           )}
-          <Button onClick={onClose} w={200} color="gray">Close</Button>
+          <Button onClick={onClose} w={200} color="gray" aria-label="Press enter to close QR code modal">Close</Button>
         </Flex>
       </Modal>
     </>
