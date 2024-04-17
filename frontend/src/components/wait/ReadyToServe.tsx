@@ -6,7 +6,9 @@ import { useState } from "react";
 export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) {
   const [serveIndex, setServeIndex] = useState(0);
 
-  const nextServeItem = () => serveIndex < allRequests.length - 1 && setServeIndex((prev) => prev + 1);
+  const checkEndOfList = () => (serveIndex !== 0 && serveIndex === allRequests.length - 1) && setServeIndex(allRequests.length - 2);
+
+  const nextServeItem = () => serveIndex < allRequests.length && setServeIndex((prev) => prev + 1);
   const prevServeItem = () => serveIndex > 0 && setServeIndex((prev) => prev - 1);
 
   return (
@@ -16,7 +18,7 @@ export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) 
       </Title>
 
       <Box>
-        {allRequests.length > 0 ? (
+        {allRequests.length > 0 && serveIndex < allRequests.length ? (
           <Flex direction="column" justify="space-between" className="">
             <Flex direction="column" justify="start" >
               <Card
@@ -53,7 +55,10 @@ export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) 
               radius="md"
               fullWidth
               disabled={allRequests.length === 0}
-              onClick={() => addToServeInProgress(allRequests[serveIndex])}
+              onClick={() => {
+                addToServeInProgress(allRequests[serveIndex]);
+                checkEndOfList();
+              }}
               aria-label={`Serve ${allRequests[serveIndex].quantity} ${allRequests[serveIndex].itemName} 
               to table number ${allRequests[serveIndex].tableNumber}, 
               requested on ${allRequests[serveIndex].timestamp.slice(0, 9)}`}

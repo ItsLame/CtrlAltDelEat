@@ -6,6 +6,8 @@ import { useState } from "react";
 export function RequestAssistance({ allRequests, addAssistToProgress }: reqAssistProps) {
   const [assistIndex, setAssistIndex] = useState(0);
 
+  const checkEndOfList = () => (assistIndex !== 0 && assistIndex === allRequests.length - 1) && setAssistIndex(allRequests.length - 2);
+
   const nextAssist = () => assistIndex < allRequests.length - 1 && setAssistIndex((prev) => prev + 1);
   const prevAssist = () => assistIndex > 0 && setAssistIndex((prev) => prev - 1);
 
@@ -15,7 +17,7 @@ export function RequestAssistance({ allRequests, addAssistToProgress }: reqAssis
         Request Assistance
       </Title>
 
-      {allRequests.length > 0 ? (
+      {allRequests.length > 0 && assistIndex < allRequests.length ? (
         <>
           <Card
             className="w-100"
@@ -38,7 +40,10 @@ export function RequestAssistance({ allRequests, addAssistToProgress }: reqAssis
             radius="md"
             fullWidth
             disabled={allRequests.length === 0}
-            onClick={() => addAssistToProgress(allRequests[assistIndex].tableNumber, allRequests[assistIndex].timestamp.slice(0, 9))}
+            onClick={() => {
+              addAssistToProgress(allRequests[assistIndex].tableNumber, allRequests[assistIndex].timestamp.slice(0, 9));
+              checkEndOfList();
+            }}
             aria-label={`Assist table number ${allRequests[assistIndex].tableNumber}, requested on ${allRequests[assistIndex].timestamp.slice(0, 9)}`}
           >
             Assist
