@@ -22,7 +22,8 @@ export default function HomePage() {
   const handleSuperLogin = () => {
     setLoginLoading(true);
     setLoggedIn(false);
-    generateAuthToken({ username: apiUser, password: apiPassword }).then((res) => storeToken(res))
+    generateAuthToken({ username: apiUser, password: apiPassword })
+      .then((res) => storeToken(res))
       .finally(() => {
         setLoggedIn(true);
         setLoginLoading(false);
@@ -39,7 +40,9 @@ export default function HomePage() {
 
   useEffect(() => {
     setLoginLoading(true);
-    getUserCookies().then((res) => setLoggedIn(res.username ? true : false)).finally(() => setLoginLoading(false));
+    getUserCookies()
+      .then((res) => setLoggedIn(res.username ? true : false))
+      .finally(() => setLoginLoading(false));
   }, []);
 
   return (
@@ -59,7 +62,11 @@ export default function HomePage() {
           </Flex>
           <Flex className="w-100" justify="space-between" align="center">
             <Text>Turn {isLogoAnimated ? "Off" : "On"} Logo Flicker</Text>
-            <ActionIcon color="grape" variant="light" radius="xl" size="lg"
+            <ActionIcon
+              color="grape"
+              variant="light"
+              radius="xl"
+              size="lg"
               onClick={() => setLogoAnimated(prev => !prev)}
               aria-label="Toggle logo flicker animation"
             >
@@ -115,7 +122,7 @@ export default function HomePage() {
           )}
         </Box>
 
-        {/* Note: Developer tool only available on development environment (won't appear in prod) */}
+        {/* Note: Developer tool only available on development environment (won't appear in production environment) */}
         {isDevelopment && (
           <>
             <Title order={4} mt="lg">

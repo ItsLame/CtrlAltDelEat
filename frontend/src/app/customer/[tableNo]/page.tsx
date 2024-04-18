@@ -133,10 +133,10 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
               src="/logo.svg"
               h={isMobile ? 25 : 45}
               alt="CtrlAltDelEat Logo"
-              aria-label="Press enter to view table QR code"
               onClick={openQRModal}
               onKeyDown={(e) => e.key === "Enter" && openQRModal()}
               tabIndex={0}
+              aria-label="Press enter to view table QR code"
             />
             <Text className="table-number" fw={700} size={isMobile ? "sm" : "md"} tabIndex={0}>
               Table #{tableNo}

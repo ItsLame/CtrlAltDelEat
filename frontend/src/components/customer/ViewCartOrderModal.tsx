@@ -81,14 +81,14 @@ export function ViewCartOrderModal({ cartItems, orderHistoryList, menuItemList, 
 
   const generateTotalCartCost = () => {
     let totalCost = 0;
-    for (let i = 0; i < cartItems.length; i += 1) {
-      totalCost += cartItems[i].cost * cartItems[i].quantity;
-    }
+    for (let i = 0; i < cartItems.length; i += 1) totalCost += cartItems[i].cost * cartItems[i].quantity;
+
     return <Text tabIndex={0} inline>Subtotal: ${totalCost.toFixed(2)}</Text>;
   };
 
   const generateTotalOrderCost = () => {
     const cost = orderHistoryList.reduce((acc, item) => acc + item.totalCost, 0);
+
     return <Text tabIndex={0} inline>Subtotal: ${cost.toFixed(2)}</Text>;
   };
 
@@ -144,7 +144,9 @@ export function ViewCartOrderModal({ cartItems, orderHistoryList, menuItemList, 
             </ScrollArea.Autosize>
             <Flex align="center" direction="row" justify="space-between">
               {generateTotalCartCost()}
-              <Button onClick={handleSubmit} disabled={cartItems.length <= 0}>Submit Order</Button>
+              <Button onClick={handleSubmit} disabled={cartItems.length <= 0}>
+                Submit Order
+              </Button>
             </Flex>
           </Flex>
         </Tabs.Panel>

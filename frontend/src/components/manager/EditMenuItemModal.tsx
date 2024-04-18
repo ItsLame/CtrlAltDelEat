@@ -194,6 +194,7 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
             />
           </Stack>
         </Flex>
+
         <Group justify="flex-end" mt="md">
           <Button
             variant="outline" color="red"

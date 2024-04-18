@@ -14,7 +14,7 @@ export function OrderItem ({ item }: OrderItemProps) {
 
   return (
     <Card padding="sm" radius="md" withBorder>
-      <Flex className="w-100" direction="row" justify="space-between" style={{ width: "100%" }} gap={15}>
+      <Flex className="w-100" direction="row" justify="space-between" gap={15}>
         <Flex direction="column" style={{ flex: 1 }}>
           <Text size="sm" fw="bold">{item.itemName}</Text>
           <Text size="sm" c="dimmed" fs="italic" fz="sm">{item.alterations}</Text>
