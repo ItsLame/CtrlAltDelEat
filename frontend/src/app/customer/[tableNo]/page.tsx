@@ -14,7 +14,6 @@ import { mapToGroupedOrderItems } from "@/helpers";
 export default function Customer({ params: { tableNo } }: { params: { tableNo: number } }) {
   const isMobile = useMediaQuery("(max-width: 495px)");
 
-  const [sidebarOpened] = useDisclosure();
   const [viewMenuItemModalOpened, { open: openMenuItemModal, close: closeMenuItemModal }] = useDisclosure(false);
   const [addMenuItemModalOpened, { open: openCartModal, close: closeCartModal }] = useDisclosure(false);
   const [qrModalOpened, { open: openQRModal, close: closeQRModal }] = useDisclosure(false);
@@ -122,7 +121,6 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
       navbar={{
         width: 300,
         breakpoint: "sm",
-        collapsed: { mobile: !sidebarOpened },
       }}
       padding="md"
     >

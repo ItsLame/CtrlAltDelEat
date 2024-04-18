@@ -14,7 +14,7 @@ import { noPermissionToast } from "@/helpers";
 
 export default function Wait() {
   const router = useRouter();
-  const [opened, { toggle }] = useDisclosure();
+  const [sidebarOpened, { toggle: toggleSidebar }] = useDisclosure();
 
   const [custAssistReqs, setcustAssistReqs] = useState([] as assistRequests[]);
   const [tempAssistReq, setTempAssistReq] = useState([] as assistRequests[]);
@@ -25,9 +25,9 @@ export default function Wait() {
   const [toServe, setToServe] = useState([] as items[]);
 
   const [allInProgress, setAllInProgress] = useState([] as serveAssistRequests[]);
-  const assistLock = useRef(false);
 
   const serveLock = useRef(false);
+  const assistLock = useRef(false);
 
   const refreshServe = () => getWaitItemsToServe().then((res) => setTempServeReq(res));
   const refreshAssist = () => getWaitAssistance().then((res) => setTempAssistReq(res));
@@ -53,29 +53,6 @@ export default function Wait() {
     setAllInProgress((prev) => [...prev, newReq]);
   };
 
-  const checkServe = (num: number, itemID: number, type: string) => {
-    if (type === statusType.serving && itemID === num) return false;
-    else return true;
-  };
-
-  const delServeNoUpdate = (serveItemId: number) => {
-    serveLock.current = true;
-    assistLock.current = false;
-    setAllInProgress((prev) => prev.filter((item) => checkServe(serveItemId, item.itemID, item.reqType)));
-  };
-
-  const updateItemStatusToServed = (serveItemId: number) => {
-    const itemID = serveItemId;
-    updateItemStatus(itemID, statusType.served).then(refreshServe);
-  };
-
-  const deleteServeInProgress = (serveItemId: number, serveTable:number) => {
-    toast.success(`Served Table No: ${serveTable}, Item No: ${serveItemId}!`);
-    updateItemStatusToServed(serveItemId);
-    serveLock.current = false;
-    setAllInProgress((prev) => prev.filter((item) => checkServe(serveItemId, item.itemID, item.reqType)));
-  };
-
   const addAssistInProgress = (num: number, timestamp: string) => {
     const newReq = {
       reqType: statusType.assist,
@@ -92,19 +69,42 @@ export default function Wait() {
     setAllInProgress((prev) => [...prev, newReq]);
   };
 
+  const checkServe = (num: number, itemID: number, type: string) => {
+    if (type === statusType.serving && itemID === num) return false;
+    else return true;
+  };
+
   const checkAssist = (num: number, itemTableNum: number, type: string) => {
     if (type === statusType.assist && itemTableNum === num) return false;
     else return true;
   };
 
-  const delAssistNoUpdate = (num: number) => {
+  const updateItemStatusToServed = (serveItemId: number) => {
+    const itemID = serveItemId;
+    updateItemStatus(itemID, statusType.served).then(refreshServe);
+  };
+
+  const updateAssistance = (num: number) => {
+    updateWaitAssistance(num);
+  };
+
+  const deleteServeNoUpdate = (serveItemId: number) => {
+    serveLock.current = true;
+    assistLock.current = false;
+    setAllInProgress((prev) => prev.filter((item) => checkServe(serveItemId, item.itemID, item.reqType)));
+  };
+
+  const deleteAssistNoUpdate = (num: number) => {
     assistLock.current = true;
     serveLock.current = false;
     setAllInProgress((prev) => prev.filter((item) => checkAssist(num, item.tableNumber, item.reqType)));
   };
 
-  const updateAssistance = (num: number) => {
-    updateWaitAssistance(num);
+  const deleteServeInProgress = (serveItemId: number, serveTable:number) => {
+    toast.success(`Served Table No: ${serveTable}, Item No: ${serveItemId}!`);
+    updateItemStatusToServed(serveItemId);
+    serveLock.current = false;
+    setAllInProgress((prev) => prev.filter((item) => checkServe(serveItemId, item.itemID, item.reqType)));
   };
 
   const deleteAssistInProgress = (num: number) => {
@@ -155,13 +155,13 @@ export default function Wait() {
   }, [custAssistReqs]);
 
   useEffect(() => {
-    const filtered = tempServeReq.filter((item) => item.status === statusType.prepared);
-    setserveItemsReqs(filtered);
+    const filteredServeReq = tempServeReq.filter((item) => item.status === statusType.prepared);
+    setserveItemsReqs(filteredServeReq);
   }, [tempServeReq]);
 
   useEffect(() => {
-    const filtered = tempAssistReq.filter((item) => item.request_assistance === true);
-    setcustAssistReqs(filtered);
+    const filteredAssistReq = tempAssistReq.filter((item) => item.request_assistance === true);
+    setcustAssistReqs(filteredAssistReq);
   }, [tempAssistReq]);
 
   useEffect(() => {
@@ -184,13 +184,13 @@ export default function Wait() {
       navbar={{
         width: 400,
         breakpoint: "sm",
-        collapsed: { mobile: !opened }
+        collapsed: { mobile: !sidebarOpened }
       }}
       padding="md"
     >
       <AppShell.Header>
         <div className="navbar">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" px="lg"/>
+          <Burger opened={sidebarOpened} onClick={toggleSidebar} hiddenFrom="sm" size="sm" px="lg"/>
           <Flex className="w-100" align="center">
             <LogoWithLink />
           </Flex>
@@ -216,9 +216,9 @@ export default function Wait() {
       <AppShell.Main>
         <InProgress
           allRequests={allInProgress}
-          assistUndo={delAssistNoUpdate}
+          assistUndo={deleteAssistNoUpdate}
           assistUpdate={deleteAssistInProgress}
-          serveUndo={delServeNoUpdate}
+          serveUndo={deleteServeNoUpdate}
           serveUpdate={deleteServeInProgress}
           refreshAssist={refreshAssist}
           refreshServe={refreshServe}

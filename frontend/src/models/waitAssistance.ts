@@ -1,4 +1,4 @@
-import { items } from "@/models/kitchen";
+import { items } from "@/models";
 
 /* eslint-disable */
 export enum statusType {

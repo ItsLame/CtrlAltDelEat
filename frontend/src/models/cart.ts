@@ -1,5 +1,4 @@
-import { menuItems } from "./menuitems";
-import { statusType } from "./waitAssistance";
+import { menuItems, statusType } from "@/models";
 
 export interface addToCartRequest {
     tableNumber: number;
@@ -51,7 +50,7 @@ export interface groupedOrders {
 export interface ViewCartModalProps {
     cartItems: cartView[];
     orderHistoryList: groupedOrders[];
-    menuItemList: menuItems[]
+    menuItemList: menuItems[];
     tableNo: number;
     isOpen: boolean;
     onClose: () => void;

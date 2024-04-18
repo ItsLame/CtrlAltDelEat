@@ -1,13 +1,7 @@
 import { apiUrlBase } from "@/constants";
 import { getHeaders } from "@/services";
 import { failedDeleteError, failedGetError, failedPostError } from "@/helpers";
-import {
-  addMenuItemRequest,
-  deleteMenuItemRequest,
-  editMenuItemRequest,
-  menuItems,
-  uploadMenuItemImageRequest
-} from "@/models";
+import { addMenuItemRequest, deleteMenuItemRequest, editMenuItemRequest, menuItems, uploadMenuItemImageRequest } from "@/models";
 
 const apiUrl = `${apiUrlBase}/api/menu/menuitems/`;
 

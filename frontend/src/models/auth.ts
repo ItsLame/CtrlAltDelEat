@@ -8,25 +8,25 @@ export enum userType {
 /* eslint-enable */
 
 export interface userGroup {
-  id: number,
-  name: userType,
+  id: number;
+  name: userType;
 }
 
 export interface storeTokenRequest {
-  access: string
-  refresh: string
-  username: string
-  isSuperUser: boolean
-  groups: userGroup[]
+  access: string;
+  refresh: string;
+  username: string;
+  isSuperUser: boolean;
+  groups: userGroup[];
 }
 
 export interface generateAuthTokenRequest {
-  username?: string
-  password?: string
+  username?: string;
+  password?: string;
 }
 
 export interface refreshAuthTokenRequest {
-  refresh?: string
+  refresh?: string;
 }
 
 export interface LoginProps {
