@@ -1,9 +1,9 @@
 export interface orderItems {
   id: string;
-  items: Items[];
+  items: items[];
 }
 
-export interface Items {
+export interface items {
   id: number;
   tableNumber: number;
   itemName: string;
@@ -22,6 +22,6 @@ export interface KitchenMainProps {
 }
 
 export interface UndoOrderProps {
-  item: Items;
+  item: items;
   handleUndoClick: () => void;
 }

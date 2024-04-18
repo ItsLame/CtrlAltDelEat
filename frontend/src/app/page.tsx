@@ -4,11 +4,11 @@ import Link from "next/link";
 import { Image, Button, Center, Flex, Stack, Title, Box, NumberInput, LoadingOverlay, Text, ActionIcon } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 
 import { clearAuthRefreshTokens, generateAuthToken, getUserCookies, storeToken } from "@/services";
 import { apiPassword, apiUser, siteRoute } from "@/constants";
 import { StaffInfo, ThemeToggle } from "@/components";
-import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 
 export default function HomePage() {
   const isDevelopment = process.env.NODE_ENV === "development" ? true : false;
@@ -92,7 +92,9 @@ export default function HomePage() {
               aria-label="Enter table number for customer"
             />
             <Link href={`${siteRoute.customer}/${tableNo}`} aria-label="Press enter to navigate to wait staff page">
-              <Button tabIndex={-1} disabled={tableNo <= 0 ? true : false}>Customer</Button>
+              <Button tabIndex={-1} disabled={tableNo <= 0 ? true : false}>
+                Customer
+              </Button>
             </Link>
           </Flex>
         </Stack>

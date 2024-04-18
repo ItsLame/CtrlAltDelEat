@@ -11,7 +11,6 @@ export interface menuItems {
   position: number
 }
 
-// API requests model
 export interface addMenuItemRequest {
   menuitem_name: string
   cost: number

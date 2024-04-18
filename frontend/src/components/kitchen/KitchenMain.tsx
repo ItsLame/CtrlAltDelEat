@@ -3,7 +3,7 @@ import { Blockquote, Box, Card, Flex, Text, Title } from "@mantine/core";
 import toast from "react-hot-toast";
 
 import { UndoDeleteOrder } from "@/components";
-import { KitchenMainProps, orderItems, Items, statusType } from "@/models";
+import { KitchenMainProps, orderItems, items, statusType } from "@/models";
 import { updateItemStatus } from "@/services";
 
 export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
@@ -13,19 +13,19 @@ export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
 
   let timeOut: string | number | NodeJS.Timeout | undefined;
 
-  const handleUndoClick = (tID: string, item: Items) => {
+  const handleUndoClick = (tID: string, item: items) => {
     toast.dismiss(tID);
     clearTimeout(timeOut);
     setCardsPrepared((prevCards) => prevCards.filter((itemnum) => itemnum !== item.id));
   };
 
-  const handleDelete = (tID: string, item: Items) => {
+  const handleDelete = (tID: string, item: items) => {
     toast.dismiss(tID);
     const itemID = item.id;
     updateItemStatus(itemID, statusType.prepared).then(onRefresh);
   };
 
-  const handleClick = (item: Items) => {
+  const handleClick = (item: items) => {
     if (!preparedCards.includes(item.id)) {
       let x = "";
       setCardsPrepared((prevCards) => [...prevCards, item.id]);

@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 import { LogoWithLink, LogoutButton, ThemeToggle, InProgress, ReadyToServe, RequestAssistance } from "@/components";
 import { getUserCookies, getWaitAssistance, getWaitItemsToServe, updateItemStatus, updateWaitAssistance } from "@/services";
-import { assistRequests, serveAssistRequests, Items, statusType, userType } from "@/models";
+import { assistRequests, serveAssistRequests, items, statusType, userType } from "@/models";
 import { siteRoute } from "@/constants";
 import { noPermissionToast } from "@/helpers";
 
@@ -20,9 +20,9 @@ export default function Wait() {
   const [tempAssistReq, setTempAssistReq] = useState([] as assistRequests[]);
   const [toAssist, setToAssist] = useState([] as assistRequests[]);
 
-  const [serveItemsReqs, setserveItemsReqs] = useState([] as Items[]);
-  const [tempServeReq, setTempServeReq] = useState([] as Items[]);
-  const [toServe, setToServe] = useState([] as Items[]);
+  const [serveItemsReqs, setserveItemsReqs] = useState([] as items[]);
+  const [tempServeReq, setTempServeReq] = useState([] as items[]);
+  const [toServe, setToServe] = useState([] as items[]);
 
   const [allInProgress, setAllInProgress] = useState([] as serveAssistRequests[]);
   const assistLock = useRef(false);
@@ -30,78 +30,14 @@ export default function Wait() {
   const serveLock = useRef(false);
 
   const refreshServe = () => getWaitItemsToServe().then((res) => setTempServeReq(res));
-
-  useEffect(() => {
-    const filtered = tempServeReq.filter((item) => item.status === statusType.prepared);
-    setserveItemsReqs(filtered);
-  }, [tempServeReq]);
-
-  const refreshAssist = () => {
-    getWaitAssistance().then((res) => setTempAssistReq(res));
-  };
-
-  useEffect(() => {
-    const filtered = tempAssistReq.filter((item) => item.request_assistance === true);
-    setcustAssistReqs(filtered);
-  }, [tempAssistReq]);
+  const refreshAssist = () => getWaitAssistance().then((res) => setTempAssistReq(res));
 
   const refreshAllList = useCallback(() => {
     refreshAssist();
     refreshServe();
   }, []);
 
-  /* Fetches every second. */
-  useEffect(() => {
-    const assistIntervalId = setInterval(refreshAssist, 1000);
-    const serveIntervalId = setInterval(refreshServe, 1000);
-
-    return () => {
-      clearInterval(assistIntervalId);
-      clearInterval(serveIntervalId);
-    };
-  }, []);
-
-  useEffect(() => {
-    getUserCookies().then((res) => {
-      const permittedUsers = new RegExp(`${userType.manager}|${userType.waitStaff}`);
-      if (res && (res.isSuperUser === "true" || permittedUsers.test(res.groups || ""))) refreshAllList();
-      else {
-        noPermissionToast();
-        router.push(siteRoute.auth);
-      }
-    });
-  }, [refreshAllList, router]);
-
-  useEffect(() => {
-    if (assistLock.current) {
-      const tableToAssist = custAssistReqs
-        .sort((a, b) => a.timestamp > b.timestamp ? 1 : -1)
-        .filter((item) => item.request_assistance &&
-        !allInProgress.some((i) => item.tableNumber === i.tableNumber && i.reqType === statusType.assist));
-      setToAssist(tableToAssist);
-      assistLock.current = false;
-    }
-  }, [allInProgress, custAssistReqs]);
-
-  useEffect(() => {
-    assistLock.current = true;
-  }, [custAssistReqs]);
-
-  useEffect(() => {
-    if (serveLock.current) {
-      let orderToServe = serveItemsReqs
-        .sort((a, b) => a.timestamp > b.timestamp ? 1 : -1)
-        .filter((item1) => !allInProgress.some((item2) => item1.id === item2.itemID));
-      setToServe(orderToServe);
-      serveLock.current = false;
-    }
-  }, [allInProgress, serveItemsReqs]);
-
-  useEffect(() => {
-    serveLock.current = true;
-  }, [serveItemsReqs]);
-
-  const addServeItemToInProgress = (serveItem: Items) => {
+  const addServeItemToInProgress = (serveItem: items) => {
     const newReq = {
       reqType: statusType.serving,
       tableNumber: serveItem.tableNumber,
@@ -177,6 +113,67 @@ export default function Wait() {
     assistLock.current = false;
     setAllInProgress((prev) => prev.filter((item) => checkAssist(num, item.tableNumber, item.reqType)));
   };
+
+  useEffect(() => {
+    getUserCookies().then((res) => {
+      const permittedUsers = new RegExp(`${userType.manager}|${userType.waitStaff}`);
+      if (res && (res.isSuperUser === "true" || permittedUsers.test(res.groups || ""))) refreshAllList();
+      else {
+        noPermissionToast();
+        router.push(siteRoute.auth);
+      }
+    });
+  }, [refreshAllList, router]);
+
+  useEffect(() => {
+    if (serveLock.current) {
+      let orderToServe = serveItemsReqs
+        .sort((a, b) => a.timestamp > b.timestamp ? 1 : -1)
+        .filter((item1) => !allInProgress.some((item2) => item1.id === item2.itemID));
+      setToServe(orderToServe);
+      serveLock.current = false;
+    }
+  }, [allInProgress, serveItemsReqs]);
+
+  useEffect(() => {
+    if (assistLock.current) {
+      const tableToAssist = custAssistReqs
+        .sort((a, b) => a.timestamp > b.timestamp ? 1 : -1)
+        .filter((item) => item.request_assistance &&
+          !allInProgress.some((i) => item.tableNumber === i.tableNumber && i.reqType === statusType.assist));
+      setToAssist(tableToAssist);
+      assistLock.current = false;
+    }
+  }, [allInProgress, custAssistReqs]);
+
+  useEffect(() => {
+    serveLock.current = true;
+  }, [serveItemsReqs]);
+
+  useEffect(() => {
+    assistLock.current = true;
+  }, [custAssistReqs]);
+
+  useEffect(() => {
+    const filtered = tempServeReq.filter((item) => item.status === statusType.prepared);
+    setserveItemsReqs(filtered);
+  }, [tempServeReq]);
+
+  useEffect(() => {
+    const filtered = tempAssistReq.filter((item) => item.request_assistance === true);
+    setcustAssistReqs(filtered);
+  }, [tempAssistReq]);
+
+  useEffect(() => {
+    /* Fetches every second. */
+    const assistIntervalId = setInterval(refreshAssist, 1000);
+    const serveIntervalId = setInterval(refreshServe, 1000);
+
+    return () => {
+      clearInterval(assistIntervalId);
+      clearInterval(serveIntervalId);
+    };
+  }, []);
 
   useEffect(() => {
     document.title = "CtrlAltDelEat - Wait";

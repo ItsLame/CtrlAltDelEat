@@ -1,4 +1,26 @@
-import { Items } from "@/models/kitchen";
+import { items } from "@/models/kitchen";
+
+/* eslint-disable */
+export enum statusType {
+  inCart = "in-cart",
+  received = "received",
+  prepared = "prepared",
+  serving = "serve",
+  served = "served",
+  assist = "assist",
+  paying = "yet-to-pay"
+}
+/* eslint-enable */
+
+export interface serveAssistRequests {
+  reqType: statusType;
+  tableNumber: number;
+  itemID: number;
+  timestamp: string;
+  itemName: string;
+  quantity: number;
+  alterations: string;
+}
 
 export interface assistRequests {
   tableNumber: number;
@@ -7,8 +29,8 @@ export interface assistRequests {
 }
 
 export interface ReadyToServeProps {
-  allRequests: Items[];
-  addToServeInProgress: (_serveItem: Items) => void;
+  allRequests: items[];
+  addToServeInProgress: (_serveItem: items) => void;
 }
 
 export interface RequestAssistanceProps {
@@ -25,32 +47,3 @@ export interface InProgressProps {
   refreshAssist: () => void;
   refreshServe: () => void;
 }
-
-export interface waitMainProps {
-  serveItemsReqs: Items[];
-  custAssistReqs: assistRequests[];
-  refreshAssist: () => void;
-  refreshServe: () => void;
-}
-
-export interface serveAssistRequests {
-  reqType: statusType;
-  tableNumber: number;
-  itemID: number;
-  timestamp: string;
-  itemName: string;
-  quantity: number;
-  alterations: string;
-}
-
-/* eslint-disable */
-export enum statusType {
-  inCart = "in-cart",
-  received = "received",
-  prepared = "prepared",
-  serving = "serve",
-  served = "served",
-  assist = "assist",
-  paying = "yet-to-pay"
-}
-/* eslint-enable */

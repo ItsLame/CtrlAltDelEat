@@ -20,13 +20,13 @@ export function StaffInfo({ onLogout }: StaffInfoProps) {
     });
   };
 
-  useEffect(() => {
-    refreshUser();
-  }, []);
-
   const handleLogout = () => {
     blacklistAuthToken().then(() => onLogout());
   };
+
+  useEffect(() => {
+    refreshUser();
+  }, []);
 
   return (
     <Stack className="w-100" gap="xs" align="center">

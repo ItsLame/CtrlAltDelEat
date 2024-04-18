@@ -20,17 +20,6 @@ export interface cartView {
     quantity: number;
 }
 
-export interface ViewCartModalProps {
-    cartItems: cartView[];
-    orderHistoryList: groupedOrders[];
-    menuItemList: menuItems[]
-    tableNo: number;
-    isOpen: boolean;
-    onClose: () => void;
-    updateCart: () => void;
-    updateOrderItems: () => void;
-}
-
 export interface orderHistoryView {
     id: number;
     tableNumber: number;
@@ -57,6 +46,17 @@ export interface groupedOrders {
     totalCost: number;
     timestamp: string;
     items: itemView[];
+}
+
+export interface ViewCartModalProps {
+    cartItems: cartView[];
+    orderHistoryList: groupedOrders[];
+    menuItemList: menuItems[]
+    tableNo: number;
+    isOpen: boolean;
+    onClose: () => void;
+    updateCart: () => void;
+    updateOrderItems: () => void;
 }
 
 export interface HistoryProps {

@@ -4,7 +4,6 @@ export interface category {
   position: number
 }
 
-// API requests model
 export interface addCategoryRequest {
   category_name: string
 }

@@ -15,21 +15,24 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
   const isMobile = useMediaQuery("(max-width: 495px)");
 
   const [sidebarOpened] = useDisclosure();
-  const [viewMenuItemModalOpened, { open, close }] = useDisclosure(false);
+  const [viewMenuItemModalOpened, { open: openMenuItemModal, close: closeMenuItemModal }] = useDisclosure(false);
   const [addMenuItemModalOpened, { open: openCartModal, close: closeCartModal }] = useDisclosure(false);
   const [qrModalOpened, { open: openQRModal, close: closeQRModal }] = useDisclosure(false);
 
   const [category, setCategory] = useState({} as category);
   const [menuItem, setMenuItem] = useState({} as menuItems);
-  const [filteredItemList, updateItems] = useState([] as menuItems[]);
   const [menuItemList, setMenuItemList] = useState([] as menuItems[]);
+  const [filteredItemList, updateItems] = useState([] as menuItems[]);
   const [categoryList, setCategoryList] = useState([] as category[]);
+  const [cartItems, setCartItems] = useState([] as cartView[]);
+  const [orderHistory, setOrders] = useState([] as groupedOrders[]);
+
   const [isMenuItemListLoading, menuItemListHandler] = useDisclosure(true);
   const [isCategoryListLoading, categoryListHandler] = useDisclosure(true);
-  const [cartItems, setCartItems] = useState([] as cartView[]);
   const [isCartLoading, cartHandler] = useDisclosure(false);
-  const [orderHistory, setOrders] = useState([] as groupedOrders[]);
   const [isOrderLoading, ordersHandler] = useDisclosure(true);
+
+  const handleSelectMenuItem = (menuItem: menuItems) => setMenuItem(menuItem);
 
   const handleSelectCategory = (category?: category) => {
     if (category) {
@@ -52,10 +55,6 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     });
   };
 
-  const handleSelectMenuItem = (menuItem: menuItems) => {
-    setMenuItem(menuItem);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       const cart = await getCartStatus(tableNo);
@@ -72,6 +71,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     const fetchData = async () => {
       const orderHistory = await getOrderHistory(tableNo);
       const groupedOrders = mapToGroupedOrderItems(orderHistory);
+
       setOrders(groupedOrders);
       ordersHandler.close();
     };
@@ -85,10 +85,12 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     const fetchData = async () => {
       const menuItems: menuItems[] = await getMenuItems();
       const orderedItems = menuItems.sort((a) => a.position);
+
       setMenuItemList(orderedItems);
 
       const categories = await getCategories();
       let categoriesSet = new Set();
+
       menuItems.forEach((item) => item.category.forEach((cat) => categoriesSet.add(cat)));
       const filteredSortedCategories = categories
         .filter((c) => categoriesSet.has(c.url))
@@ -189,7 +191,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
           category={category}
           items={filteredItemList}
           onMenuItemSelect={handleSelectMenuItem}
-          onViewMenuItem={open}
+          onViewMenuItem={openMenuItemModal}
         />
       </AppShell.Main>
 
@@ -198,7 +200,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         tableNo={tableNo}
         isOpened={viewMenuItemModalOpened}
         isLoading={isMenuItemListLoading}
-        onClose={close}
+        onClose={closeMenuItemModal}
       />
 
       <ViewCartOrderModal

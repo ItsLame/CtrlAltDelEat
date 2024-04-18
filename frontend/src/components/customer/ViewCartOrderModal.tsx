@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-import { ActionIcon, Badge, Blockquote, Button, Card, Collapse, Flex, Image, Modal, ScrollArea, Stack, Tabs, Text, UnstyledButton } from "@mantine/core";
-import { ChevronDownIcon, ChevronUpIcon, TrashIcon } from "@radix-ui/react-icons";
+import { ActionIcon, Blockquote, Button, Card, Flex, Image, Modal, ScrollArea, Stack, Tabs, Text } from "@mantine/core";
+import { TrashIcon } from "@radix-ui/react-icons";
 import toast from "react-hot-toast";
-import { useDisclosure } from "@mantine/hooks";
 
 import { imagePlaceholder } from "@/constants";
 import { generateBill, orderCart, removeFromCart } from "@/services";
-import { cartView, HistoryProps, itemView, menuItems, OrderItemProps, statusType, ViewCartModalProps } from "@/models";
+import { cartView, menuItems, statusType, ViewCartModalProps } from "@/models";
+import { OrderHistoryItem } from "@/components";
 
 const handleRemoveItem = (itemNo: number, action: () => void) => {
   removeFromCart(itemNo).then((res) => {
@@ -58,60 +58,6 @@ const generateMenuItem = (item: cartView, key: number, itemList: menuItems[], ac
         </Flex>
       </Flex>
     </Card>
-  );
-};
-
-const OrderItem = ({ item }: OrderItemProps) => {
-  const statusBadgeColor = (itemStatus: statusType) => {
-    switch (itemStatus) {
-    case statusType.received: return "gray";
-    case statusType.prepared: return "yellow";
-    case statusType.serving: return "blue";
-    case statusType.served: return "green";
-    default: return "gray";
-    }
-  };
-
-  return (
-    <Card padding="sm" radius="md" withBorder>
-      <Flex className="w-100" direction="row" justify="space-between" style={{ width: "100%" }} gap={15}>
-        <Flex direction="column" style={{ flex: 1 }}>
-          <Text size="sm" fw="bold">{item.itemName}</Text>
-          <Text size="sm" c="dimmed" fs="italic" fz="sm">{item.alterations}</Text>
-        </Flex>
-        <Flex direction="column" align="flex-end" style={{ flex: 1 }}>
-          <Badge mb={5} color={statusBadgeColor(item.status)}>{item.status}</Badge>
-          <Text size="sm">Quantity: {item.quantity}</Text>
-          <Text size="sm" c="dimmed">(${item.cost} x {item.quantity})</Text>
-          <Text size="sm">${(item.quantity * item.cost).toFixed(2)} </Text>
-        </Flex>
-      </Flex>
-    </Card>
-  );
-};
-
-const OrderHistoryItem = ({ groupedOrders, index }: HistoryProps) => {
-  const [opened, { toggle }] = useDisclosure(false);
-
-  return (
-    <UnstyledButton onClick={toggle} key={index}>
-      <Card className={`order-list-toggle ${opened ? "selected" : ""}`} padding="lg" radius="md" shadow="sm" withBorder>
-        <Flex direction="row" align="center" justify="space-between">
-          <Flex gap="md" align="center">
-            {opened ? <ChevronUpIcon width={20} height={20}/> : <ChevronDownIcon width={20} height={20}/>}
-            <Text size="md">Order number: {index + 1}</Text>
-          </Flex>
-          <Text size="md">${groupedOrders.totalCost}</Text>
-        </Flex>
-      </Card>
-      <Collapse in={opened}>
-        <Card p="xs" withBorder>
-          <Stack gap="xs">
-            {groupedOrders.items.map((item: itemView, k: number) => <OrderItem item={item} key={k}/>)}
-          </Stack>
-        </Card>
-      </Collapse>
-    </UnstyledButton>
   );
 };
 

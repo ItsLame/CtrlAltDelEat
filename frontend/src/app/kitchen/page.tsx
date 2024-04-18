@@ -25,12 +25,6 @@ export default function Kitchen() {
     });
   };
 
-  /* Fetches every second. */
-  useEffect(() => {
-    const intervalId = setInterval(refreshOrderList, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
-
   useEffect(() => {
     getUserCookies().then((res) => {
       const permittedUsers = new RegExp(`${userType.manager}|${userType.kitchenStaff}`);
@@ -44,6 +38,10 @@ export default function Kitchen() {
 
   useEffect(() => {
     document.title = "CtrlAltDelEat - Kitchen";
+
+    /* Fetches every second. */
+    const intervalId = setInterval(refreshOrderList, 1000);
+    return () => clearInterval(intervalId);
   }, []);
 
   return (

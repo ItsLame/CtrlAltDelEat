@@ -25,14 +25,6 @@ export function Login({ onReturn } : LoginProps) {
     });
   };
 
-  useEffect(() => {
-    if (!checkLogin()) {
-      initForm();
-      setLoginLoading(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handleLogin = (pin: string) => {
     setLoginLoading(true);
     generateAuthToken( { username: pin, password: apiPassword } ).then((res) => {
@@ -60,7 +52,15 @@ export function Login({ onReturn } : LoginProps) {
     return false;
   };
 
-  const LoginForm = () => (
+  useEffect(() => {
+    if (!checkLogin()) {
+      initForm();
+      setLoginLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const loginForm = () => (
     <form onSubmit={(e) => {
       e.preventDefault();
       !form.validate().hasErrors && handleLogin(form.values?.pin);
@@ -98,7 +98,7 @@ export function Login({ onReturn } : LoginProps) {
         <Title order={1} mb="xl">
           Staff Login
         </Title>
-        {LoginForm()}
+        {loginForm()}
       </Stack>
     </Flex>
   );
