@@ -106,6 +106,11 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
   }, [categoryListHandler, isCategoryListLoading, isMenuItemListLoading, menuItemListHandler]);
 
   useEffect(() => {
+    categoryList?.length > 0 && handleSelectCategory(categoryList[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryList]);
+
+  useEffect(() => {
     document.title = "CtrlAltDelEat - Customer";
   }, []);
 

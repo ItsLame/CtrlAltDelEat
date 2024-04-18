@@ -41,6 +41,7 @@ export function CustomerMain({ category, items, onMenuItemSelect, onViewMenuItem
       <Stack gap="xs" mt={isMobile ? 50 : 0}>
         <Title order={2} visibleFrom="sm">{category.category_name}</Title>
         {items.map((item, k) => generateMenuItem(item, k))}
+        {!category.url && <Text c="dimmed">No category selected.</Text>}
       </Stack>
     </div>
   );
