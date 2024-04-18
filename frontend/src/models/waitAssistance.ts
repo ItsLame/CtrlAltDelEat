@@ -6,18 +6,18 @@ export interface assistRequests {
   timestamp: string;
 }
 
-export interface serveProps {
+export interface ReadyToServeProps {
   allRequests: Items[];
   addToServeInProgress: (_serveItem: Items) => void;
 }
 
-export interface reqAssistProps {
+export interface RequestAssistanceProps {
   allRequests: assistRequests[];
   addAssistToProgress: (_tableNum: number, _timestamp: string) => void;
 }
 
-export interface inProgProps {
-  allRequests: bothrequests[];
+export interface InProgressProps {
+  allRequests: serveAssistRequests[];
   assistUndo: (_tableNum: number) => void;
   assistUpdate: (_tableNum: number) => void;
   serveUndo: (_itemid: number) => void;
@@ -33,7 +33,7 @@ export interface waitMainProps {
   refreshServe: () => void;
 }
 
-export interface bothrequests {
+export interface serveAssistRequests {
   reqType: statusType;
   tableNumber: number;
   itemID: number;

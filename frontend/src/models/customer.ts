@@ -5,7 +5,6 @@ export interface CustomerSidebarProps {
     categoryList: category[]
     isLoading: boolean
     onCategorySelect: (_category: category) => void
-    onRefresh: () => void
 }
 
 export interface CustomerMainProps {
@@ -21,7 +20,6 @@ export interface ViewMenuItemModalProps {
     isOpened: boolean
     isLoading: boolean
     onClose: () => void
-    onSubmit: () => void
 }
 
 export interface CustomerQRProps {

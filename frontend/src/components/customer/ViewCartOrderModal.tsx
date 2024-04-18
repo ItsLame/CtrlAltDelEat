@@ -1,18 +1,7 @@
 "use client";
 
-import {
-  ActionIcon,
-  Badge,
-  Blockquote,
-  Button,
-  Card, Collapse,
-  Flex,
-  Image,
-  Modal,
-  ScrollArea,
-  Stack, Tabs,
-  Text, UnstyledButton,
-} from "@mantine/core";
+import { useEffect } from "react";
+import { ActionIcon, Badge, Blockquote, Button, Card, Collapse, Flex, Image, Modal, ScrollArea, Stack, Tabs, Text, UnstyledButton } from "@mantine/core";
 import { ChevronDownIcon, ChevronUpIcon, TrashIcon } from "@radix-ui/react-icons";
 import toast from "react-hot-toast";
 import { useDisclosure } from "@mantine/hooks";
@@ -20,7 +9,6 @@ import { useDisclosure } from "@mantine/hooks";
 import { imagePlaceholder } from "@/constants";
 import { generateBill, orderCart, removeFromCart } from "@/services";
 import { cartView, HistoryProps, itemView, menuItems, OrderItemProps, statusType, ViewCartModalProps } from "@/models";
-import { useEffect } from "react";
 
 const handleRemoveItem = (itemNo: number, action: () => void) => {
   removeFromCart(itemNo).then((res) => {
@@ -50,7 +38,7 @@ const generateMenuItem = (item: cartView, key: number, itemList: menuItems[], ac
           miw={80}
         />
 
-        <Flex className="w-100" direction={"column"}>
+        <Flex className="w-100" direction="column">
           <Flex>
             <Text className="w-100" size="lg" c="blue" fw={700}>{item.itemName}</Text>
             <ActionIcon
@@ -86,8 +74,8 @@ const OrderItem = ({ item }: OrderItemProps) => {
 
   return (
     <Card padding="sm" radius="md" withBorder>
-      <Flex direction={"row"} justify="space-between" style={{ width: "100%" }} gap={15}>
-        <Flex direction={"column"} style={{ flex: 1 }}>
+      <Flex className="w-100" direction="row" justify="space-between" style={{ width: "100%" }} gap={15}>
+        <Flex direction="column" style={{ flex: 1 }}>
           <Text size="sm" fw="bold">{item.itemName}</Text>
           <Text size="sm" c="dimmed" fs="italic" fz="sm">{item.alterations}</Text>
         </Flex>
@@ -108,7 +96,7 @@ const OrderHistoryItem = ({ groupedOrders, index }: HistoryProps) => {
   return (
     <UnstyledButton onClick={toggle} key={index}>
       <Card className={`order-list-toggle ${opened ? "selected" : ""}`} padding="lg" radius="md" shadow="sm" withBorder>
-        <Flex direction={"row"} align={"center"} justify={"space-between"}>
+        <Flex direction="row" align="center" justify="space-between">
           <Flex gap="md" align="center">
             {opened ? <ChevronUpIcon width={20} height={20}/> : <ChevronDownIcon width={20} height={20}/>}
             <Text size="md">Order number: {index + 1}</Text>
@@ -127,9 +115,9 @@ const OrderHistoryItem = ({ groupedOrders, index }: HistoryProps) => {
   );
 };
 
-export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
+export function ViewCartOrderModal({ cartItems, orderHistoryList, menuItemList, tableNo, isOpen, updateCart, updateOrderItems, onClose }: ViewCartModalProps) {
   const handleSubmit = () => {
-    orderCart(viewCartProps.tableNo).then((res) => {
+    orderCart(tableNo).then((res) => {
       switch (res) {
       case 200:
         toast.success("Order sent to kitchen!");
@@ -140,30 +128,30 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
       }
     });
 
-    viewCartProps.onClose();
-    viewCartProps.updateCart();
-    viewCartProps.updateOrderItems();
+    onClose();
+    updateCart();
+    updateOrderItems();
   };
 
   const generateTotalCartCost = () => {
     let totalCost = 0;
-    for (let i = 0; i < viewCartProps.cartItems.length; i += 1) {
-      totalCost += viewCartProps.cartItems[i].cost * viewCartProps.cartItems[i].quantity;
+    for (let i = 0; i < cartItems.length; i += 1) {
+      totalCost += cartItems[i].cost * cartItems[i].quantity;
     }
     return <Text tabIndex={0} inline>Subtotal: ${totalCost.toFixed(2)}</Text>;
   };
 
   const generateTotalOrderCost = () => {
-    const cost = viewCartProps.orderHistoryList.reduce((acc, item) => acc + item.totalCost, 0);
+    const cost = orderHistoryList.reduce((acc, item) => acc + item.totalCost, 0);
     return <Text tabIndex={0} inline>Subtotal: ${cost.toFixed(2)}</Text>;
   };
 
   const handlePayBill = () => {
-    generateBill(viewCartProps.tableNo).then((res) => {
+    generateBill(tableNo).then((res) => {
       switch (res) {
       case 200:
-        viewCartProps.updateOrderItems();
-        viewCartProps.onClose();
+        updateOrderItems();
+        onClose();
         toast.success("Bill sent! Please approach the counter to finalize payment.", { duration: 5000 });
         break;
       default:
@@ -173,16 +161,16 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
     });
   };
 
-  /* Fetches every 2 seconds. Uncomment for demo. */
+  /* Fetches every 2 seconds. */
   useEffect(() => {
-    const intervalId = setInterval(viewCartProps.updateOrderItems, 2000);
+    const intervalId = setInterval(updateOrderItems, 2000);
     return () => clearInterval(intervalId);
-  }, [viewCartProps.updateOrderItems]);
+  }, [updateOrderItems]);
 
   return (
     <Modal
-      opened={viewCartProps.isOpen}
-      onClose={viewCartProps.onClose}
+      opened={isOpen}
+      onClose={onClose}
       title="Order Information"
     >
       <Tabs variant="outline" defaultValue="cart">
@@ -196,21 +184,21 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
         </Tabs.List>
 
         <Tabs.Panel value="cart">
-          <Flex direction={"column"} gap={"sm"}>
+          <Flex direction="column" gap="sm">
             <ScrollArea.Autosize scrollbars="y" mah={430}>
-              {viewCartProps.cartItems.length >= 1 ? (
+              {cartItems.length >= 1 ? (
                 <Stack gap="xs">
-                  {viewCartProps.cartItems
+                  {cartItems
                     ?.filter((item) => item.status === statusType.inCart)
-                    .map((i, k) => generateMenuItem(i, k, viewCartProps.menuItemList, viewCartProps.updateCart))
+                    .map((i, k) => generateMenuItem(i, k, menuItemList, updateCart))
                   }
                 </Stack>
               ): <Text c="dimmed">Cart is empty.</Text>}
 
             </ScrollArea.Autosize>
-            <Flex align={"center"} direction={"row"} justify={"space-between"}>
+            <Flex align="center" direction="row" justify="space-between">
               {generateTotalCartCost()}
-              <Button onClick={handleSubmit} disabled={viewCartProps.cartItems.length <= 0}>Submit Order</Button>
+              <Button onClick={handleSubmit} disabled={cartItems.length <= 0}>Submit Order</Button>
             </Flex>
           </Flex>
         </Tabs.Panel>
@@ -218,20 +206,21 @@ export function ViewCartOrderModal(viewCartProps: ViewCartModalProps) {
         <Tabs.Panel value="orders">
           <Flex direction="column" gap="xs">
             <ScrollArea.Autosize scrollbars="y" mah={430}>
-              {viewCartProps.orderHistoryList.length >= 1 ? (
+              {orderHistoryList.length >= 1 ? (
                 <Stack pb="xs" gap="xs">
-                  {viewCartProps.orderHistoryList.sort((a, b) => a.timestamp > b.timestamp ? 1 : -1).map((order, index) => (
-                    <OrderHistoryItem groupedOrders={order} index={index} key={index}/>
-                  ))}
+                  {orderHistoryList
+                    .sort((a, b) => a.timestamp > b.timestamp ? 1 : -1)
+                    .map((order, index) => <OrderHistoryItem groupedOrders={order} index={index} key={index}/>)
+                  }
                 </Stack>
               ): <Text c="dimmed">Order history is empty.</Text>}
             </ScrollArea.Autosize>
 
-            <Flex align={"center"} direction={"row"} justify={"space-between"}>
+            <Flex align="center" direction="row" justify="space-between">
               {generateTotalOrderCost()}
               <Button
                 px="xl" color="green"
-                disabled={viewCartProps.orderHistoryList.length <= 0}
+                disabled={orderHistoryList.length <= 0}
                 onClick={handlePayBill}
               >
                 Pay Bill

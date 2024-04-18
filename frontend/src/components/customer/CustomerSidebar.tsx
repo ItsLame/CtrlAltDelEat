@@ -2,8 +2,7 @@ import { Box, Card, Flex, LoadingOverlay, Stack, Text } from "@mantine/core";
 
 import { CustomerSidebarProps } from "@/models";
 
-// eslint-disable-next-line no-unused-vars
-export function CustomerSidebar({ category, categoryList, isLoading, onCategorySelect, onRefresh }: CustomerSidebarProps) {
+export function CustomerSidebar({ category, categoryList, isLoading, onCategorySelect }: CustomerSidebarProps) {
 
   return (
     <div className="customer sidebar">

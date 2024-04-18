@@ -181,7 +181,6 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
           categoryList={categoryList}
           isLoading={isCategoryListLoading}
           onCategorySelect={handleSelectCategory}
-          onRefresh={categoryListHandler.open}
         />
       </AppShell.Navbar>
 
@@ -200,7 +199,6 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         isOpened={viewMenuItemModalOpened}
         isLoading={isMenuItemListLoading}
         onClose={close}
-        onSubmit={menuItemListHandler.open}
       />
 
       <ViewCartOrderModal

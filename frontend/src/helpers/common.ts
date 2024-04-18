@@ -10,6 +10,7 @@ export function displayImage (file: File | null) {
     reader.onerror = reject;
     reader.onload = () => resolve(reader.result?.toString());
   });
+
   file && reader.readAsDataURL(file);
   return dataUrlPromise as Promise<string>;
 }

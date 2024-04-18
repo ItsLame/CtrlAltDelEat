@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 import { LogoWithLink, LogoutButton, ThemeToggle, InProgress, ReadyToServe, RequestAssistance } from "@/components";
 import { getUserCookies, getWaitAssistance, getWaitItemsToServe, updateItemStatus, updateWaitAssistance } from "@/services";
-import { assistRequests, bothrequests, Items, statusType, userType } from "@/models";
+import { assistRequests, serveAssistRequests, Items, statusType, userType } from "@/models";
 import { siteRoute } from "@/constants";
 import { noPermissionToast } from "@/helpers";
 
@@ -18,15 +18,15 @@ export default function Wait() {
 
   const [custAssistReqs, setcustAssistReqs] = useState([] as assistRequests[]);
   const [tempAssistReq, setTempAssistReq] = useState([] as assistRequests[]);
-
-  const [tempServeReq, setTempServeReq] = useState([] as Items[]);
-  const [serveItemsReqs, setserveItemsReqs] = useState([] as Items[]);
-
-  const [allInProgress, setAllInProgress] = useState([] as bothrequests[]);
   const [toAssist, setToAssist] = useState([] as assistRequests[]);
+
+  const [serveItemsReqs, setserveItemsReqs] = useState([] as Items[]);
+  const [tempServeReq, setTempServeReq] = useState([] as Items[]);
+  const [toServe, setToServe] = useState([] as Items[]);
+
+  const [allInProgress, setAllInProgress] = useState([] as serveAssistRequests[]);
   const assistLock = useRef(false);
 
-  const [toServe, setToServe] = useState([] as Items[]);
   const serveLock = useRef(false);
 
   const refreshServe = () => getWaitItemsToServe().then((res) => setTempServeReq(res));
@@ -50,7 +50,7 @@ export default function Wait() {
     refreshServe();
   }, []);
 
-  /* Fetches every second. Uncomment for demo. */
+  /* Fetches every second. */
   useEffect(() => {
     const assistIntervalId = setInterval(refreshAssist, 1000);
     const serveIntervalId = setInterval(refreshServe, 1000);
@@ -204,7 +204,7 @@ export default function Wait() {
         </div>
       </AppShell.Header>
 
-      <AppShell.Navbar >
+      <AppShell.Navbar>
         <ReadyToServe
           allRequests={toServe}
           addToServeInProgress={addServeItemToInProgress}

@@ -2,12 +2,12 @@ import { Button, Stack, Flex, Title, PinInput, Text, Group, LoadingOverlay, Box 
 import { useEffect, useState } from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 import { generateAuthToken, getUserCookies, storeToken } from "@/services";
 import { apiPassword, siteRoute } from "@/constants";
 import { LoginProps, loginSchema } from "@/models";
 import { mapUserToRoute } from "@/helpers";
-import toast from "react-hot-toast";
 
 export function Login({ onReturn } : LoginProps) {
   const router = useRouter();

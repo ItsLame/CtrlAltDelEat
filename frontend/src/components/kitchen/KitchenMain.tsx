@@ -13,20 +13,6 @@ export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
 
   let timeOut: string | number | NodeJS.Timeout | undefined;
 
-  useEffect(() => {
-    let countOrders = 0;
-    const newOrders = orderItemList.map((order) => {
-      const id = order.id;
-      const items = order.items.filter((oneItem) => oneItem.status === statusType.received);
-      return { id, items };
-    });
-
-    const prgressOrders = newOrders.filter((order) => order.items.length !== 0);
-    prgressOrders.forEach((order) => countOrders += order.items.length);
-    setOrderList(prgressOrders);
-    setTotalOrders(countOrders);
-  }, [orderItemList]);
-
   const handleUndoClick = (tID: string, item: Items) => {
     toast.dismiss(tID);
     clearTimeout(timeOut);
@@ -58,8 +44,21 @@ export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
     }
   };
 
-  return (
+  useEffect(() => {
+    let countOrders = 0;
+    const newOrders = orderItemList.map((order) => {
+      const id = order.id;
+      const items = order.items.filter((oneItem) => oneItem.status === statusType.received);
+      return { id, items };
+    });
 
+    const prgressOrders = newOrders.filter((order) => order.items.length !== 0);
+    prgressOrders.forEach((order) => countOrders += order.items.length);
+    setOrderList(prgressOrders);
+    setTotalOrders(countOrders);
+  }, [orderItemList]);
+
+  return (
     <Box className="appshell-h-100">
       <Title order={2}>Incoming Orders ({totalOrders})</Title>
       <Flex
@@ -98,13 +97,13 @@ export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
 
             <Text size="md" mb="xs">Item No: {singleItem.id}</Text>
 
-            <Box className="order-items" p="xs" >
+            <Box className="order-items" p="xs">
               <Flex justify="space-between">
                 <Title className="item-name" order={5} textWrap="balance">{singleItem.itemName}</Title>
                 <Title order={4}>x {singleItem.quantity}</Title>
               </Flex>
 
-              {singleItem.alterations != "" && <Blockquote p={0} pl="xs" c="dimmed" fs="italic">{singleItem.alterations}</Blockquote>}
+              {singleItem.alterations !== "" && <Blockquote p={0} pl="xs" c="dimmed" fs="italic">{singleItem.alterations}</Blockquote>}
             </Box>
           </Card>
         ))) : <Text p="md" c="dimmed">No items ordered yet.</Text>}

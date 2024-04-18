@@ -1,8 +1,8 @@
 import { Card, Flex, Stack, UnstyledButton, Image, Text, Title } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 
 import { menuItems, CustomerMainProps } from "@/models";
 import { imagePlaceholder } from "@/constants";
-import { useMediaQuery } from "@mantine/hooks";
 
 export function CustomerMain({ category, items, onMenuItemSelect, onViewMenuItem }: CustomerMainProps) {
   const isMobile = useMediaQuery("(max-width: 768px)");

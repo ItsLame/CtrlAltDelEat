@@ -1,9 +1,10 @@
-import { reqAssistProps } from "@/models";
-import { ActionIcon, Box, Button, Card, Flex, Text, Title } from "@mantine/core";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { ActionIcon, Box, Button, Card, Flex, Text, Title } from "@mantine/core";
 import { useState } from "react";
 
-export function RequestAssistance({ allRequests, addAssistToProgress }: reqAssistProps) {
+import { RequestAssistanceProps } from "@/models";
+
+export function RequestAssistance({ allRequests, addAssistToProgress }: RequestAssistanceProps) {
   const [assistIndex, setAssistIndex] = useState(0);
 
   const checkEndOfList = () => (assistIndex !== 0 && assistIndex === allRequests.length - 1) && setAssistIndex(allRequests.length - 2);

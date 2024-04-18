@@ -25,7 +25,7 @@ export default function Kitchen() {
     });
   };
 
-  /* Fetches every second. Uncomment for demo. */
+  /* Fetches every second. */
   useEffect(() => {
     const intervalId = setInterval(refreshOrderList, 1000);
     return () => clearInterval(intervalId);

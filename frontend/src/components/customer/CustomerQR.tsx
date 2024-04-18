@@ -33,7 +33,9 @@ export function CustomerQR({ isOpened, onClose }: CustomerQRProps) {
               }}
             />
           )}
-          <Button onClick={onClose} w={200} color="gray" aria-label="Press enter to close QR code modal">Close</Button>
+          <Button onClick={onClose} w={200} color="gray" aria-label="Press enter to close QR code modal">
+            Close
+          </Button>
         </Flex>
       </Modal>
     </>
