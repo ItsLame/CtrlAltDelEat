@@ -41,6 +41,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     }
   };
 
+    /* call for assistance */
   const handleRequestForAssistance = () => {
     requestAssistance(tableNo).then((res) => {
       switch (res) {
@@ -54,6 +55,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     });
   };
 
+    /* Get the items in the cart */
   useEffect(() => {
     const fetchData = async () => {
       const cart = await getCartStatus(tableNo);
@@ -66,6 +68,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     }
   }, [cartHandler, cartItems, isCartLoading, tableNo]);
 
+    /* Query the backend for all items the customer has ordered */
   useEffect(() => {
     const fetchData = async () => {
       const orderHistory = await getOrderHistory(tableNo);
@@ -80,6 +83,12 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     }
   }, [isOrderLoading, ordersHandler, tableNo]);
 
+  /*
+    * Query the backend for both the categories and the menu items at the same time. This has a time of 30 seconds
+    * as we want the customer to have any changes that the manager makes to be updated automatically.
+    * The ordering of this is important, we filter empty categories from the customer ui, so we need to get all menu
+    * items first.
+    * */
   useEffect(() => {
     const fetchData = async () => {
       const menuItems: menuItems[] = await getMenuItems();
@@ -106,6 +115,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     }
   }, [categoryListHandler, isCategoryListLoading, isMenuItemListLoading, menuItemListHandler]);
 
+  /* Selects a category at the start if and only if there's a category to be selected */
   useEffect(() => {
     categoryList?.length > 0 && handleSelectCategory(categoryList[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -138,7 +148,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
               aria-label="Press enter to view table QR code"
             />
             <Text className="table-number" fw={700} size={isMobile ? "sm" : "md"} tabIndex={0}>
-              Table #{tableNo}
+                            Table #{tableNo}
             </Text>
           </Flex>
           <Flex justify="flex-end" gap="sm">
@@ -149,12 +159,12 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
               }}
               aria-label="View order history"
             >
-              <ReaderIcon/>
+              <ReaderIcon />
             </ActionIcon>
             <ActionIcon size="lg" onClick={handleRequestForAssistance} aria-label="Request for assistance">
-              <BellIcon/>
+              <BellIcon />
             </ActionIcon>
-            <ThemeToggle/>
+            <ThemeToggle />
           </Flex>
         </div>
         <Paper pb="xs" shadow="sm" radius={0} hiddenFrom="sm">
@@ -216,7 +226,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         onClose={closeQRModal}
       />
 
-      <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
+      <Toaster position="top-center" toastOptions={{ duration: 1500 }} />
     </AppShell>
   );
 }
