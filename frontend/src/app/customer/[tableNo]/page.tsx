@@ -124,7 +124,6 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
       }}
       padding="md"
     >
-      <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
       <AppShell.Header>
         <div className="navbar">
           <Flex align="center" gap="sm" flex={1}>
@@ -216,6 +215,8 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         isOpened={qrModalOpened}
         onClose={closeQRModal}
       />
+
+      <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
     </AppShell>
   );
 }

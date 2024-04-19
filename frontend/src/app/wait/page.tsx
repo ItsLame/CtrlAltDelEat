@@ -260,6 +260,7 @@ export default function Wait() {
           refreshServe={refreshServe}
         />
       </AppShell.Main>
+
       <Toaster position="top-center" toastOptions={{ duration: 1500 }} />
     </AppShell>
   );

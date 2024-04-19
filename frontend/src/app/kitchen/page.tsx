@@ -65,6 +65,7 @@ export default function Kitchen() {
           onRefresh={refreshOrderList}
         />
       </AppShell.Main>
+
       <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
     </AppShell>
   );
