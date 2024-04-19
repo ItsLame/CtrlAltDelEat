@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { RequestAssistanceProps } from "@/models";
 
-export function RequestAssistance({ allRequests, addAssistToProgress }: RequestAssistanceProps) {
+export function RequestAssistance({ allRequests, addToAssistInProgress }: RequestAssistanceProps) {
   const [assistIndex, setAssistIndex] = useState(0);
 
   const checkEndOfList = () => (assistIndex !== 0 && assistIndex === allRequests.length - 1) && setAssistIndex(allRequests.length - 2);
@@ -42,7 +42,7 @@ export function RequestAssistance({ allRequests, addAssistToProgress }: RequestA
             fullWidth
             disabled={allRequests.length === 0}
             onClick={() => {
-              addAssistToProgress(allRequests[assistIndex].tableNumber, allRequests[assistIndex].timestamp.slice(0, 9));
+              addToAssistInProgress(allRequests[assistIndex].tableNumber, allRequests[assistIndex].timestamp.slice(0, 9));
               checkEndOfList();
             }}
             aria-label={`Assist table number ${allRequests[assistIndex].tableNumber}, requested on ${allRequests[assistIndex].timestamp.slice(0, 9)}`}

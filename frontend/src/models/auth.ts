@@ -1,3 +1,4 @@
+// Note: eslint disabled for this block as it conflicts with typescript's enum declaration
 /* eslint-disable */
 export enum userType {
   customer = "Customer",

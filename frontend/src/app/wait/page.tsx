@@ -55,7 +55,7 @@ export default function Wait() {
     setAllInProgress((prev) => [...prev, newReq]);
   };
 
-  const addAssistInProgress = (num: number, timestamp: string) => {
+  const addAssistToInProgress = (num: number, timestamp: string) => {
     /* Creates new serveAssistRequest to add assist request to 'In Progress' section */
 
     const newReq = {
@@ -245,7 +245,7 @@ export default function Wait() {
         <Divider my="sm" />
         <RequestAssistance
           allRequests={toAssist}
-          addAssistToProgress={addAssistInProgress}
+          addToAssistInProgress={addAssistToInProgress}
         />
       </AppShell.Navbar>
 

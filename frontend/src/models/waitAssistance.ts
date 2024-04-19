@@ -1,5 +1,6 @@
 import { items } from "@/models";
 
+// Note: eslint disabled for this block as it conflicts with typescript's enum declaration
 /* eslint-disable */
 export enum statusType {
   inCart = "in-cart",
@@ -35,15 +36,15 @@ export interface ReadyToServeProps {
 
 export interface RequestAssistanceProps {
   allRequests: assistRequests[];
-  addAssistToProgress: (_tableNum: number, _timestamp: string) => void;
+  addToAssistInProgress: (_tableNo: number, _timestamp: string) => void;
 }
 
 export interface InProgressProps {
   allRequests: serveAssistRequests[];
-  assistUndo: (_tableNum: number) => void;
-  assistUpdate: (_tableNum: number) => void;
-  serveUndo: (_itemid: number) => void;
-  serveUpdate: (_itemid: number, _tableno: number) => void;
+  assistUndo: (_tableNo: number) => void;
+  assistUpdate: (_tableNo: number) => void;
+  serveUndo: (_itemId: number) => void;
+  serveUpdate: (_itemId: number, _tableNo: number) => void;
   refreshAssist: () => void;
   refreshServe: () => void;
 }

@@ -1,6 +1,5 @@
 import { category, menuItems } from "@/models";
 
-// Function props
 export interface ManagerSidebarProps {
   category: category;
   categoryList: category[];

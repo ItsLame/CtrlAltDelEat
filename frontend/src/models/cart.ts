@@ -1,13 +1,5 @@
 import { menuItems, statusType } from "@/models";
 
-export interface addToCartRequest {
-    tableNumber: number;
-    itemName: string;
-    cost: number;
-    quantity: number;
-    alterations: string;
-}
-
 export interface cartView {
     id: number;
     tableNumber: number;
@@ -45,6 +37,14 @@ export interface groupedOrders {
     totalCost: number;
     timestamp: string;
     items: itemView[];
+}
+
+export interface addToCartRequest {
+    tableNumber: number;
+    itemName: string;
+    cost: number;
+    quantity: number;
+    alterations: string;
 }
 
 export interface ViewCartModalProps {
