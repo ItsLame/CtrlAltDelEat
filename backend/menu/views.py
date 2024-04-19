@@ -28,6 +28,10 @@ class MenuListAPIView(generics.ListAPIView):
 
 
 class MenuItemImageListCreateAPIView(generics.ListCreateAPIView):
+    """
+    List and create menu item images
+    """
+
     queryset = MenuItemImage.objects.all()
     serializer_class = MenuItemImageSerializer
     permission_classes = [permissions.IsAdminUser | IsManagerOrReadOnly]
@@ -124,7 +128,11 @@ class MenuItemDestroyAPIView(generics.DestroyAPIView):
 
 
 class UpdateMenuItemPositionAPIView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    """
+    Update position of menu items
+    """
+
+    permission_classes = [permissions.IsAdminUser | IsManagerOrReadOnly]
 
     def post(self, request, *args, **kwargs):
         serializer = MenuItemPositionListSerializer(data=request.data)
@@ -142,7 +150,11 @@ class UpdateMenuItemPositionAPIView(views.APIView):
 
 
 class UpdateCategoryPositionAPIView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    """
+    Update position of categories
+    """
+
+    permission_classes = [permissions.IsAdminUser | IsManagerOrReadOnly]
 
     def post(self, request, *args, **kwargs):
         serializer = CategoryPositionListSerializer(data=request.data)

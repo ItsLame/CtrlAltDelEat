@@ -1,0 +1,29 @@
+Week 1
+This week, enrolled in the tutorial late. Communicated with the team on the weekend and we split into frontend and backend groups. I will be the project owner and backend engineer. We discussed tech stacks and decided on Django rest for backend. I worked on creating a basic Django starter app.
+
+Week 2
+Continued working on Django starter app. Worked with Docker and Postgres to set up the backend app for the backend team. Started working on proposal. Decided on schema of database. Explored options for hosting on DigitalOcean and AWS.
+
+Week 3
+Worked on proposal. Set up the report template and checklisted against the requirements. Asked clarifying questions on Ed.  Wrote the “Background” section, created the software architecture diagram and database schema. Brainstormed user stories.
+
+Week 4
+Worked on the manager API. Added in views for menu items, categories and tags. Set up docker files. Helped team setting up the docker on their own personal setups.
+
+Week 5
+Finished most of the manager user stories. Added in authentication and permission classes. Flew up to Sydney to do the demo and retrospective. Contributed to retrospective discussion. Didn’t manage to finish the login as I was not very familiar with front end setup.
+
+Week 6
+Worked on Image upload. Explored s3ninja and localstack as alternatives. However, they don’t have persistence. Ended up using django local image storage instead.
+
+Week 7
+Worked on authentication and login. Created a login component, implemented cookies for JWT access and refresh tokens.
+
+Week 8
+Worked on project demo for manager edit items, as well as bug fixes.
+
+Week 9
+Worked on re-ordering backend. Researched DigitalOcean and bought subscription. Fixed dockerfile for deployment to have both production and development environments. Drafted project report.
+
+Week 10
+Continued to work on project report and tidying up code. Prepared presentation slides. Rehearsed presentation. Minor bug fixes.

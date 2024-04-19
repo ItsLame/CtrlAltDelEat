@@ -17,12 +17,10 @@ class CategoryTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
         self.data = {'category_name': 'Mains'}
         self.url = reverse('menu:category-list-create')
-        print(self.url)
 
     def test_create_category(self):
         data = self.data
         response = self.client.post(self.url, data)
-        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Category.objects.count(), 1)
         self.assertEqual(Category.objects.get().category_name, 'Mains')
@@ -44,7 +42,6 @@ class AuthenticationTestCase(APITestCase):
     def test_create_category(self):
         data = self.data
         response = self.client.post(self.url, data)
-        print(response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Category.objects.count(), 1)
         self.assertEqual(Category.objects.get().category_name, 'Mains')

@@ -30,23 +30,40 @@ class Category(models.Model):
 
 
 class ThroughIngredientTag(TaggedItemBase):
+    """
+    Intermediate model for storing tags related to menu item ingredients.
+    """
+
     content_object = models.ForeignKey('MenuItem', on_delete=models.CASCADE)
 
 
 class ThroughTagTag(TaggedItemBase):
+    """
+    Intermediate model for storing tags related to menu item tags.
+    """
+
     content_object = models.ForeignKey('MenuItem', on_delete=models.CASCADE)
 
 
 def upload_path(instance, filename):
+    """
+    Function to define upload path for MenuItemImage instances.
+    """
     return os.path.join('images', filename)
 
 
 class MenuItemImage(models.Model):
+    """
+    Model representing an image associated with a menu item.
+    """
+
     image = ImageField(upload_to=upload_path, blank=True, null=True)
 
 
 class MenuItem(models.Model):
     """
+    Model representing a menu item
+
     Stores a unique menu item name (length <=60), cost (max 8 digits),
     description (max 255 chars), available flag, list of categories,
     list of ingredients, list of tags and image URL. Related to :model:`menu.Category`

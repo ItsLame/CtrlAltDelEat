@@ -28,10 +28,14 @@ SECRET_KEY = (
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ["localhost", "170.64.249.120", "127.0.0.1", "api.ctrlaltdeleat.com"]
+# Set allowed hosts to allow traffic
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'api.ctrlaltdeleat.com',
+]
 
 # Application definition
 
@@ -51,9 +55,10 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'orders',
     'tables',
-    'bill'
+    'bill',
 ]
 
+# Default permission and authentication classes
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -63,6 +68,7 @@ REST_FRAMEWORK = {
     ],
 }
 
+# JWT config parameters
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -93,6 +99,8 @@ CORS_ALLOW_HEADERS = [
     'origin',
     'authorization',
 ]
+
+# Allow CORS from certain origins
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://localhost:4000',
@@ -101,24 +109,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:3000',
     'http://127.0.0.1:4000',
     'http://api.ctrlaltdeleat.com',
-    'http://170.64.249.120'
 ]
-
-# CORS_ORIGIN_ALLOW_ALL = True
-# CSRF_TRUSTED_ORIGINS = [
-#     'http://localhost:3000',
-#     'http://localhost:4000',
-#     'http://0.0.0.0:3000',
-#     'http://0.0.0.0:4000',
-#     'http://127.0.0.1:3000',
-#     'http://127.0.0.1:4000',
-# ]
-# CSRF_COOKIE_SAMESITE = 'Strict'
-# CSRF_COOKIE_HTTPONLY = True
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SAMESITE = 'Strict'
-# SESSION_COOKIE_HTTPONLY = True
-
 
 # Actual directory user files go to
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'backend/media')
@@ -150,6 +141,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# Use environment variables for database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -193,9 +185,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-FIXTURE_DIRS = [
-    "fixtures/"
-]
+FIXTURE_DIRS = ['fixtures/']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -207,5 +197,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = "/media/"
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'public/media/')

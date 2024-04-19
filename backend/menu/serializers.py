@@ -4,9 +4,16 @@ from taggit.serializers import TagListSerializerField, TaggitSerializer
 
 
 class MenuItemSerializer(TaggitSerializer, serializers.ModelSerializer):
+    """
+    Serializes menu items
+    """
+
+    # Hyperlink to access individual menu item detail
     url = serializers.HyperlinkedIdentityField(
         view_name='menu:menuitem-detail', lookup_field='uuid', read_only=True
     )
+
+    # Hyperlinked related field for categories
     category = serializers.HyperlinkedRelatedField(
         view_name='menu:category-detail',
         queryset=Category.objects.all(),
@@ -35,12 +42,21 @@ class MenuItemSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 
 class MenuItemImageSerializer(serializers.ModelSerializer):
+    """
+    Serializes menu item images
+    """
+
     class Meta:
         model = MenuItemImage
         fields = ('image',)
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    """
+    Serializes categories
+    """
+
+    # Hyperlink to access individual category detail
     url = serializers.HyperlinkedIdentityField(
         view_name='menu:category-detail', lookup_field='uuid', read_only=True
     )
@@ -52,6 +68,10 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class MenuSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the menu list broken down by category with nested items
+    """
+
     url = serializers.HyperlinkedIdentityField(
         view_name='menu:category-detail', lookup_field='uuid', read_only=True
     )
@@ -65,6 +85,10 @@ class MenuSerializer(serializers.ModelSerializer):
 
 
 class MenuItemPositionSerializer(serializers.Serializer):
+    """
+    Serializer that takes in menuitem:positions
+    """
+
     menuitem = serializers.HyperlinkedRelatedField(
         view_name='menu:menuitem-detail',
         lookup_field='uuid',
@@ -74,10 +98,18 @@ class MenuItemPositionSerializer(serializers.Serializer):
 
 
 class MenuItemPositionListSerializer(serializers.ListSerializer):
+    """
+    Serializer for lists of menuitem_positions
+    """
+
     child = MenuItemPositionSerializer()
 
 
 class CategoryPositionSerializer(serializers.Serializer):
+    """
+    Serializer for Category:Positions
+    """
+
     category = serializers.HyperlinkedRelatedField(
         view_name='menu:category-detail',
         lookup_field='uuid',
@@ -87,4 +119,8 @@ class CategoryPositionSerializer(serializers.Serializer):
 
 
 class CategoryPositionListSerializer(serializers.ListSerializer):
+    """
+    Serializer for Category:position lists
+    """
+
     child = CategoryPositionSerializer()

@@ -8,4 +8,20 @@ Week 3:
 Brainstormed with group on potential User Stories to be created in weekly standup. Added content to project proposal for novel features and functionalities the waiting management system brings in. Took up login user stories for wait staff and kitchen staff.  
 
 Week 4:
-Discussed sprint 1 updates with group. Looked into API endpoint creation for project. Discussed demo agenda and retrospective requirements with team in weekly standup. 
+Discussed sprint 1 updates with group. Looked into API endpoint creation for project using Django REST Framework. Discussed demo agenda and retrospective requirements with team in weekly standup. 
+
+Week 5: 
+After retrospective 1 after Demo A, we considered reshuffling team members between our Frontend team and Backend team, since workload on the Front End ended up being quite heavy. We additonally prioritised a few user stories after taking into account feedback from retrospective 1. I was subsequently made incharge of developing customer assistance by waitstaff functionality. I took up the following user stories: 
+	CAE9900-22 As a wait staff I want to be able to see if a customer requires assistance so that I can go to their table. 
+	CAE9900-25 As a wait staff I want to be able to mark complete an assistance so that I can remove that task off the list. 
+
+Week 6:
+Faced a few technical difficulties with setup on my local system (docker desktop installation, Ubuntu WSL), and tried resolving these at the earliest to begin work on CAE9900-22. Also brainstormed with other backend team members as to approach for developing POST API as part of CAE9900-22. Discussed updated in relation to my work in weekly standup. 
+
+Week 7: Resolved technical issues in installation and set up. Started making changes to BE_Customer_Assistance branch for POST APIs as part of CAE9900-22. Discussed updated in relation to my work in weekly standup. 
+
+Week 8: Finalised making changes to BE_Customer_Assistance branch for POST APIs as part of CAE9900-22. Started and finalised work on CAE9900-25 for developing PUT and DELETE API for customer assistance by waitstaff. Presented finished work to frontend team for implementation. Participated in Demo B and Retrospective B. 
+
+Week 9: Discussed code with front end team for explaining backend behaviour and potential improvements. Prepared for final demo for next week and discussed changes to be made in project report. 
+
+Week 10: Created a few waitstaff functionality related slides for final demo. Finished final demo B and participated in code clean up and final submission activities. 

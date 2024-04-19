@@ -1,0 +1,56 @@
+Janhavi Jain - z5431064
+
+Week 1
+Decided on the project and became part of backend team along with being the scrum master.
+Researched about Django and postgres sql
+
+Week 2
+Setup basic project in django and postgres on my local.
+Integrated with postman to test changes.
+Decided database schema for customers in the waiting management system.
+Contributed to writing project proposal (sections like sprint dates, user stories, acceptance criteria and objectives)
+
+Week 3
+Continued working on project proposal and experimenting with django.
+Created API for customer orders but spent most time in fixing bugs.
+
+Week 4
+Created order end point/API for customers to place an order.
+
+Week 5
+Wrote the retrospective for demo A
+Created several APIs for customer side of things as listed below:
+- addtocart API which allows any user to add items to their cart
+- getCartForTable API which allows any user to view their cart at that moment
+- removeFromCart API which allows customer to delete items from the cart
+
+Week 6
+Created APIs for kitchen staff. The kitchen staff should be able to view places orders and mark each item as prepared.
+Experimented with django filters and updating data in postgres.
+Made regular enhancements based on needs of front end team members
+Designed the below end points for the same:
+- viewReceivedOrders to fetch all items with status received
+- changeItemStatus to mark an item as prepared. This end point was originally different but based on regular discussions with a team member, updated the endpoint
+
+Week 7
+Created APIs for wait staff. The wait staff should be able to view prepared items and mark each item as served.
+Made regular enhancements based on needs of front end team members
+Designed the below end points for the same:
+- viewPreparedOrders to fetch all items with status prepared.
+- changeItemStatus to mark an item as served.
+
+Week 8
+Prepared for demo B. Collaborated with the whole team via discord for the same.
+Discussed retrospective points post the demo for th report.
+Updated changeItemStatus API to get rid of request body and use URL parameter. This made our project more robust.
+
+Week 9
+Created some final features for the customer side of things.
+The features were not part of original specs but rather add ons to make the project more robust.
+- feature to show order history for all the orders placed by a customer during his visit
+- feature to generate cumulative bill for a customer before he can make the payment at the counter
+- feature to update states of order items in the backend so that these items are not fetched mistakenly for the next customer
+
+Week 10
+Prepared for the final demo.
+Held a meeting with the whole team to go through all features and structure demo.
