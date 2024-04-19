@@ -18,7 +18,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         groups = GroupSerializer(Group.objects.filter(user=user.id), many=True).data
 
         data["username"] = user.username
-        data["isSuperUser"] = user.is_superuser
+        data["isSuperUser"] = user.is_staff
         data["groups"] = groups
 
 
