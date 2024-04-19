@@ -1,43 +1,16 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import {
-  Flex,
-  LoadingOverlay,
-  Modal,
-  NumberInput,
-  Stack,
-  Textarea,
-  Button,
-  Group,
-  Image,
-  NumberInputHandlers,
-  ActionIcon,
-  Title,
-  Text,
-  Badge,
-} from "@mantine/core";
+import { Flex, LoadingOverlay, Modal, NumberInput, Stack, Textarea, Button, Group, Image, NumberInputHandlers, ActionIcon, Title, Text, Badge } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import toast from "react-hot-toast";
 
-import {
-  ViewMenuItemModalProps,
-  addToCartRequest,
-  orderItemSchema,
-} from "@/models";
+import { ViewMenuItemModalProps, addToCartRequest, orderItemSchema } from "@/models";
 import { imagePlaceholder } from "@/constants";
 import { addItemToCart } from "@/services";
 
-export function ViewMenuItemModal({
-  tableNo,
-  menuItem,
-  isOpened,
-  isLoading,
-  onClose,
-  // eslint-disable-next-line no-unused-vars
-  onSubmit,
-}: ViewMenuItemModalProps) {
+export function ViewMenuItemModal({ tableNo,menuItem,isOpened,isLoading,onClose }: ViewMenuItemModalProps) {
   const handlersRef = useRef<NumberInputHandlers>(null);
 
   const form = useForm({
@@ -46,7 +19,6 @@ export function ViewMenuItemModal({
   });
 
   const handleSubmit = () => {
-    // create menu item to post to api
     const menu_item_request: addToCartRequest = {
       itemName: menuItem.menuitem_name,
       cost: menuItem.cost,

@@ -30,5 +30,4 @@ export function mapToGroupedOrderItems(orderItemsView: orderHistoryView[]): grou
   const result: groupedOrders[] = [];
   map.forEach((item) => result.push(item));
   return result;
-
 }

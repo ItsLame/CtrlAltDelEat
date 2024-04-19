@@ -102,10 +102,12 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
 
   return (
     <Modal opened={isOpened} onClose={handleClear} title="Edit Item" size="lg">
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        !form.validate().hasErrors && handleEditMenuItem();
-      }}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          !form.validate().hasErrors && handleEditMenuItem();
+        }}
+      >
         <Flex gap="xl" justify="center" wrap={isMobile ? "wrap" : "nowrap"}>
           <LoadingOverlay visible={isLoading}/>
           <Stack>
@@ -194,16 +196,19 @@ export function EditMenuItemModal({ menuItem, categoryList, isOpened, isLoading,
             />
           </Stack>
         </Flex>
+
         <Group justify="flex-end" mt="md">
           <Button
-            variant="outline" color="red"
+            variant="outline"
+            color="red"
             onClick={() => onDeleteMenuItem(menuItem)}
             aria-label={`Delete ${menuItem.menuitem_name} menu item`}
           >
             Delete
           </Button>
           <Button
-            type="submit" px="xl"
+            px="xl"
+            type="submit"
             aria-label={`Save changes for ${menuItem.menuitem_name} menu item`}
           >
             Save

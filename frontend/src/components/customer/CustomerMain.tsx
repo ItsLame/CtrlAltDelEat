@@ -1,19 +1,22 @@
 import { Card, Flex, Stack, UnstyledButton, Image, Text, Title } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 
 import { menuItems, CustomerMainProps } from "@/models";
 import { imagePlaceholder } from "@/constants";
-import { useMediaQuery } from "@mantine/hooks";
 
 export function CustomerMain({ category, items, onMenuItemSelect, onViewMenuItem }: CustomerMainProps) {
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const generateMenuItem = (item: menuItems, k: number) => {
     return (
-      <UnstyledButton key={k} onClick={() => {
-        onMenuItemSelect(item);
-        onViewMenuItem();
-      }}>
-        <Card className="menu-item" shadow="sm" padding="lg" radius="md" withBorder={true}>
+      <UnstyledButton
+        key={k}
+        onClick={() => {
+          onMenuItemSelect(item);
+          onViewMenuItem();
+        }}
+      >
+        <Card className="menu-item" shadow="sm" padding="lg" radius="md" withBorder>
           <Flex gap="md">
             <Image
               src={item.image}

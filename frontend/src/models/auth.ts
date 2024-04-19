@@ -1,3 +1,4 @@
+// Note: eslint disabled for this block as it conflicts with typescript's enum declaration
 /* eslint-disable */
 export enum userType {
   customer = "Customer",
@@ -7,30 +8,26 @@ export enum userType {
 }
 /* eslint-enable */
 
-// API groups model
 export interface userGroup {
-  id: number,
-  name: userType,
+  id: number;
+  name: userType;
 }
 
-// API user model
 export interface storeTokenRequest {
-  access: string
-  refresh: string
-  username: string
-  isSuperUser: boolean
-  groups: userGroup[]
+  access: string;
+  refresh: string;
+  username: string;
+  isSuperUser: boolean;
+  groups: userGroup[];
 }
 
-// API requests model
 export interface generateAuthTokenRequest {
-  username?: string
-  password?: string
+  username?: string;
+  password?: string;
 }
 
-// API requests model
 export interface refreshAuthTokenRequest {
-  refresh?: string
+  refresh?: string;
 }
 
 export interface LoginProps {

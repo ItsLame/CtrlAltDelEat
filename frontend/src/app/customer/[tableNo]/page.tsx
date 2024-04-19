@@ -14,22 +14,24 @@ import { mapToGroupedOrderItems } from "@/helpers";
 export default function Customer({ params: { tableNo } }: { params: { tableNo: number } }) {
   const isMobile = useMediaQuery("(max-width: 495px)");
 
-  const [sidebarOpened] = useDisclosure();
-  const [viewMenuItemModalOpened, { open, close }] = useDisclosure(false);
+  const [viewMenuItemModalOpened, { open: openMenuItemModal, close: closeMenuItemModal }] = useDisclosure(false);
   const [addMenuItemModalOpened, { open: openCartModal, close: closeCartModal }] = useDisclosure(false);
   const [qrModalOpened, { open: openQRModal, close: closeQRModal }] = useDisclosure(false);
 
   const [category, setCategory] = useState({} as category);
   const [menuItem, setMenuItem] = useState({} as menuItems);
-  const [filteredItemList, updateItems] = useState([] as menuItems[]);
   const [menuItemList, setMenuItemList] = useState([] as menuItems[]);
+  const [filteredItemList, updateItems] = useState([] as menuItems[]);
   const [categoryList, setCategoryList] = useState([] as category[]);
+  const [cartItems, setCartItems] = useState([] as cartView[]);
+  const [orderHistory, setOrders] = useState([] as groupedOrders[]);
+
   const [isMenuItemListLoading, menuItemListHandler] = useDisclosure(true);
   const [isCategoryListLoading, categoryListHandler] = useDisclosure(true);
-  const [cartItems, setCartItems] = useState([] as cartView[]);
   const [isCartLoading, cartHandler] = useDisclosure(false);
-  const [orderHistory, setOrders] = useState([] as groupedOrders[]);
   const [isOrderLoading, ordersHandler] = useDisclosure(true);
+
+  const handleSelectMenuItem = (menuItem: menuItems) => setMenuItem(menuItem);
 
   const handleSelectCategory = (category?: category) => {
     if (category) {
@@ -52,10 +54,6 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     });
   };
 
-  const handleSelectMenuItem = (menuItem: menuItems) => {
-    setMenuItem(menuItem);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       const cart = await getCartStatus(tableNo);
@@ -72,6 +70,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     const fetchData = async () => {
       const orderHistory = await getOrderHistory(tableNo);
       const groupedOrders = mapToGroupedOrderItems(orderHistory);
+
       setOrders(groupedOrders);
       ordersHandler.close();
     };
@@ -85,10 +84,12 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
     const fetchData = async () => {
       const menuItems: menuItems[] = await getMenuItems();
       const orderedItems = menuItems.sort((a) => a.position);
+
       setMenuItemList(orderedItems);
 
       const categories = await getCategories();
       let categoriesSet = new Set();
+
       menuItems.forEach((item) => item.category.forEach((cat) => categoriesSet.add(cat)));
       const filteredSortedCategories = categories
         .filter((c) => categoriesSet.has(c.url))
@@ -120,11 +121,9 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
       navbar={{
         width: 300,
         breakpoint: "sm",
-        collapsed: { mobile: !sidebarOpened },
       }}
       padding="md"
     >
-      <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
       <AppShell.Header>
         <div className="navbar">
           <Flex align="center" gap="sm" flex={1}>
@@ -133,10 +132,10 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
               src="/logo.svg"
               h={isMobile ? 25 : 45}
               alt="CtrlAltDelEat Logo"
-              aria-label="Press enter to view table QR code"
               onClick={openQRModal}
               onKeyDown={(e) => e.key === "Enter" && openQRModal()}
               tabIndex={0}
+              aria-label="Press enter to view table QR code"
             />
             <Text className="table-number" fw={700} size={isMobile ? "sm" : "md"} tabIndex={0}>
               Table #{tableNo}
@@ -175,13 +174,12 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         </Paper>
       </AppShell.Header>
 
-      <AppShell.Navbar p="md">
+      <AppShell.Navbar p="md" visibleFrom="sm">
         <CustomerSidebar
           category={category}
           categoryList={categoryList}
           isLoading={isCategoryListLoading}
           onCategorySelect={handleSelectCategory}
-          onRefresh={categoryListHandler.open}
         />
       </AppShell.Navbar>
 
@@ -190,7 +188,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
           category={category}
           items={filteredItemList}
           onMenuItemSelect={handleSelectMenuItem}
-          onViewMenuItem={open}
+          onViewMenuItem={openMenuItemModal}
         />
       </AppShell.Main>
 
@@ -199,8 +197,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         tableNo={tableNo}
         isOpened={viewMenuItemModalOpened}
         isLoading={isMenuItemListLoading}
-        onClose={close}
-        onSubmit={menuItemListHandler.open}
+        onClose={closeMenuItemModal}
       />
 
       <ViewCartOrderModal
@@ -218,6 +215,8 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         isOpened={qrModalOpened}
         onClose={closeQRModal}
       />
+
+      <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
     </AppShell>
   );
 }

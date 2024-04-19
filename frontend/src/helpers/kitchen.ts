@@ -1,7 +1,7 @@
-import { Items, orderItems } from "@/models";
+import { items, orderItems } from "@/models";
 
-export function mapToOrderItems(items: Items[]): orderItems[] {
-  let map = new Map<string, Items[]>();
+export function mapToOrderItems(items: items[]): orderItems[] {
+  let map = new Map<string, items[]>();
   items.forEach((item) => {
     let itemList = map.get(item.orderNo);
     if (itemList !== undefined) {

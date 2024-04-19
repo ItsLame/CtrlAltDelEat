@@ -29,6 +29,11 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
   };
 
   useEffect(() => {
+    const filtered = menuItemList.filter(item => item.category.includes(category.url));
+    setMenuItemListFiltered(filtered);
+  }, [menuItemList, category]);
+
+  useEffect(() => {
     menuItemListHandlers.setState(menuItemListFiltered.sort((a, b) => a.position > b.position ? 1 : -1));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menuItemListFiltered]);
@@ -38,12 +43,7 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menuItemListState]);
 
-  useEffect(() => {
-    const filtered = menuItemList.filter(item => item.category.includes(category.url));
-    setMenuItemListFiltered(filtered);
-  }, [menuItemList, category]);
-
-  const DraggableMenuItemCard = menuItemListState.map((item, index) => {
+  const draggableMenuItemCard = menuItemListState.map((item, index) => {
     const isSelected = item.url === menuItem.url;
 
     return (
@@ -68,12 +68,15 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
             >
               <Flex align="center">
                 <Flex gap="md" className="w-100">
-                  <Flex {...provided.dragHandleProps} className="drag-handle"
-                    align="center" py="xl" pl="xs" pr="xs"
+                  <Flex
+                    {...provided.dragHandleProps}
+                    className="drag-handle"
+                    align="center"
+                    py="xl" pl="xs" pr="xs"
                     onClick={(e) => e.stopPropagation()}
                     onKeyDown={(e) => e.key === "Enter" && e.stopPropagation()}
                   >
-                    <DragHandleDots2Icon width={20} height={20}/>
+                    <DragHandleDots2Icon width={20} height={20} />
                   </Flex>
                   <Image
                     className={isMobile ? "hidden" : ""}
@@ -140,7 +143,7 @@ export function ManagerMain({ category, menuItem, menuItemList, isLoading, onRef
                 ref={provided.innerRef}
                 gap={0}
               >
-                {DraggableMenuItemCard}
+                {draggableMenuItemCard}
                 {provided.placeholder}
               </Stack>
             )}

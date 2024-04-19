@@ -44,7 +44,9 @@ export function DeleteCategoryModal ({ category, isOpened, onDelete, onClose }: 
         >
           Cancel
         </Button>
-        <Button variant="outline" color="red"
+        <Button
+          variant="outline"
+          color="red"
           onClick={() => handleDeleteCategory(category)}
           aria-label={`Confirm deletion of ${category.category_name} category`}
         >

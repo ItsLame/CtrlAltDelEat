@@ -1,13 +1,4 @@
-import { menuItems } from "./menuitems";
-import { statusType } from "./waitAssistance";
-
-export interface addToCartRequest {
-    tableNumber: number;
-    itemName: string;
-    cost: number;
-    quantity: number;
-    alterations: string;
-}
+import { menuItems, statusType } from "@/models";
 
 export interface cartView {
     id: number;
@@ -18,17 +9,6 @@ export interface cartView {
     alterations: string;
     timestamp: string;
     quantity: number;
-}
-
-export interface ViewCartModalProps {
-    cartItems: cartView[];
-    orderHistoryList: groupedOrders[];
-    menuItemList: menuItems[]
-    tableNo: number;
-    isOpen: boolean;
-    onClose: () => void;
-    updateCart: () => void;
-    updateOrderItems: () => void;
 }
 
 export interface orderHistoryView {
@@ -57,6 +37,25 @@ export interface groupedOrders {
     totalCost: number;
     timestamp: string;
     items: itemView[];
+}
+
+export interface addToCartRequest {
+    tableNumber: number;
+    itemName: string;
+    cost: number;
+    quantity: number;
+    alterations: string;
+}
+
+export interface ViewCartModalProps {
+    cartItems: cartView[];
+    orderHistoryList: groupedOrders[];
+    menuItemList: menuItems[];
+    tableNo: number;
+    isOpen: boolean;
+    onClose: () => void;
+    updateCart: () => void;
+    updateOrderItems: () => void;
 }
 
 export interface HistoryProps {

@@ -1,7 +1,8 @@
+import toast from "react-hot-toast";
+
 import { siteRoute } from "@/constants";
 import { userType } from "@/models";
 import { clearAuthRefreshTokens } from "@/services";
-import toast from "react-hot-toast";
 
 export function mapUserToRoute (name: userType) {
   switch(name) {

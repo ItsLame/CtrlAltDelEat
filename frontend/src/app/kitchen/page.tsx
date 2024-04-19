@@ -25,12 +25,6 @@ export default function Kitchen() {
     });
   };
 
-  /* Fetches every second. Uncomment for demo. */
-  useEffect(() => {
-    const intervalId = setInterval(refreshOrderList, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
-
   useEffect(() => {
     getUserCookies().then((res) => {
       const permittedUsers = new RegExp(`${userType.manager}|${userType.kitchenStaff}`);
@@ -44,6 +38,10 @@ export default function Kitchen() {
 
   useEffect(() => {
     document.title = "CtrlAltDelEat - Kitchen";
+
+    /* Fetches incoming customer orders every second. */
+    const intervalId = setInterval(refreshOrderList, 1000);
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -67,6 +65,7 @@ export default function Kitchen() {
           onRefresh={refreshOrderList}
         />
       </AppShell.Main>
+
       <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
     </AppShell>
   );

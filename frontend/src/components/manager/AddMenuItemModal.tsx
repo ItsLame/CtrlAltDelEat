@@ -95,10 +95,12 @@ export function AddMenuItemModal({ category, categoryList, menuItemList, isOpene
 
   return (
     <Modal opened={isOpened} onClose={handleClear} title="Add Item" size="lg">
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        !form.validate().hasErrors && handleAddMenuItem();
-      }}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          !form.validate().hasErrors && handleAddMenuItem();
+        }}
+      >
         <Flex gap="xl" justify="center" wrap={isMobile ? "wrap" : "nowrap"}>
           <LoadingOverlay visible={isLoading}/>
           <Stack>
@@ -188,7 +190,8 @@ export function AddMenuItemModal({ category, categoryList, menuItemList, isOpene
             Cancel
           </Button>
           <Button
-            type="submit" px="xl"
+            px="xl"
+            type="submit"
             aria-label={`Submit new menu item called ${form.values?.itemName}`}
           >
             Add

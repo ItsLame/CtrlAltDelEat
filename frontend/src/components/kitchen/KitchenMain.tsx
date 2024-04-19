@@ -3,46 +3,42 @@ import { Blockquote, Box, Card, Flex, Text, Title } from "@mantine/core";
 import toast from "react-hot-toast";
 
 import { UndoDeleteOrder } from "@/components";
-import { KitchenMainProps, orderItems, Items, statusType } from "@/models";
+import { KitchenMainProps, orderItems, items, statusType } from "@/models";
 import { updateItemStatus } from "@/services";
 
 export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
   const [totalOrders, setTotalOrders] = useState(0);
-  const [preparedCards, setCardsPrepared] = useState([] as Number[]);
+  const [preparedItems, setPreparedItems] = useState([] as Number[]);
   const [orderList, setOrderList] = useState([] as orderItems[]);
 
   let timeOut: string | number | NodeJS.Timeout | undefined;
 
-  useEffect(() => {
-    let countOrders = 0;
-    const newOrders = orderItemList.map((order) => {
-      const id = order.id;
-      const items = order.items.filter((oneItem) => oneItem.status === statusType.received);
-      return { id, items };
-    });
+  const handleUndoClick = (tID: string, item: items) => {
+    /* Mark an item as unprepared again. */
 
-    const prgressOrders = newOrders.filter((order) => order.items.length !== 0);
-    prgressOrders.forEach((order) => countOrders += order.items.length);
-    setOrderList(prgressOrders);
-    setTotalOrders(countOrders);
-  }, [orderItemList]);
-
-  const handleUndoClick = (tID: string, item: Items) => {
     toast.dismiss(tID);
     clearTimeout(timeOut);
-    setCardsPrepared((prevCards) => prevCards.filter((itemnum) => itemnum !== item.id));
+    setPreparedItems((prevCards) => prevCards.filter((itemnum) => itemnum !== item.id));
   };
 
-  const handleDelete = (tID: string, item: Items) => {
+  const handleDelete = (tID: string, item: items) => {
+    /* Send request to change the status of an item as "prepared". */
+
     toast.dismiss(tID);
     const itemID = item.id;
     updateItemStatus(itemID, statusType.prepared).then(onRefresh);
   };
 
-  const handleClick = (item: Items) => {
-    if (!preparedCards.includes(item.id)) {
+  const handleClick = (item: items) => {
+    /* If clicked on an item card:
+     * - mark it as prepared,
+     * - send a toast with an undo button,
+     * - toast lasts only for 5 seconds.
+     */
+
+    if (!preparedItems.includes(item.id)) {
       let x = "";
-      setCardsPrepared((prevCards) => [...prevCards, item.id]);
+      setPreparedItems((prevCards) => [...prevCards, item.id]);
       toast((t) => {
         x = t.id;
 
@@ -58,8 +54,25 @@ export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
     }
   };
 
-  return (
+  useEffect(() => {
+    /* Filter incoming order list to only get orders marked as "received"
+     * Each item in an order is an individual item card.
+     */
 
+    let countOrders = 0;
+    const newOrders = orderItemList.map((order) => {
+      const id = order.id;
+      const items = order.items.filter((oneItem) => oneItem.status === statusType.received);
+      return { id, items };
+    });
+
+    const prgressOrders = newOrders.filter((order) => order.items.length !== 0);
+    prgressOrders.forEach((order) => countOrders += order.items.length);
+    setOrderList(prgressOrders);
+    setTotalOrders(countOrders);
+  }, [orderItemList]);
+
+  return (
     <Box className="appshell-h-100">
       <Title order={2}>Incoming Orders ({totalOrders})</Title>
       <Flex
@@ -76,7 +89,7 @@ export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
             radius="md"
             padding="xs"
             withBorder
-            className={`kitchen-items ${(preparedCards.includes(singleItem.id)? "prepped" : "")}`}
+            className={`kitchen-items ${(preparedItems.includes(singleItem.id)? "prepped" : "")}`}
             onClick={() => handleClick(singleItem)}
             onKeyDown={(e) => {
               e.stopPropagation();
@@ -98,13 +111,13 @@ export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
 
             <Text size="md" mb="xs">Item No: {singleItem.id}</Text>
 
-            <Box className="order-items" p="xs" >
+            <Box className="order-items" p="xs">
               <Flex justify="space-between">
                 <Title className="item-name" order={5} textWrap="balance">{singleItem.itemName}</Title>
                 <Title order={4}>x {singleItem.quantity}</Title>
               </Flex>
 
-              {singleItem.alterations != "" && <Blockquote p={0} pl="xs" c="dimmed" fs="italic">{singleItem.alterations}</Blockquote>}
+              {singleItem.alterations !== "" && <Blockquote p={0} pl="xs" c="dimmed" fs="italic">{singleItem.alterations}</Blockquote>}
             </Box>
           </Card>
         ))) : <Text p="md" c="dimmed">No items ordered yet.</Text>}

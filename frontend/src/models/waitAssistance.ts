@@ -1,48 +1,6 @@
-import { Items } from "@/models/kitchen";
+import { items } from "@/models";
 
-export interface assistRequests {
-  tableNumber: number;
-  request_assistance: boolean;
-  timestamp: string;
-}
-
-export interface serveProps {
-  allRequests: Items[];
-  addToServeInProgress: (_serveItem: Items) => void;
-}
-
-export interface reqAssistProps {
-  allRequests: assistRequests[];
-  addAssistToProgress: (_tableNum: number, _timestamp: string) => void;
-}
-
-export interface inProgProps {
-  allRequests: bothrequests[];
-  assistUndo: (_tableNum: number) => void;
-  assistUpdate: (_tableNum: number) => void;
-  serveUndo: (_itemid: number) => void;
-  serveUpdate: (_itemid: number, _tableno: number) => void;
-  refreshAssist: () => void;
-  refreshServe: () => void;
-}
-
-export interface waitMainProps {
-  serveItemsReqs: Items[];
-  custAssistReqs: assistRequests[];
-  refreshAssist: () => void;
-  refreshServe: () => void;
-}
-
-export interface bothrequests {
-  reqType: statusType;
-  tableNumber: number;
-  itemID: number;
-  timestamp: string;
-  itemName: string;
-  quantity: number;
-  alterations: string;
-}
-
+// Note: eslint disabled for this block as it conflicts with typescript's enum declaration
 /* eslint-disable */
 export enum statusType {
   inCart = "in-cart",
@@ -54,3 +12,39 @@ export enum statusType {
   paying = "yet-to-pay"
 }
 /* eslint-enable */
+
+export interface serveAssistRequests {
+  reqType: statusType;
+  tableNumber: number;
+  itemID: number;
+  timestamp: string;
+  itemName: string;
+  quantity: number;
+  alterations: string;
+}
+
+export interface assistRequests {
+  tableNumber: number;
+  request_assistance: boolean;
+  timestamp: string;
+}
+
+export interface ReadyToServeProps {
+  allRequests: items[];
+  addToServeInProgress: (_serveItem: items) => void;
+}
+
+export interface RequestAssistanceProps {
+  allRequests: assistRequests[];
+  addToAssistInProgress: (_tableNo: number, _timestamp: string) => void;
+}
+
+export interface InProgressProps {
+  allRequests: serveAssistRequests[];
+  assistUndo: (_tableNo: number) => void;
+  assistUpdate: (_tableNo: number) => void;
+  serveUndo: (_itemId: number) => void;
+  serveUpdate: (_itemId: number, _tableNo: number) => void;
+  refreshAssist: () => void;
+  refreshServe: () => void;
+}

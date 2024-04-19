@@ -2,12 +2,12 @@ import { Button, Stack, Flex, Title, PinInput, Text, Group, LoadingOverlay, Box 
 import { useEffect, useState } from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 import { generateAuthToken, getUserCookies, storeToken } from "@/services";
 import { apiPassword, siteRoute } from "@/constants";
 import { LoginProps, loginSchema } from "@/models";
 import { mapUserToRoute } from "@/helpers";
-import toast from "react-hot-toast";
 
 export function Login({ onReturn } : LoginProps) {
   const router = useRouter();
@@ -24,14 +24,6 @@ export function Login({ onReturn } : LoginProps) {
       pin: ""
     });
   };
-
-  useEffect(() => {
-    if (!checkLogin()) {
-      initForm();
-      setLoginLoading(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleLogin = (pin: string) => {
     setLoginLoading(true);
@@ -60,11 +52,21 @@ export function Login({ onReturn } : LoginProps) {
     return false;
   };
 
-  const LoginForm = () => (
-    <form onSubmit={(e) => {
-      e.preventDefault();
-      !form.validate().hasErrors && handleLogin(form.values?.pin);
-    }}>
+  useEffect(() => {
+    if (!checkLogin()) {
+      initForm();
+      setLoginLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const loginForm = () => (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        !form.validate().hasErrors && handleLogin(form.values?.pin);
+      }}
+    >
       <Box pos="relative">
         <Stack gap={0} align="center">
           <LoadingOverlay zIndex={1000} visible={isLoginLoading}/>
@@ -98,7 +100,7 @@ export function Login({ onReturn } : LoginProps) {
         <Title order={1} mb="xl">
           Staff Login
         </Title>
-        {LoginForm()}
+        {loginForm()}
       </Stack>
     </Flex>
   );

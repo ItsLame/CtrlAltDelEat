@@ -68,7 +68,7 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryListState]);
 
-  const DraggableCategoryCard = categoryListState.map((c, index) => {
+  const draggableCategoryCard = categoryListState.map((c, index) => {
     const isSelected = c.url === category.url;
 
     return (
@@ -93,12 +93,14 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
             >
               <Flex align="center">
                 <Flex className="w-100" align="center">
-                  <Flex {...provided.dragHandleProps} className="drag-handle"
+                  <Flex
+                    {...provided.dragHandleProps}
+                    className="drag-handle"
                     align="center" py="md" pl="md" pr="xs"
                     onClick={(e) => e.stopPropagation()}
                     onKeyDown={(e) => e.key === "Enter" && e.stopPropagation()}
                   >
-                    <DragHandleDots2Icon width={20} height={20}/>
+                    <DragHandleDots2Icon width={20} height={20} />
                   </Flex>
                   <Text fw={500}>{c.category_name}</Text>
                 </Flex>
@@ -128,11 +130,12 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
 
   return (
     <div className="sidebar">
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        handleAddCategory();
-        handleClearNewCategoryName();
-      }}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleAddCategory();
+          handleClearNewCategoryName();
+        }}
       >
         <TextInput
           placeholder="New category name"
@@ -146,9 +149,9 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
           mt="md"
           rightSection={(
             <CloseButton
-              aria-label="Clear input"
-              onClick={handleClearNewCategoryName}
               style={{ display: form.values?.categoryName ? undefined : "none" }}
+              onClick={handleClearNewCategoryName}
+              aria-label="Clear input"
             />
           )}
         />
@@ -192,7 +195,7 @@ export function ManagerSidebar({ category, onCategorySelect, onCategoryDelete, c
                 pb="xs"
                 gap={0}
               >
-                {DraggableCategoryCard}
+                {draggableCategoryCard}
                 {provided.placeholder}
               </Stack>
             )}

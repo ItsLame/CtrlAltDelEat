@@ -206,6 +206,7 @@ export default function Manager() {
         onDelete={handleDeleteMenuItemAfter}
         onClose={handleDeleteMenuItemCancel}
       />
+
       <Toaster position="top-center" toastOptions={{ duration: 1500 }}/>
     </AppShell>
   );

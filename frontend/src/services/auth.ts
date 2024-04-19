@@ -52,7 +52,6 @@ export const getHeaders = {
   },
   async form() {
     return {
-      // "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${await getAuthToken()}`,
     };
   }

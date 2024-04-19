@@ -1,0 +1,103 @@
+Week 1:
+- Formed a group of 4 with 3 other people in Wednesday 6-8 PM in-person tutorial
+- Invited to Jira Site
+- Decided on project P4 as a team
+- Brainstormed with the team on what features we'll need
+- Created a GitHub Repo
+- Delegated frontend and backend roles (I'm frontend)
+- Updated Ed post to recruit new members
+- Communicated with other students who are interested in joining the group via email
+- At the end of week 1 we had 2 new members
+- Brainstormed and decided on frontend and backend tech stack
+	- FE: Next, TypeScript, Mantine
+	- BE: Python, Django, PostgreSQL
+- Initialised a Next.js project for frontend and pushed to repository
+- Created a discord group chat for communication
+
+Week 2:
+- Discussed with all the members on task allocation
+- Decided that I will be doing the Storyboards while the rest can focus on the other parts
+- Brainstormed some user stories and its structure with the team
+- Brainstormed and did rough sketches for some of the Storyboards with the team
+- A couple of online meetings was held for brainstorming sessions
+- I re-initialised the frontend to include Mantine and TypeScript as well
+
+Week 3:
+- Double checking and proof reading the proposal (mostly the user stories)
+- Fixed the formatting of the proposal document (revamped the cover page, fixed page numbering, modified headers styling, spacing settings, justification)
+- Started working on the wireframes on Figma
+- After the wireframes are done, I transferred the wireframes to Miro to start annotating
+- After annotation is done I moved it over to the proposal document
+- Double checking the proposal again and did touch ups
+- Finalised the proposal and left it to be double checked by the other members
+
+Week 4:
+- Discussed with frontend members on task allocation
+- Had a look of the live demo of the backend from the backend lead
+- Merged the backend branch into main so that I can start setting it up on my computer
+- Got the backend up and running on my computer
+- Created some relevant tasks for the user stories that I aim to work on (Manager)
+- Assigned the tasks to myself and started to work on it
+- Attempts to make a request to the backend but failing (some issue related to CORS)
+	- After lots of debugging, this issue was fixed
+- Assisted some team member with the front and backend environment setup
+
+Week 5:
+- Created a request to get auth token which then is store in cookies
+- Encountered more issues when authenticating and accessing the token from the cookie
+	- After lots of debugging, this issue was fixed
+	- Issue was because the auth token was not stored and retrieved properly from cookie resulting it to always return the same value.
+- Updated fetch requests to also pass in auth tokens retrieved from cookies
+- Completed manager related tickets except for:
+	- Sending the image to our Django backend (image preview upon upload works)
+	- Authentication with user input (currently hard coded)
+- Reviewed frontend PRs from other team members
+- Presented Demo A
+- Retrospective A with the team
+
+Week 6:
+- Discussed task allocation
+- Discussed with some team members on how we can potentially upload the image
+- Reviewed frontend PRs from other team members
+
+Week 7:
+- Reviewed frontend PRs from other team members
+- Worked on all tasks under manager epic for Sprint 2
+- Fixed and created new tickets in Sprint 2 for bugs found on Sprint 1 features
+- Reviewed frontend PRs from other team members
+- Enforced PR/commit names to team members to track tickets better and better consistency
+- Created Jira ticket automation and linked it to GitHub
+- Discussed task progress and readiness for progressive demo B
+
+Week 8:
+- Reviewed issues raised by other team members
+- Reviewed frontend PRs from other team members
+- Completed all tasks under manager epic for Sprint 2
+	- Edit, delete category
+	- Edit, delete menu item
+- Fixed bugs from Sprint 1 and 2 features relating to menu items and categories (manager)
+- Presented Demo B
+- Retrospective B with the team
+
+Week 9:
+- Reviewed frontend PRs from other team members
+- Worked on all tasks under manager epic for Sprint 3
+- Worked on some tasks/fixes under other epics for Sprint 3
+- Worked on some presentation content, outline, and layout for final demo
+- Code clean ups and refactoring
+- Group meeting to discuss final demo, report and which to focus on first
+
+Week 10:
+- Reviewed PRs
+- Worked on and completed all tasks under manager epic for Sprint 3
+- Fixed frontend bugs across all epics
+- Worked on refining UIs across all epics
+- Added all of the accessibility labels (tabIndex, aria-labels, alt tags) for frontend
+- Major code clean ups and refactoring across all epics
+- Worked on presentation slides for final demo
+- Group meeting for a test run and slide allocation
+- Presented the project with the team in our tutorial slot (Wednesday 6pm)
+- Worked on the report (all functionalities, frontend third party functionalities, frontend implementation challenges, some installation/setup)
+- Testing all routes and functionalities
+- Test run of the setup process
+- Double checked and proof-read the report

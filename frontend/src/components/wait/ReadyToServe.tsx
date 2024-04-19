@@ -1,9 +1,10 @@
-import { serveProps } from "@/models";
 import { Button, Card, Text, Flex, Title, Box, ActionIcon, Blockquote } from "@mantine/core";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
-export function ReadyToServe({ allRequests, addToServeInProgress }: serveProps) {
+import { ReadyToServeProps } from "@/models";
+
+export function ReadyToServe({ allRequests, addToServeInProgress }: ReadyToServeProps) {
   const [serveIndex, setServeIndex] = useState(0);
 
   const checkEndOfList = () => (serveIndex !== 0 && serveIndex === allRequests.length - 1) && setServeIndex(allRequests.length - 2);
