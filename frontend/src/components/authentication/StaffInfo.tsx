@@ -30,7 +30,7 @@ export function StaffInfo({ onLogout }: StaffInfoProps) {
 
   return (
     <Stack className="w-100" gap="xs" align="center">
-      <Card className="w-100" withBorder radius="sm" shadow="md">
+      <Card className="w-100" radius="sm" shadow="md" withBorder>
         <Stack gap="xs">
           <Flex justify="space-between">
             <Text span fw={600}>Username:</Text>

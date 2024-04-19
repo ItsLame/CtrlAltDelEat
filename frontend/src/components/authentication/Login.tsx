@@ -61,10 +61,12 @@ export function Login({ onReturn } : LoginProps) {
   }, []);
 
   const loginForm = () => (
-    <form onSubmit={(e) => {
-      e.preventDefault();
-      !form.validate().hasErrors && handleLogin(form.values?.pin);
-    }}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        !form.validate().hasErrors && handleLogin(form.values?.pin);
+      }}
+    >
       <Box pos="relative">
         <Stack gap={0} align="center">
           <LoadingOverlay zIndex={1000} visible={isLoginLoading}/>

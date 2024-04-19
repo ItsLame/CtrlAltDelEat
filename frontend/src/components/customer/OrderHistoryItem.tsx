@@ -10,7 +10,13 @@ export function OrderHistoryItem ({ groupedOrders, index }: HistoryProps) {
 
   return (
     <UnstyledButton onClick={toggle} key={index}>
-      <Card className={`order-list-toggle ${opened ? "selected" : ""}`} padding="lg" radius="md" shadow="sm" withBorder>
+      <Card
+        className={`order-list-toggle ${opened ? "selected" : ""}`}
+        padding="lg"
+        radius="md"
+        shadow="sm"
+        withBorder
+      >
         <Flex direction="row" align="center" justify="space-between">
           <Flex gap="md" align="center">
             {opened ? <ChevronUpIcon width={20} height={20}/> : <ChevronDownIcon width={20} height={20}/>}

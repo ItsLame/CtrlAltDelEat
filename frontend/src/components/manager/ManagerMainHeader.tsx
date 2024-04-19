@@ -92,7 +92,8 @@ export function ManagerMainHeader ({ category, onRefresh, onAddMenuItem, onEditC
                     )}
                   />
                   <Button
-                    variant="outline" color="gray"
+                    variant="outline"
+                    color="gray"
                     onClick={toggleEditCategory}
                     aria-label={`Cancel changes for ${category.category_name} category name`}
                   >
@@ -104,7 +105,9 @@ export function ManagerMainHeader ({ category, onRefresh, onAddMenuItem, onEditC
           }
           <Group gap="sm" align="top">
             <ActionIcon
-              variant="subtle" size="lg" py={17}
+              variant="subtle"
+              size="lg"
+              py={17}
               onClick={onRefresh}
               aria-label="Reload menu item list"
             >
@@ -112,7 +115,8 @@ export function ManagerMainHeader ({ category, onRefresh, onAddMenuItem, onEditC
             </ActionIcon>
             <Button
               onClick={onAddMenuItem}
-              aria-label={`Add new menu item for ${category.category_name} category `}>
+              aria-label={`Add new menu item for ${category.category_name} category `}
+            >
               Add Item
             </Button>
           </Group>

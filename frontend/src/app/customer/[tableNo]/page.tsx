@@ -175,7 +175,7 @@ export default function Customer({ params: { tableNo } }: { params: { tableNo: n
         </Paper>
       </AppShell.Header>
 
-      <AppShell.Navbar p="md">
+      <AppShell.Navbar p="md" visibleFrom="sm">
         <CustomerSidebar
           category={category}
           categoryList={categoryList}

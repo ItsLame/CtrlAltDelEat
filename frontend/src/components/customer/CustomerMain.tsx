@@ -9,11 +9,14 @@ export function CustomerMain({ category, items, onMenuItemSelect, onViewMenuItem
 
   const generateMenuItem = (item: menuItems, k: number) => {
     return (
-      <UnstyledButton key={k} onClick={() => {
-        onMenuItemSelect(item);
-        onViewMenuItem();
-      }}>
-        <Card className="menu-item" shadow="sm" padding="lg" radius="md" withBorder={true}>
+      <UnstyledButton
+        key={k}
+        onClick={() => {
+          onMenuItemSelect(item);
+          onViewMenuItem();
+        }}
+      >
+        <Card className="menu-item" shadow="sm" padding="lg" radius="md" withBorder>
           <Flex gap="md">
             <Image
               src={item.image}

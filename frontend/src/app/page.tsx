@@ -98,7 +98,7 @@ export default function HomePage() {
               onChange={(e) => setTableNo(e as number)}
               aria-label="Enter table number for customer"
             />
-            <Link href={`${siteRoute.customer}/${tableNo}`} aria-label="Press enter to navigate to wait staff page">
+            <Link href={`${siteRoute.customer}/${tableNo}`} aria-label="Press enter to navigate to customer page">
               <Button tabIndex={-1} disabled={tableNo <= 0 ? true : false}>
                 Customer
               </Button>
