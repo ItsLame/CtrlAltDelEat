@@ -1,0 +1,41 @@
+Week 1:
+I formed a group of two with William, we looked for prospective teams and floated a bit between online and offline.
+
+Week 2: 
+Joined the offline group, joined jira, brainstormed ideas for project, allocated people to join specific roles for
+example frontend and backend. I got given frontend :(
+
+Week 3:
+More brainstorming, began working on project proposal, began sketching things in Miro, added some jira tickets.
+
+Week 4:
+Began sprint one, I was involved with the customer side of things, in this week I struggled heavily with learning
+react, typescript, next-js and so forth. I learned a bit about Mantine components in this week.
+
+Week 5:
+Implemented components for customers to be able to browse a menu, added the functionality to call backend apis for
+customers to get actual items from the backend as well as added the ability for customers to add things to cart.
+Flew up to Sydney with Will for presentation that went quite well.
+
+Week 6:
+Lazy this week :( mostly spent time learning nextjs
+
+Week 7:
+Started work on customers being able to actually order items, cleaned up some code, did some more "frontendy" things,
+also added the ability for a customer to request assistance. Spent a stupid amount of time debugging what I thought
+was a serialization error but was actually me misrepresenting the interface. Whoops
+
+Week8:
+Last second scramble for a few things, did some backend stuff, made it so customers could actually order things,
+made lists of things that could be browsable. Demo went poorly, I somehow broke authentication during the presentation,
+we got a little tangled. :(
+
+Week9:
+Final stretch! Spent most of this week touching up a few things styling wise, also was drowning in homework for another
+class and actual work, so I couldn't spend as much time as desired here.
+
+Week10:
+Added the ability for a customer to pay, created a way of browsing history, created a component view for tracking status
+and how big the bill was. Touched a few things on the backend for authentication, did quite a lot of bug fixing,
+spent a lot of time styling components to represent data, and updated the way the customer page would transmit data
+to be more efficient.
