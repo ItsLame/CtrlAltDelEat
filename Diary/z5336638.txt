@@ -1,0 +1,40 @@
+Week 1:
+Met with other classmates in the first tutorial and formed the group. 
+Decided on the team name, roles within the team and set up Jira. 
+Discussed which project to do and voted on it.
+
+Week 2:
+Finalised the complete group. Held meetings online and got assigned work for project proposal.
+
+Week 3: 
+Created the epics and user story tickets on Jira based on the shared document where the team brainstormed ideas for user stories. 
+Worked on the project proposal's 1.2 - reviewing existing solutions, their limitations and feature comparison. 
+
+Week 4:
+Got help setting up the environment and understanding the project file structure. 
+Looked up documentation for Typescript, NextJS and Docker, the parts of the tech stack that were new to me.
+
+Week 5:
+Finally started to work on the kitchen staff page. Created the page functionalities but not connected with the database yet.
+
+Week 6:
+Finish working on the kitchen staff page, handled API changes to connect with the backend. 
+
+Week 7: 
+Started work on the wait staff page. Decided on the page layout and workout out the functionalities. 
+Talked with the backend team members to express what I will need and also how they will structure the requests/responses.
+
+Week 8:
+Handle API changes and clean up for the demo. Wrote the retrospective B. 
+
+Week 9:
+Refactored the entire wait page to make it look neater and also work better with Mantine UI. 
+Incorporaeted changes in UI to make it look more refine. 
+Handle some more API changes for item status. 
+Discussed the 'request assistance' bug and incorporated timestamp for it. 
+
+Week 10:
+Fixed last minute bugs and refined styles more.
+Prepare for the demo by adding to the ppt slides and practice demo. 
+Cleaned up the code in any way I could. Added comments to parts I wrote.
+Looked over final report to double check tables and/or any errors.   

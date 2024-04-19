@@ -8,27 +8,37 @@ import { updateItemStatus } from "@/services";
 
 export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
   const [totalOrders, setTotalOrders] = useState(0);
-  const [preparedCards, setCardsPrepared] = useState([] as Number[]);
+  const [preparedItems, setPreparedItems] = useState([] as Number[]);
   const [orderList, setOrderList] = useState([] as orderItems[]);
 
   let timeOut: string | number | NodeJS.Timeout | undefined;
 
   const handleUndoClick = (tID: string, item: items) => {
+    /* Mark an item as unprepared again. */
+
     toast.dismiss(tID);
     clearTimeout(timeOut);
-    setCardsPrepared((prevCards) => prevCards.filter((itemnum) => itemnum !== item.id));
+    setPreparedItems((prevCards) => prevCards.filter((itemnum) => itemnum !== item.id));
   };
 
   const handleDelete = (tID: string, item: items) => {
+    /* Send request to change the status of an item as "prepared". */
+
     toast.dismiss(tID);
     const itemID = item.id;
     updateItemStatus(itemID, statusType.prepared).then(onRefresh);
   };
 
   const handleClick = (item: items) => {
-    if (!preparedCards.includes(item.id)) {
+    /* If clicked on an item card:
+     * - mark it as prepared,
+     * - send a toast with an undo button,
+     * - toast lasts only for 5 seconds.
+     */
+
+    if (!preparedItems.includes(item.id)) {
       let x = "";
-      setCardsPrepared((prevCards) => [...prevCards, item.id]);
+      setPreparedItems((prevCards) => [...prevCards, item.id]);
       toast((t) => {
         x = t.id;
 
@@ -45,6 +55,10 @@ export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
   };
 
   useEffect(() => {
+    /* Filter incoming order list to only get orders marked as "received"
+     * Each item in an order is an individual item card.
+     */
+
     let countOrders = 0;
     const newOrders = orderItemList.map((order) => {
       const id = order.id;
@@ -75,7 +89,7 @@ export function KitchenMain({ orderItemList, onRefresh }: KitchenMainProps) {
             radius="md"
             padding="xs"
             withBorder
-            className={`kitchen-items ${(preparedCards.includes(singleItem.id)? "prepped" : "")}`}
+            className={`kitchen-items ${(preparedItems.includes(singleItem.id)? "prepped" : "")}`}
             onClick={() => handleClick(singleItem)}
             onKeyDown={(e) => {
               e.stopPropagation();

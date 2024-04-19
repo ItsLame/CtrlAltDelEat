@@ -39,7 +39,7 @@ export default function Kitchen() {
   useEffect(() => {
     document.title = "CtrlAltDelEat - Kitchen";
 
-    /* Fetches every second. */
+    /* Fetches incomming customer orders every second. */
     const intervalId = setInterval(refreshOrderList, 1000);
     return () => clearInterval(intervalId);
   }, []);

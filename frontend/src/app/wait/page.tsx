@@ -16,11 +16,11 @@ export default function Wait() {
   const router = useRouter();
   const [sidebarOpened, { toggle: toggleSidebar }] = useDisclosure();
 
-  const [custAssistReqs, setcustAssistReqs] = useState([] as assistRequests[]);
+  const [custAssistReqs, setCustAssistReqs] = useState([] as assistRequests[]);
   const [tempAssistReq, setTempAssistReq] = useState([] as assistRequests[]);
   const [toAssist, setToAssist] = useState([] as assistRequests[]);
 
-  const [serveItemsReqs, setserveItemsReqs] = useState([] as items[]);
+  const [serveItemsReqs, setServeItemsReqs] = useState([] as items[]);
   const [tempServeReq, setTempServeReq] = useState([] as items[]);
   const [toServe, setToServe] = useState([] as items[]);
 
@@ -38,6 +38,8 @@ export default function Wait() {
   }, []);
 
   const addServeItemToInProgress = (serveItem: items) => {
+    /* Creates new serveAssistRequest to add serve item to 'In Progress' section */
+
     const newReq = {
       reqType: statusType.serving,
       tableNumber: serveItem.tableNumber,
@@ -54,6 +56,8 @@ export default function Wait() {
   };
 
   const addAssistInProgress = (num: number, timestamp: string) => {
+    /* Creates new serveAssistRequest to add assist request to 'In Progress' section */
+
     const newReq = {
       reqType: statusType.assist,
       tableNumber: num,
@@ -70,37 +74,57 @@ export default function Wait() {
   };
 
   const checkServe = (num: number, itemID: number, type: string) => {
+    /*
+     * Check which item card to remove from 'Ready To Serve based on
+     * if the item is being served.
+     */
+
     if (type === statusType.serving && itemID === num) return false;
     else return true;
   };
 
   const checkAssist = (num: number, itemTableNum: number, type: string) => {
+    /*
+     *  Check which assist card to remove from Request Assistance
+     *  based on if the table is being assisted.
+     */
+
     if (type === statusType.assist && itemTableNum === num) return false;
     else return true;
   };
 
   const updateItemStatusToServed = (serveItemId: number) => {
+    /* Send request to backend to mark item as served */
+
     const itemID = serveItemId;
     updateItemStatus(itemID, statusType.served).then(refreshServe);
   };
 
   const updateAssistance = (num: number) => {
+    /* Send request to backend to mark assistance as complete */
+
     updateWaitAssistance(num);
   };
 
   const deleteServeNoUpdate = (serveItemId: number) => {
+    /* Only remove from 'In Progess'; does not send any request to backend */
+
     serveLock.current = true;
     assistLock.current = false;
     setAllInProgress((prev) => prev.filter((item) => checkServe(serveItemId, item.itemID, item.reqType)));
   };
 
   const deleteAssistNoUpdate = (num: number) => {
+    /* Only remove from 'In Progess'; does not send any request to backend */
+
     assistLock.current = true;
     serveLock.current = false;
     setAllInProgress((prev) => prev.filter((item) => checkAssist(num, item.tableNumber, item.reqType)));
   };
 
   const deleteServeInProgress = (serveItemId: number, serveTable:number) => {
+    /* Remove from 'In Progress'; send request to backend to mark as complete */
+
     toast.success(`Served Table No: ${serveTable}, Item No: ${serveItemId}!`);
     updateItemStatusToServed(serveItemId);
     serveLock.current = false;
@@ -108,6 +132,8 @@ export default function Wait() {
   };
 
   const deleteAssistInProgress = (num: number) => {
+    /* Remove from 'In Progress'; send request to backend to mark as complete */
+
     toast.success(`Assisted Table No: ${num}!`);
     updateAssistance(num);
     assistLock.current = false;
@@ -126,6 +152,11 @@ export default function Wait() {
   }, [refreshAllList, router]);
 
   useEffect(() => {
+    /* When serve item request list has been modified:
+     * - filter those requests that are currently 'In Progress'
+     * - sort all items according to timestamp.
+     */
+
     if (serveLock.current) {
       let orderToServe = serveItemsReqs
         .sort((a, b) => a.timestamp > b.timestamp ? 1 : -1)
@@ -136,6 +167,11 @@ export default function Wait() {
   }, [allInProgress, serveItemsReqs]);
 
   useEffect(() => {
+    /* When assistance request list has been modified:
+     * - filter those requests that are currently 'In Progress'
+     * - sort all items according to timestamp.
+     */
+
     if (assistLock.current) {
       const tableToAssist = custAssistReqs
         .sort((a, b) => a.timestamp > b.timestamp ? 1 : -1)
@@ -156,16 +192,16 @@ export default function Wait() {
 
   useEffect(() => {
     const filteredServeReq = tempServeReq.filter((item) => item.status === statusType.prepared);
-    setserveItemsReqs(filteredServeReq);
+    setServeItemsReqs(filteredServeReq);
   }, [tempServeReq]);
 
   useEffect(() => {
     const filteredAssistReq = tempAssistReq.filter((item) => item.request_assistance === true);
-    setcustAssistReqs(filteredAssistReq);
+    setCustAssistReqs(filteredAssistReq);
   }, [tempAssistReq]);
 
   useEffect(() => {
-    /* Fetches every second. */
+    /* Fetches incomming serve+assist requests every second. */
     const assistIntervalId = setInterval(refreshAssist, 1000);
     const serveIntervalId = setInterval(refreshServe, 1000);
 
